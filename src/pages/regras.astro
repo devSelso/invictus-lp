@@ -66,7 +66,7 @@ const n = (id: string) => String(secoes.findIndex(([s]) => s === id) + 1).padSta
         <h3>Nether</h3>
         <ul><li><b>Só entra quem estiver com armadura completa de diamante</b> na hora da entrada, por qualquer caminho, inclusive teleporte. Depois de entrar, pode tirar.</li><li>Reseta todo dia à meia-noite e nada tem dono. Não pode colocar cama.</li><li>PvP sempre ligado.</li></ul>
         <h3>The End</h3>
-        <ul><li>A ilha central clássica da 1.8, com dragão, torres de obsidiana e cristais.</li><li><b>O dragão renasce 6 horas depois de derrotado.</b> <span class="cmd">/dragao</span> mostra se ele está vivo ou quanto falta. A derrota e o renascimento são anunciados para todos.</li><li>Não pode colocar blocos, nem para subir nas torres: o dragão se derrota com arco.</li><li>PvP sempre ligado. Não precisa de armadura para entrar.</li></ul>
+        <ul><li>A ilha central clássica da 1.8, com dragão, torres de obsidiana e cristais.</li><li><b>O dragão renasce 6 horas depois de derrotado.</b> <span class="cmd">/dragao</span> mostra se ele está vivo ou quanto falta. A derrota e o renascimento são anunciados para todos.</li><li><b>Prêmio:</b> quem dá o golpe final ganha 5.000 Coins e a tag roxa <b class="tag-destemido">Destemido</b> no chat, que fica com ele até outro jogador matar o dragão. A cada morte, o dragão tem 0,5% de chance de deixar cair uma gaiola. Valores iniciais.</li><li>Não pode colocar blocos, nem para subir nas torres: o dragão se derrota com arco.</li><li>PvP sempre ligado. Não precisa de armadura para entrar.</li></ul>
       </section>
 
       <section id="gerais" class="sec" data-palavras="morrer dormir cama limpeza">
@@ -165,7 +165,7 @@ const n = (id: string) => String(secoes.findIndex(([s]) => s === id) + 1).padSta
       <section id="gaiolas" class="sec" data-palavras="spawner spawners ovo mob masmorra">
         <h2><span>{n('gaiolas')}</span>Gaiolas (spawners)</h2>
         <ul>
-          <li><b>O servidor não vende gaiolas.</b> Elas saem como prêmio da ativação do VIP e são negociadas entre jogadores.</li>
+          <li><b>O servidor não vende gaiolas.</b> Elas saem como prêmio do VIP de promoção (Natal, Dia das Crianças) e do dragão, e são negociadas entre jogadores.</li>
           <li>A gaiola é um item que guarda o mob, como "Gaiola de Zumbi", e <b>só pode ser colocada no Mundo 1</b>.</li>
           <li><b>Sua gaiola:</b> só você recolhe (quebrando, ela volta como item com o mesmo mob) e troca o mob.</li>
           <li><b>Gaiola natural das masmorras:</b> qualquer um quebra, mas ela se perde. O servidor avisa antes; quebrando de novo em 5 segundos, ela some.</li>
@@ -303,7 +303,7 @@ const n = (id: string) => String(secoes.findIndex(([s]) => s === id) + 1).padSta
   .sec ul li { position: relative; padding-left: 20px; }
   .sec ul li::before { content: ''; position: absolute; left: 0; top: 0.68em; width: 6px; height: 6px; background: var(--vermelho-jogo); }
   .sec b { color: var(--branco); }
-  .sec b.tag-vip { color: #ffaa00; } .sec b.tag-magnata { color: #55ff55; } .sec b.tag-diretor { color: #aa0000; } .sec b.tag-admin { color: #ff5555; }
+  .sec b.tag-vip { color: #ffaa00; } .sec b.tag-magnata { color: #55ff55; } .sec b.tag-diretor { color: #aa0000; } .sec b.tag-admin { color: #ff5555; } .sec b.tag-destemido { color: #d16ad1; }
   .vermelho { color: var(--vermelho-jogo) !important; }
   .destaque { border: 2px solid var(--vermelho-jogo); box-shadow: var(--brilho-caixa); background: rgba(200, 29, 37, 0.18); padding: 18px 22px; font-size: 20px; font-weight: 700; }
   .minis { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr)); gap: 10px; }

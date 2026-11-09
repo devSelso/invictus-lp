@@ -28,6 +28,15 @@ export const vip = {
   mensagemDirect: 'Quero ter acesso ao VIP antecipado',
   // Bônus exclusivos da pré-venda. Lista vazia = "anúncio em breve".
   bonusPreVenda: [] as string[],
+  // O que vem em toda ativação (igual ao vip.pacote do config.yml do ServidorCore).
+  pacote: [
+    { valor: '4', item: 'Armadura de diamante', detalhe: 'Completa, sem encantamento. Já libera a entrada no Nether.' },
+    { valor: '15', item: 'Níveis de XP', detalhe: 'Para encantar o que quiser.' },
+    { valor: '5K', item: 'Coins', detalhe: '5.000 Coins para começar a economia.' },
+  ],
+  // Promoção de data especial (Natal, Dia das Crianças...). Ligada, o VIP também sorteia ovo e gaiola,
+  // e o site mostra a tabela de chances e o simulador. Desligada no lançamento.
+  promocao: { ativa: false, nome: '' },
 };
 
 // Tabela de chances do ovo na ativação do VIP (valores iniciais).

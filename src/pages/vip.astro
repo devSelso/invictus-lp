@@ -15,12 +15,12 @@ const vantagens = [
   { v: 'ON/OFF', t: 'PvP do seu jeito', d: 'Ligue e desligue o próprio PvP fora do Spawn e fora de combate, com 3 minutos entre trocas.', cmd: '/pvp off' },
 ];
 ---
-<Base titulo="VIP" descricao="Vantagens do VIP do Invictus, pré-venda, como funciona o código, mercado de VIP e a tabela de chances da ativação.">
+<Base titulo="VIP" descricao="Vantagens do VIP do Invictus, pré-venda, pacote da ativação, como funciona o código e o mercado de VIP.">
   <section class="container topo">
     <div class="topo-txt">
       <span class="hud"><span class="ponto"></span>{servidor.preLancamento ? `Pré-venda até ${servidor.lancamentoCurto}` : 'VIP Invictus'}</span>
       <h1 class="t-titulo t-h1 t-brilho">{servidor.preLancamento ? 'VIP antecipado' : 'VIP Invictus'}</h1>
-      <p class="lead">O VIP chega como um código. Você ativa para você ou vende para outro jogador por Coins. Cada ativação ainda sorteia um ovo de criatura e uma chance de gaiola, com as chances publicadas nesta página.</p>
+      <p class="lead">O VIP chega como um código. Você ativa para você ou vende para outro jogador por Coins. Ao ativar, você recebe armadura de diamante, 15 níveis de XP e 5.000 Coins.</p>
       {servidor.preLancamento && (
         <div class="bonus-box">
           <b>Bônus de quem compra na pré-venda</b>
@@ -80,9 +80,24 @@ const vantagens = [
 
   <section class="container secao">
     <div class="cabeca">
-      <span class="hud">Prêmios da ativação</span>
-      <h2 class="t-titulo t-h2">Chances às claras</h2>
-      <p>Cada ativação dá um sorteio de ovo de criatura e uma chance de ganhar uma gaiola. Prêmios raros são anunciados para o servidor todo.{chancesProvisorias && ' Estes são os valores iniciais e podem mudar até a abertura.'}</p>
+      <span class="hud">Pacote da ativação</span>
+      <h2 class="t-titulo t-h2">O que chega no inventário</h2>
+      <p>Toda ativação entrega este pacote. Por isso o inventário precisa estar vazio na hora (a armadura vestida pode ficar).</p>
+    </div>
+    <ul class="vant pacote">
+      {vip.pacote.map((p) => (
+        <li><div><h3>{p.item}</h3><p>{p.detalhe}</p></div><span class="v">{p.valor}</span></li>
+      ))}
+    </ul>
+    {!vip.promocao.ativa && <p class="promo-nota">Em datas especiais, como Natal e Dia das Crianças, o VIP de promoção também sorteia um ovo de criatura e uma chance de gaiola.</p>}
+  </section>
+
+  {vip.promocao.ativa && (
+  <section class="container secao">
+    <div class="cabeca">
+      <span class="hud"><span class="ponto"></span>{vip.promocao.nome || 'Promoção'}</span>
+      <h2 class="t-titulo t-h2">Prêmios da promoção</h2>
+      <p>Durante a promoção, cada ativação também dá um sorteio de ovo de criatura e uma chance de ganhar uma gaiola. Prêmios raros são anunciados para o servidor todo.{chancesProvisorias && ' Estes são os valores iniciais e podem mudar.'}</p>
     </div>
     <div class="premios">
       <div class="tabela-chances">
@@ -108,6 +123,7 @@ const vantagens = [
       </div>
     </div>
   </section>
+  )}
 
   <section class="container secao">
     <div class="mercado">
@@ -206,6 +222,9 @@ const vantagens = [
   .resultado { background: rgba(0, 0, 0, 0.6); border-left: 3px solid var(--vermelho-jogo); padding: 20px; display: flex; flex-direction: column; gap: 6px; min-height: 124px; justify-content: center; }
   .resultado b { font-size: 21px; }
   .resultado span { color: var(--texto-2); }
+
+  .pacote { grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); }
+  .promo-nota { margin-top: 20px; color: var(--texto-3); }
 
   .mercado { background: rgba(19, 19, 23, 0.92); border: 1px solid var(--linha); padding: clamp(26px, 5vw, 48px); display: flex; flex-wrap: wrap; gap: 40px; }
   .m-txt { flex: 1 1 360px; display: flex; flex-direction: column; gap: 16px; }

@@ -150,6 +150,7 @@ h1, h2, h3, p { margin: 0; }
 .tag-admin { color: #ff5555; }
 .tag-magnata { color: #55ff55; }
 .tag-vip { color: #ffaa00; }
+.tag-destemido { color: #d16ad1; }
 
 @keyframes piscar { to { visibility: hidden; } }
 @media (prefers-reduced-motion: reduce) {
