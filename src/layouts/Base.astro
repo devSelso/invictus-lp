@@ -1,0 +1,72 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { servidor } from '../data/servidor';
+
+interface Props {
+  titulo?: string;
+  descricao?: string;
+}
+const {
+  titulo,
+  descricao = 'Servidor de Minecraft 1.8.8 com survival clássico, PvP da 1.8, economia em Coins, proteção automática e VIP. Aceita original e pirata.',
+} = Astro.props;
+const tituloCompleto = titulo ? `${titulo} · Invictus` : 'Invictus · Servidor de Minecraft 1.8.8';
+---
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{tituloCompleto}</title>
+    <meta name="description" content={descricao} />
+    <meta name="theme-color" content="#C81D25" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={tituloCompleto} />
+    <meta property="og:description" content={descricao} />
+    <meta property="og:image" content="/logo-invictus.png" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta name="twitter:card" content="summary_large_image" />
+  </head>
+  <body data-lancamento={servidor.lancamento}>
+    <Header />
+    <main>
+      <slot />
+    </main>
+    <Footer />
+
+    <script>
+      // Copiar texto: qualquer elemento com data-copiar. O texto do botão muda por um tempo.
+      document.querySelectorAll<HTMLElement>('[data-copiar]').forEach((el) => {
+        el.addEventListener('click', () => {
+          const texto = el.dataset.copiar ?? '';
+          try { navigator.clipboard?.writeText(texto).catch(() => {}); } catch {}
+          const aviso = el.dataset.copiado;
+          if (!aviso || el.querySelector('*')) return;
+          const original = el.textContent;
+          el.textContent = aviso;
+          window.setTimeout(() => { el.textContent = original; }, 3500);
+        });
+      });
+
+      // Dias até o lançamento.
+      const alvo = Date.parse(document.body.dataset.lancamento ?? '');
+      if (!Number.isNaN(alvo)) {
+        const dias = Math.ceil((alvo - Date.now()) / 86400000);
+        const texto = dias > 1 ? `faltam ${dias} dias` : dias === 1 ? 'é amanhã' : 'já começou';
+        document.querySelectorAll<HTMLElement>('[data-dias]').forEach((el) => { el.textContent = texto; });
+      }
+
+      // Menu do celular.
+      const botao = document.querySelector<HTMLButtonElement>('[data-menu]');
+      const menu = document.getElementById('menu');
+      botao?.addEventListener('click', () => {
+        const aberto = menu?.classList.toggle('aberto') ?? false;
+        botao.setAttribute('aria-expanded', String(aberto));
+        botao.setAttribute('aria-label', aberto ? 'Fechar menu' : 'Abrir menu');
+      });
+    </script>
+  </body>
+</html>

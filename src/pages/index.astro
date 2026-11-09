@@ -1,0 +1,292 @@
+---
+import Base from '../layouts/Base.astro';
+import Elmo from '../components/Elmo.astro';
+import BotaoDirect from '../components/BotaoDirect.astro';
+import NovidadeCard from '../components/NovidadeCard.astro';
+import { servidor, links, vip } from '../data/servidor';
+import { novidadesOrdenadas } from '../data/novidades';
+
+const ultimas = (await novidadesOrdenadas()).slice(0, 3);
+
+const motivos = [
+  { t: 'Todo bloco que você coloca é seu', d: 'Sem terreno para comprar e sem comando para proteger. Ninguém quebra o que você construiu, e baús, portas e fornalhas já nascem trancados.' },
+  { t: 'Mundos de recurso novos todo dia', d: 'O Minerar e o Nether resetam à meia-noite. Todo dia tem minério intocado esperando, e o seu Mundo 1 fica para sempre.' },
+  { t: 'A noite é perigosa', d: 'PvP clássico da 1.8. De dia o Mundo 1 é tranquilo; quando escurece, o PvP liga. No Nether e no The End ele nunca desliga.' },
+  { t: 'Vire o Magnata', d: 'Economia em Coins, loja do servidor e lojas de jogadores. O mais rico ganha a tag verde Magnata, e o servidor todo fica sabendo.' },
+  { t: 'O dragão volta a cada 6 horas', d: 'A ilha clássica do The End, com torres e cristais. Derrotou? Em 6 horas ele renasce.', cmd: '/dragao' },
+  { t: 'VIP que vira moeda', d: 'Todo VIP é um código. Ative para você ou venda para outro jogador por Coins, com a troca feita pelo servidor, sem risco de golpe.' },
+];
+
+const mundos = [
+  { nome: 'Spawn', cmd: '/spawn', cor: '#F3F2EE', chip: ['#1A1A1D', '#FFFFFF'], d: 'Vila medieval flutuante. Loja do servidor na praça.', pvp: 'Desligado', construir: 'Não', reset: 'Nunca' },
+  { nome: 'Mundo 1', cmd: '/warp mundo1', cor: '#3B6D11', chip: ['#173404', '#C0DD97'], d: '10.000 × 10.000 blocos. Sua casa, para sempre.', pvp: 'Só à noite', construir: 'Sim, com dono', reset: 'Nunca' },
+  { nome: 'Minerar', cmd: '/minerar', cor: '#5F5E5A', chip: ['#2C2C2A', '#D3D1C7'], d: '5.000 × 5.000, sem monstros. Nada tem dono.', pvp: 'Só à noite', construir: 'Sim, sem dono', reset: 'Todo dia' },
+  { nome: 'Nether', cmd: '/warp nether', cor: '#791F1F', chip: ['#501313', '#F7C1C1'], d: 'Só entra quem vestir armadura completa de diamante.', pvp: 'Sempre', construir: 'Sim, sem dono', reset: 'Todo dia' },
+  { nome: 'The End', cmd: '/warp end', cor: '#26215C', chip: ['#26215C', '#CECBF6'], d: 'Ilha central clássica. O dragão se derrota com arco.', pvp: 'Sempre', construir: 'Não', reset: 'Nunca' },
+];
+
+const perguntas = [
+  { p: 'Preciso de Minecraft original?', r: 'Não. O servidor aceita original e pirata. No primeiro acesso você cria uma senha com <span class="cmd">/register</span>.' },
+  { p: 'Qual versão eu uso?', r: `Minecraft ${servidor.versao}, Java Edition. O endereço é <span class="cmd">${servidor.ip}</span>.` },
+  { p: 'Quando o servidor abre?', r: `Dia ${servidor.lancamentoTexto} de 2026. Até lá, garanta seu VIP na pré-venda e siga @${servidor.instagram} no Instagram e no TikTok.` },
+  { p: 'Como protejo minha casa?', r: 'Você não precisa fazer nada: todo bloco que você coloca já é seu. O terreno natural não tem dono, então construa o próprio chão.' },
+  { p: 'O que acontece quando eu morro?', r: 'Você volta ao Spawn e os itens do inventário caem no lugar da morte. Seus Coins ficam na conta.' },
+];
+---
+<Base>
+  <section class="hero">
+    <div class="grid-fundo" aria-hidden="true"></div>
+    <div class="container hero-in">
+      <div class="hero-texto">
+        <div class="blk lanc">
+          <span class="titulo">LANÇAMENTO {servidor.lancamentoCurto}</span>
+          <span class="lanc-dias" data-dias>{servidor.lancamentoTexto}</span>
+        </div>
+        <div class="chips">
+          <span>Minecraft {servidor.versao}</span><span>Java Edition</span><span>Aceita original e pirata</span>
+        </div>
+        <h1 class="titulo nome">INVICTUS</h1>
+        <p class="hero-lead">Survival clássico com o PvP da 1.8. Construa, junte Coins e domine a noite, como nos servidores brasileiros de 2010 a 2014.</p>
+        <div class="acoes">
+          <div class="blk ip">
+            <div class="ip-txt"><span>ENDEREÇO DO SERVIDOR</span><b>{servidor.ip}</b></div>
+            <button type="button" class="btn blk btn-vermelho" data-copiar={servidor.ip} data-copiado="Copiado!">Copiar IP</button>
+          </div>
+          <a href="/como-entrar/" class="btn blk btn-branco">Como entrar</a>
+        </div>
+        <div class="redes">
+          <a href={links.instagram} target="_blank" rel="noopener">Instagram @{servidor.instagram}</a>
+          <a href={links.tiktok} target="_blank" rel="noopener">TikTok @{servidor.tiktok}</a>
+          <span>Jogadores online: em breve</span>
+        </div>
+        {servidor.preLancamento && (
+          <div class="pre">
+            <div>
+              <span class="pre-rot">PRÉ-VENDA ABERTA</span>
+              <b>Garanta seu VIP antes do dia {servidor.lancamentoCurto.split('/')[0]}</b>
+              <span class="muted">{vip.bonusPreVenda.length ? vip.bonusPreVenda.join(' · ') : 'Vantagens exclusivas da pré-venda: anúncio em breve.'}</span>
+            </div>
+            <BotaoDirect />
+          </div>
+        )}
+      </div>
+      <div class="hero-elmo blk" aria-hidden="true">
+        <span class="px px1"></span><span class="px px2"></span>
+        <Elmo largura={250} />
+      </div>
+    </div>
+  </section>
+
+  <div class="faixa-branca">
+    <div class="container faixa-in titulo">
+      <span>PVP DA 1.8</span><i>◆</i><span>ECONOMIA EM COINS</span><i>◆</i><span>PROTEÇÃO AUTOMÁTICA</span><i>◆</i><span>RESET DIÁRIO</span><i>◆</i><span>TUDO EM PORTUGUÊS</span>
+    </div>
+  </div>
+
+  <section class="container secao" style="padding-top:112px">
+    <div class="rotulo">01 · Por que jogar</div>
+    <h2 class="titulo h2" style="margin:16px 0 48px;max-width:820px">Simples de entender. Difícil de largar.</h2>
+    <div class="grade" style="--min:340px">
+      {motivos.map((m, i) => (
+        <article class="card motivo">
+          <span class="num">/{String(i + 1).padStart(2, '0')}</span>
+          <h3>{m.t}</h3>
+          <p>{m.d}{m.cmd && <> Use <span class="cmd">{m.cmd}</span> para saber quando.</>}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="container secao">
+    <div class="secao-topo">
+      <div><div class="rotulo">02 · Os mundos</div><h2 class="titulo h2">Cinco mundos, um inventário</h2></div>
+      <p class="muted" style="max-width:420px;line-height:1.6">No jogo, <span class="cmd">/warps</span> abre um menu com todos os destinos. Morreu em qualquer mundo? Você volta ao Spawn.</p>
+    </div>
+    <div class="grade" style="--min:220px">
+      {mundos.map((m) => (
+        <article class="mundo">
+          <div class="mundo-cor" style={`background:${m.cor}`}><span style={`color:${m.chip[0]};background:${m.chip[1]}`}>{m.cmd}</span></div>
+          <div class="mundo-in">
+            <h3 class="titulo">{m.nome}</h3>
+            <p>{m.d}</p>
+            <dl>
+              <div><dt>PvP</dt><dd class={m.pvp === 'Desligado' ? '' : 'vermelho'}>{m.pvp}</dd></div>
+              <div><dt>Construir</dt><dd>{m.construir}</dd></div>
+              <div><dt>Reset</dt><dd>{m.reset}</dd></div>
+            </dl>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="container secao">
+    <div class="blk passos">
+      <div class="passos-txt">
+        <div class="rotulo">03 · Primeira vez</div>
+        <h2 class="titulo" style="font-size:clamp(32px,4vw,48px)">Do zero ao primeiro bloco em 4 passos</h2>
+        <p class="muted" style="line-height:1.6">Nunca jogou em servidor? O guia completo explica cada passo, do launcher ao primeiro kit.</p>
+        <a href="/como-entrar/" style="font-weight:700">Ver o guia completo →</a>
+      </div>
+      <ol>
+        <li><span class="titulo">1</span><b>Abra a 1.8.8</b><span>No launcher, escolha a versão 1.8.8.</span></li>
+        <li><span class="titulo">2</span><b>Adicione o servidor</b><span>Multijogador, Adicionar servidor, cole o IP.</span></li>
+        <li><span class="titulo">3</span><b>Crie sua senha</b><span><span class="cmd">/register</span> no primeiro acesso, <span class="cmd">/login</span> nos outros.</span></li>
+        <li><span class="titulo">4</span><b>Pegue seu kit</b><span><span class="cmd">/tutorial</span> e depois <span class="cmd">/kit nb</span>.</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="container secao">
+    <div class="blk vipb">
+      <div class="vipb-a">
+        <div class="vipb-topo"><div class="rotulo" style="color:var(--vermelho)">04 · VIP</div>{servidor.preLancamento && <span class="selo">Pré-venda aberta</span>}</div>
+        <h2 class="titulo" style="font-size:clamp(40px,5vw,56px);line-height:1">{servidor.preLancamento ? 'VIP antecipado' : 'Jogue sem esperar'}</h2>
+        {servidor.preLancamento && (
+          <div class="vipb-bonus">
+            <b>Quem compra na pré-venda leva vantagens exclusivas</b>
+            <span>{vip.bonusPreVenda.length ? vip.bonusPreVenda.join(' · ') : `Os bônus da pré-venda serão anunciados em breve no Instagram e no TikTok @${servidor.instagram}.`}</span>
+          </div>
+        )}
+        <p>{servidor.preLancamento ? `Garanta seu VIP antes do lançamento, dia ${servidor.lancamentoTexto}. Voo, teleporte na hora e homes sem limite desde o primeiro dia. Chame a gente no direct do Instagram @${servidor.instagram}: a mensagem já vai pronta.` : 'Voo, teleporte na hora e homes sem limite. E cada ativação sorteia prêmios, com chances publicadas aqui no site.'}</p>
+        <div class="preco"><span class="titulo">{vip.preco}</span><span>{vip.periodo}</span>{vip.precoProvisorio && <span class="selo selo-escuro">Valor inicial</span>}</div>
+        <div class="acoes">
+          {servidor.preLancamento && <BotaoDirect />}
+          <a href="/vip/" class="btn blk btn-claro">Ver vantagens e chances</a>
+        </div>
+      </div>
+      <ul class="vipb-b">
+        <li>Voo no Spawn, no Mundo 1 e no Minerar</li>
+        <li>Teleportes instantâneos, até em combate</li>
+        <li>Homes ilimitadas</li>
+        <li>Lojas de placa sem limite</li>
+        <li>Kit VIP de diamante a cada 24 horas</li>
+        <li>Tag <b class="tag-vip">VIP</b> dourada no chat</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="container secao">
+    <div class="secao-topo">
+      <div><div class="rotulo">05 · Novidades</div><h2 class="titulo h2">O que mudou</h2></div>
+      <a href="/novidades/" style="font-weight:700">Todas as novidades →</a>
+    </div>
+    <div class="grade" style="--min:320px">
+      {ultimas.map((post) => <NovidadeCard post={post} />)}
+    </div>
+  </section>
+
+  <section class="container secao faq">
+    <div style="flex:1 1 320px"><div class="rotulo">06 · Dúvidas</div><h2 class="titulo" style="margin-top:16px;font-size:clamp(34px,4vw,48px)">Perguntas frequentes</h2></div>
+    <div class="faq-lista">
+      {perguntas.map((q) => (
+        <details>
+          <summary>{q.p}<span aria-hidden="true">+</span></summary>
+          <p set:html={q.r} />
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <section class="container secao" style="padding-bottom:72px">
+    <div class="blk cta">
+      <div>
+        <h2 class="titulo" style="font-size:clamp(34px,4.4vw,52px)">Lançamento dia {servidor.lancamentoTexto}</h2>
+        <p>Siga <b>@{servidor.instagram}</b> no Instagram e no TikTok: lá saem a data de abertura, as novidades e os eventos.</p>
+      </div>
+      <div class="acoes">
+        <a href={links.instagram} target="_blank" rel="noopener" class="btn blk btn-preto">Instagram</a>
+        <a href={links.tiktok} target="_blank" rel="noopener" class="btn blk btn-branco">TikTok</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero { position: relative; overflow: hidden; border-bottom: 1px solid #26262b; }
+  .grid-fundo { position: absolute; inset: 0; background-image: linear-gradient(#1d1d21 1px, transparent 1px), linear-gradient(90deg, #1d1d21 1px, transparent 1px); background-size: 48px 48px; }
+  .hero-in { position: relative; padding-block: 72px 88px; display: flex; flex-wrap: wrap; gap: 56px; align-items: center; }
+  .hero-texto { flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 26px; }
+  .lanc { align-self: flex-start; background: var(--branco); color: var(--preto); padding: 12px 20px; display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
+  .lanc .titulo { font-size: 20px; letter-spacing: 2px; }
+  .lanc-dias { font-family: var(--mono); font-size: 15px; background: var(--vermelho); color: var(--branco); padding: 4px 10px; }
+  .chips { display: flex; gap: 10px; flex-wrap: wrap; }
+  .chips span { border: 1px solid #3a3a40; color: var(--texto-2); font-size: 13px; font-weight: 600; padding: 6px 12px; border-radius: 999px; background: var(--fundo); }
+  .nome { font-size: clamp(40px, 11.5vw, 128px); line-height: .95; letter-spacing: clamp(2px, 0.8vw, 10px); }
+  .hero-lead { font-size: clamp(18px, 2vw, 24px); line-height: 1.45; color: #e4e4ea; max-width: 620px; }
+  .acoes { display: flex; flex-wrap: wrap; gap: 12px; align-items: stretch; }
+  .ip { background: var(--fundo-3); display: flex; align-items: center; gap: 16px; padding: 10px 10px 10px 20px; flex-wrap: wrap; }
+  .ip-txt { display: flex; flex-direction: column; gap: 2px; }
+  .ip-txt span { font-size: 11px; font-weight: 700; letter-spacing: 2px; color: var(--texto-3); }
+  .ip-txt b { font-family: var(--mono); font-weight: 500; font-size: 18px; }
+  .redes { display: flex; gap: 10px 28px; flex-wrap: wrap; font-size: 14px; color: var(--texto-3); }
+  .redes a { color: var(--texto-2); }
+  .pre { border: 1px solid var(--vermelho); background: #1f1214; border-radius: 14px; padding: 18px 20px; display: flex; flex-wrap: wrap; gap: 16px; align-items: center; justify-content: space-between; max-width: 680px; }
+  .pre > div { display: flex; flex-direction: column; gap: 4px; }
+  .pre-rot { font-size: 12px; font-weight: 700; letter-spacing: 2px; color: var(--vermelho-claro); }
+  .pre b { font-size: 18px; }
+  .pre .muted { font-size: 14px; }
+  .hero-elmo { flex: 0 1 400px; aspect-ratio: 10 / 11; background: var(--vermelho); display: flex; align-items: center; justify-content: center; position: relative; margin-inline: auto; }
+  .px { position: absolute; width: 20px; height: 20px; background: var(--fundo); }
+  .px1 { left: 20px; top: 20px; } .px2 { right: 20px; bottom: 20px; }
+  @media (max-width: 820px) { .hero-elmo { display: none; } .hero-in { padding-block: 48px 56px; } }
+
+  .faixa-branca { background: var(--branco); color: var(--preto); }
+  .faixa-in { padding-block: 16px; display: flex; gap: 12px 28px; flex-wrap: wrap; justify-content: space-between; font-size: 16px; letter-spacing: 3px; }
+  .faixa-in i { color: var(--vermelho); font-style: normal; }
+  @media (max-width: 820px) { .faixa-in { justify-content: center; font-size: 13px; } .faixa-in i { display: none; } }
+
+  .motivo { padding: 32px; gap: 14px; }
+  .motivo h3 { font-size: 24px; }
+  .motivo p { font-size: 16px; }
+  .motivo:hover { border-color: var(--vermelho); }
+  .num { font-family: var(--mono); color: var(--vermelho-claro); font-size: 14px; }
+
+  .mundo { background: var(--fundo-2); border: 1px solid var(--linha); border-radius: 14px; overflow: hidden; transition: transform .2s; }
+  .mundo:hover { transform: translateY(-4px); }
+  .mundo-cor { height: 120px; display: flex; align-items: end; padding: 16px; }
+  .mundo-cor span { font-family: var(--mono); font-size: 13px; padding: 3px 8px; border-radius: 4px; }
+  .mundo-in { padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+  .mundo-in h3 { font-size: 24px; }
+  .mundo-in p { color: #b4b4bc; font-size: 14px; }
+  dl { margin: 0; display: flex; flex-direction: column; gap: 6px; font-size: 13px; border-top: 1px solid var(--linha); padding-top: 12px; }
+  dl div { display: flex; justify-content: space-between; gap: 8px; }
+  dt { color: var(--texto-3); } dd { margin: 0; text-align: right; }
+  .vermelho { color: var(--vermelho-claro); }
+
+  .passos { background: var(--fundo-2); padding: clamp(28px, 5vw, 56px); display: flex; flex-wrap: wrap; gap: 48px; }
+  .passos-txt { flex: 1 1 320px; display: flex; flex-direction: column; gap: 18px; }
+  .passos ol { flex: 2 1 520px; margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 12px; }
+  .passos li { background: var(--fundo); border-radius: 12px; padding: 24px; display: flex; flex-direction: column; gap: 10px; }
+  .passos li > .titulo { font-size: 36px; color: var(--vermelho); }
+  .passos li b { font-size: 18px; }
+  .passos li > span:last-child { color: #b4b4bc; font-size: 15px; }
+
+  .vipb { background: var(--pergaminho); color: var(--preto); display: flex; flex-wrap: wrap; }
+  .vipb-a { flex: 1 1 460px; padding: clamp(28px, 5vw, 56px); display: flex; flex-direction: column; gap: 20px; }
+  .vipb-topo { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .vipb-bonus { background: var(--preto); color: var(--branco); padding: 16px 18px; display: flex; flex-direction: column; gap: 4px; }
+  .vipb-bonus span { font-size: 14px; color: var(--texto-2); }
+  .vipb-a > p { font-size: 17px; line-height: 1.6; color: #3a3a40; }
+  .preco { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+  .preco .titulo { font-size: 44px; }
+  .preco > span:nth-child(2) { color: #3a3a40; }
+  .vipb-b { flex: 1 1 420px; margin: 0; list-style: none; background: var(--preto); color: var(--branco); padding: clamp(28px, 5vw, 56px); display: flex; flex-direction: column; justify-content: center; }
+  .vipb-b li { display: flex; gap: 14px; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--grafite); font-size: 17px; }
+  .vipb-b li:last-child { border-bottom: 0; }
+  .vipb-b li::before { content: ''; width: 10px; height: 10px; background: var(--vermelho); flex: none; }
+
+  .faq { display: flex; flex-wrap: wrap; gap: 48px; }
+  .faq-lista { flex: 2 1 560px; }
+  details { border-bottom: 1px solid var(--linha); padding: 22px 0; }
+  summary { cursor: pointer; list-style: none; font-size: 19px; font-weight: 600; display: flex; justify-content: space-between; gap: 16px; }
+  summary::-webkit-details-marker { display: none; }
+  summary span { color: var(--vermelho-claro); transition: transform .2s; }
+  details[open] summary span { transform: rotate(45deg); }
+  details p { margin-top: 14px; color: #b4b4bc; font-size: 16px; line-height: 1.6; }
+
+  .cta { background: var(--vermelho); padding: clamp(36px, 6vw, 72px) clamp(24px, 5vw, 56px); display: flex; flex-wrap: wrap; gap: 32px; align-items: center; justify-content: space-between; }
+  .cta > div:first-child { display: flex; flex-direction: column; gap: 12px; max-width: 640px; }
+  .cta p { font-size: 18px; color: var(--rosa); }
+  .cta p b { color: var(--branco); }
+</style>

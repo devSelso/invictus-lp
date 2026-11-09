@@ -1,0 +1,31 @@
+---
+interface Props {
+  largura?: number;
+  simples?: boolean; // sem furos de respiro, para tamanhos pequenos
+  rotulo?: string; // texto acessível; sem ele, o elmo é decorativo
+}
+const { largura = 200, simples = false, rotulo } = Astro.props;
+const altura = Math.round(largura * 1.2);
+const borda = simples ? 10 : 6;
+---
+<svg
+  viewBox="0 0 200 240"
+  width={largura}
+  height={altura}
+  role={rotulo ? 'img' : undefined}
+  aria-label={rotulo}
+  aria-hidden={rotulo ? undefined : 'true'}
+>
+  <path d="M38 34 Q100 8 162 34 L168 206 Q100 232 32 206 Z" fill="#1A1A1D" stroke="#FFFFFF" stroke-width={borda} stroke-linejoin="round" />
+  <path d="M94 22 L106 22 L106 222 L94 222 Z" fill="#2E2E33" stroke="#FFFFFF" stroke-width={borda / 2} />
+  <path d="M36 88 L164 88 L164 114 L36 114 Z" fill="#2E2E33" stroke="#FFFFFF" stroke-width={borda / 2} />
+  <rect x="48" y="96" width="40" height="10" fill="#FF5555" />
+  <rect x="112" y="96" width="40" height="10" fill="#FF5555" />
+  {!simples && (
+    <>
+      <circle cx="124" cy="146" r="4" fill="#C81D25" /><circle cx="140" cy="146" r="4" fill="#C81D25" />
+      <circle cx="124" cy="162" r="4" fill="#C81D25" /><circle cx="140" cy="162" r="4" fill="#C81D25" />
+      <circle cx="124" cy="178" r="4" fill="#C81D25" /><circle cx="140" cy="178" r="4" fill="#C81D25" />
+    </>
+  )}
+</svg>

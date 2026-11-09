@@ -1,0 +1,317 @@
+---
+import Base from '../layouts/Base.astro';
+
+// Índice. As seções ficam no HTML abaixo, cada uma com o mesmo id.
+const secoes = [
+  ['mundos', 'Os mundos'],
+  ['gerais', 'Regras gerais'],
+  ['protecao', 'Proteção'],
+  ['pvp', 'PvP e combate'],
+  ['teleportes', 'Teleportes'],
+  ['homes', 'Homes e kits'],
+  ['economia', 'Economia'],
+  ['vip', 'VIP'],
+  ['gaiolas', 'Gaiolas'],
+  ['chat', 'Chat'],
+  ['conduta', 'Conduta e punições'],
+  ['rotina', 'Rotina do servidor'],
+  ['comandos', 'Comandos'],
+];
+const n = (id: string) => String(secoes.findIndex(([s]) => s === id) + 1).padStart(2, '0');
+---
+<Base titulo="Regras e funcionamento" descricao="Todas as regras do Invictus: mundos, proteção, PvP, teleportes, homes, kits, economia, VIP, gaiolas, chat, punições e comandos.">
+  <section class="container topo">
+    <div class="rotulo">Regras e funcionamento</div>
+    <h1 class="titulo h1">Como tudo funciona</h1>
+    <p class="lead">Tudo o que você precisa saber para jogar sem surpresa. Busque por um assunto ou use o índice.</p>
+    <div class="busca">
+      <label for="busca">Buscar nas regras</label>
+      <input id="busca" type="search" placeholder="Ex.: nether, baú, voo, punição" autocomplete="off" />
+      <span id="resultado" aria-live="polite">13 seções</span>
+    </div>
+  </section>
+
+  <div class="container corpo">
+    <nav class="indice" aria-label="Índice das regras">
+      <span>ÍNDICE</span>
+      {secoes.map(([id, nome], i) => (
+        <a href={`#${id}`} data-indice={id}><b>{String(i + 1).padStart(2, '0')}</b>{nome}</a>
+      ))}
+    </nav>
+
+    <div class="secoes">
+      <p class="vazio" id="vazio" hidden>Nada encontrado. Tente outra palavra, como "baú" ou "dragão".</p>
+
+      <section id="mundos" class="sec" data-palavras="warp warps reset monstros">
+        <h2><span>{n('mundos')}</span>Os mundos</h2>
+        <div class="tabela" style="--tmin:680px"><table>
+          <thead><tr><th></th><th>Spawn</th><th>Mundo 1</th><th>Minerar</th><th>Nether</th><th>The End</th></tr></thead>
+          <tbody>
+            <tr><td>Para que serve</td><td>Centro, loja</td><td>Construir e morar</td><td>Coletar recursos</td><td>Recursos, PvP</td><td>PvP e o dragão</td></tr>
+            <tr><td>Como ir</td><td><span class="cmd">/spawn</span></td><td><span class="cmd">/warp mundo1</span></td><td><span class="cmd">/minerar</span></td><td><span class="cmd">/warp nether</span></td><td><span class="cmd">/warp end</span></td></tr>
+            <tr><td>Tamanho</td><td>Vila flutuante</td><td>10.000 × 10.000</td><td>5.000 × 5.000</td><td>5.000 × 5.000</td><td>Ilha central</td></tr>
+            <tr><td>Construir</td><td>Não</td><td>Sim, com dono</td><td>Sim, sem dono</td><td>Sim (menos cama), sem dono</td><td>Não</td></tr>
+            <tr><td>Monstros</td><td>Não</td><td>Sim</td><td>Não</td><td>Sim</td><td>Dragão e endermen</td></tr>
+            <tr><td>PvP</td><td>Desligado</td><td>Só à noite</td><td>Só à noite</td><td>Sempre</td><td>Sempre</td></tr>
+            <tr><td>Reset</td><td>Nunca</td><td>Nunca</td><td>Todo dia, 0h</td><td>Todo dia, 0h</td><td>Nunca</td></tr>
+          </tbody>
+        </table></div>
+        <p><span class="cmd">/warps</span> abre um menu com todos os destinos, com ícone e explicação de cada um.</p>
+        <h3>Spawn</h3>
+        <ul><li>Uma vila medieval que flutua no céu. Sempre de dia, sem chuva. Ninguém constrói nem quebra.</li><li>Quem cai da ilha volta para o Spawn sem dano.</li><li>Na praça ficam o vendedor da loja do servidor e hologramas com dicas.</li><li>Toda morte, em qualquer mundo, leva de volta ao Spawn.</li></ul>
+        <h3>Mundo 1</h3>
+        <ul><li>O mundo permanente: suas construções ficam para sempre.</li><li>Todo bloco que você coloca é seu.</li><li>Não dá para criar portal para o Nether nem usar portais de fortaleza.</li><li>Creepers ferem jogadores, mas não destroem blocos com dono.</li></ul>
+        <h3>Minerar</h3>
+        <ul><li>Mundo de recurso, <b>sem monstros</b>. Reseta todo dia à meia-noite (horário de Brasília): tudo o que estiver lá é apagado.</li><li><b>Nada tem dono:</b> qualquer um quebra qualquer bloco e abre qualquer baú.</li><li>Em volta da chegada há uma área de 50 × 50 blocos protegida, sem quebrar, sem colocar e sem PvP.</li><li>O servidor avisa ao entrar, ao colocar o primeiro baú e 10 e 1 minuto antes do reset.</li></ul>
+        <h3>Nether</h3>
+        <ul><li><b>Só entra quem estiver com armadura completa de diamante</b> na hora da entrada, por qualquer caminho, inclusive teleporte. Depois de entrar, pode tirar.</li><li>Reseta todo dia à meia-noite e nada tem dono. Não pode colocar cama.</li><li>PvP sempre ligado.</li></ul>
+        <h3>The End</h3>
+        <ul><li>A ilha central clássica da 1.8, com dragão, torres de obsidiana e cristais.</li><li><b>O dragão renasce 6 horas depois de derrotado.</b> <span class="cmd">/dragao</span> mostra se ele está vivo ou quanto falta. A derrota e o renascimento são anunciados para todos.</li><li>Não pode colocar blocos, nem para subir nas torres: o dragão se derrota com arco.</li><li>PvP sempre ligado. Não precisa de armadura para entrar.</li></ul>
+      </section>
+
+      <section id="gerais" class="sec" data-palavras="morrer dormir cama limpeza">
+        <h2><span>{n('gerais')}</span>Regras gerais</h2>
+        <ul>
+          <li><b>Inventário único</b> em todos os mundos.</li>
+          <li><b>Morte:</b> você volta ao Spawn e perde os itens do inventário, que caem no local. Itens podem queimar na lava ou cair no vazio. Os Coins ficam na conta.</li>
+          <li><b>Ninguém dorme</b> e a noite nunca é pulada. O dia e a noite são iguais para todos.</li>
+          <li><b>Um só relógio:</b> o horário do Mundo 1 vale para o Minerar e define o PvP de dia e de noite.</li>
+          <li><b>Itens no chão são limpos a cada 10 minutos</b>, em todos os mundos, com avisos 60, 30 e 10 segundos antes. Só itens caídos são removidos.</li>
+          <li>Animais não passam de um mundo para outro.</li>
+        </ul>
+      </section>
+
+      <section id="protecao" class="sec" data-palavras="proteger claim construção casa bau baus">
+        <h2><span>{n('protecao')}</span>Proteção de construções</h2>
+        <div class="blk destaque">Todo bloco que você coloca é seu. Só você pode quebrá-lo.</div>
+        <ul>
+          <li><b>Ninguém coloca bloco encostado no seu</b>, nas 6 faces. Na diagonal pode.</li>
+          <li><b>Blocos livres:</b> pedregulho, areia e cascalho não têm dono; qualquer um quebra.</li>
+          <li><b>Blocos públicos:</b> terra, plantações, tochas, placas e trilhos; qualquer um quebra. Placas de loja são do dono da loja.</li>
+          <li><b>Terreno natural não tem proteção.</b> Quer chão protegido? Construa o seu.</li>
+          <li><b>Baús, portas e fornalhas</b> ficam protegidos sozinhos: só você abre. Para dar acesso a um amigo, <span class="cmd">/cmodify jogador</span>; para tirar, <span class="cmd">/cmodify -jogador</span>.</li>
+          <li>Ejetores, funis, bigornas, quadros, pinturas e suportes de armadura também têm dono.</li>
+          <li>Água, lava, fogo e explosões não danificam blocos com dono.</li>
+          <li><b>TNT desativada.</b> Pistões, fios de redstone e repetidores não funcionam. Botões, alavancas e placas de pressão abrem só portas de ferro, alçapões e portões encostados neles.</li>
+          <li>Construções ficam no mapa mesmo se o dono parar de jogar.</li>
+        </ul>
+      </section>
+
+      <section id="pvp" class="sec" data-palavras="luta matar deslogar">
+        <h2><span>{n('pvp')}</span>PvP e combate</h2>
+        <div class="grade" style="--min:180px;gap:10px">
+          <div class="mini"><span>Spawn</span><b>Sempre desligado</b></div>
+          <div class="mini"><span>Mundo 1 e Minerar</span><b class="vermelho">Ligado à noite</b></div>
+          <div class="mini"><span>Nether e The End</span><b class="vermelho">Sempre ligado</b></div>
+        </div>
+        <ul>
+          <li><b>Em combate:</b> ao atacar ou ser atacado, você fica 10 segundos em combate. Nesse tempo não dá para ativar o voo, e quem estava voando cai do voo.</li>
+          <li>Sair do jogo em combate não tem punição automática: ao voltar, você reaparece no mesmo lugar.</li>
+        </ul>
+      </section>
+
+      <section id="teleportes" class="sec" data-palavras="tp">
+        <h2><span>{n('teleportes')}</span>Teleportes</h2>
+        <div class="tabela" style="--tmin:460px"><table>
+          <thead><tr><th></th><th>Jogador</th><th>VIP</th></tr></thead>
+          <tbody>
+            <tr><td>Espera</td><td>3 segundos parado</td><td>Instantâneo</td></tr>
+            <tr><td>Levou dano esperando</td><td>Teleporte cancelado</td><td>Não se aplica</td></tr>
+            <tr><td>Em combate</td><td>Pode, com a espera</td><td>Qualquer teleporte, na hora</td></tr>
+          </tbody>
+        </table></div>
+        <ul>
+          <li>Comandos: <span class="cmd">/spawn</span> <span class="cmd">/minerar</span> <span class="cmd">/warp lugar</span> <span class="cmd">/warps</span> <span class="cmd">/sethome</span> <span class="cmd">/home</span>.</li>
+          <li><span class="cmd">/call jogador</span> pede para ir até um amigo (até 2 pedidos por minuto). Ele responde com <span class="cmd">/tpaccept</span> ou <span class="cmd">/tpdeny</span>.</li>
+          <li>Todo teleporte para o Nether confere a armadura de diamante.</li>
+        </ul>
+      </section>
+
+      <section id="homes" class="sec" data-palavras="itens inicial">
+        <h2><span>{n('homes')}</span>Homes e kits</h2>
+        <h3>Homes</h3>
+        <ul>
+          <li>Jogador comum: até 10 homes. VIP: ilimitadas.</li>
+          <li><span class="cmd">/sethome nome</span> salva, <span class="cmd">/home nome</span> volta, <span class="cmd">/home</span> lista e <span class="cmd">/delhome nome</span> apaga.</li>
+          <li>Não dá para salvar home no Minerar, no Nether nem no The End.</li>
+        </ul>
+        <h3>Kits</h3>
+        <p>Você começa sem itens. <span class="cmd">/kit</span> abre o menu.</p>
+        <div class="grade" style="--min:280px;gap:12px">
+          <div class="kit"><div><b>Normal</b><span class="cmd">/kit nb</span></div><p>Espada, picareta, machado e pá de madeira; 8 pães; bancada; fornalha.</p><span>A cada 24 horas</span></div>
+          <div class="kit kit-vip"><div><b class="tag-vip">VIP</b><span class="cmd">/kit vip</span></div><p>Espada, picareta, machado e pá de diamante; 8 maçãs douradas; 16 frascos de experiência; bancada; fornalha.</p><span>A cada 24 horas</span></div>
+        </div>
+        <p>O tempo conta a partir do último resgate. Se o inventário estiver cheio, o que não couber é perdido.</p>
+      </section>
+
+      <section id="economia" class="sec" data-palavras="dinheiro loja vender comprar rico chestshop">
+        <h2><span>{n('economia')}</span>Economia</h2>
+        <ul>
+          <li><b>Moeda: Coins.</b> Todo mundo começa com zero. Sem limite de saldo e sem impostos.</li>
+          <li><span class="cmd">/money</span> mostra o saldo; <span class="cmd">/money pay jogador quantidade</span> envia Coins.</li>
+          <li><b>Loja do servidor:</b> clique no vendedor da praça do Spawn. São 201 itens em 11 categorias, com foco em blocos de construção. Clique esquerdo compra, clique direito vende, shift + clique direito vende tudo daquele item. O servidor vende cada item a 2,5 vezes o que paga por ele, para a loja não virar fonte infinita de dinheiro.</li>
+          <li><b>Lojas de jogadores:</b> baú + placa. Todos compram; só VIP cria loja, sem limite.</li>
+          <li><b>Ranking:</b> <span class="cmd">/money top</span> mostra os 10 mais ricos (atualiza a cada 2 minutos). Também aparece num holograma no Spawn.</li>
+          <li><b>Magnata:</b> o jogador mais rico ganha a tag verde <b class="tag-magnata">Magnata</b> no chat, no tab e em cima da cabeça. Quando o primeiro muda, o servidor anuncia. <span class="cmd">/magnata</span> mostra quem é.</li>
+        </ul>
+      </section>
+
+      <section id="vip" class="sec" data-palavras="codigo código ativar comprar mercado pre-venda">
+        <h2><span>{n('vip')}</span>VIP</h2>
+        <p>O VIP é vendido como um código: você ativa para você com <span class="cmd">/ativarvip código</span> ou vende para outro jogador por Coins com <span class="cmd">/vendervip código preço</span>. Vantagens, prêmios da ativação e a tabela de chances ficam na página do VIP.</p>
+        <a href="/vip/" style="font-weight:700">Ver tudo sobre o VIP →</a>
+      </section>
+
+      <section id="gaiolas" class="sec" data-palavras="spawner spawners ovo mob masmorra">
+        <h2><span>{n('gaiolas')}</span>Gaiolas (spawners)</h2>
+        <ul>
+          <li><b>O servidor não vende gaiolas.</b> Elas saem como prêmio da ativação do VIP e são negociadas entre jogadores.</li>
+          <li>A gaiola é um item que guarda o mob, como "Gaiola de Zumbi", e <b>só pode ser colocada no Mundo 1</b>.</li>
+          <li><b>Sua gaiola:</b> só você recolhe (quebrando, ela volta como item com o mesmo mob) e troca o mob.</li>
+          <li><b>Gaiola natural das masmorras:</b> qualquer um quebra, mas ela se perde. O servidor avisa antes; quebrando de novo em 5 segundos, ela some.</li>
+          <li><b>Trocar o mob:</b> clique com um ovo na gaiola. Gasta 1 ovo e custa Coins. Só funciona no Mundo 1.</li>
+        </ul>
+      </section>
+
+      <section id="chat" class="sec" data-palavras="mensagem tag tags">
+        <h2><span>{n('chat')}</span>Chat</h2>
+        <ul>
+          <li><b>Chat local</b> <span class="muted">[L]</span>: a mensagem normal chega só a quem está no mesmo mundo, a até 100 blocos.</li>
+          <li><b>Chat global</b> <span class="muted">[G]</span>: <span class="cmd">/g mensagem</span> fala com o servidor todo. Precisa ter um saldo mínimo de Coins (valor inicial: 1.000; falar não custa nada) e esperar 7 segundos entre mensagens.</li>
+          <li>3 segundos entre mensagens e no máximo 200 caracteres.</li>
+          <li>Mensagem privada: <span class="cmd">/tell jogador mensagem</span>.</li>
+        </ul>
+        <div class="tags">
+          <span><b class="tag-diretor">Diretor</b> Nome</span>
+          <span><b class="tag-admin">Admin</b> Nome</span>
+          <span><b class="tag-magnata">Magnata</b> Nome</span>
+          <span><b class="tag-vip">VIP</b> Nome</span>
+        </div>
+      </section>
+
+      <section id="conduta" class="sec" data-palavras="punicao punição ban banimento hack cheat bug denuncia senha">
+        <h2><span>{n('conduta')}</span>Conduta e punições</h2>
+        <p>A reincidência conta por 90 dias.</p>
+        <div class="tabela"><table>
+          <thead><tr><th>Infração</th><th>1ª vez</th><th>2ª vez</th><th>3ª vez</th></tr></thead>
+          <tbody>
+            <tr><td>Hack ou cliente modificado</td><td class="vermelho">Ban permanente</td><td>—</td><td>—</td></tr>
+            <tr><td>Abuso de bug (duplicação, falha de proteção)</td><td>Ban de 30 dias</td><td class="vermelho">Ban permanente</td><td>—</td></tr>
+            <tr><td>Divulgação de outro servidor</td><td class="vermelho">Ban permanente</td><td>—</td><td>—</td></tr>
+            <tr><td>Ofensa ou discriminação</td><td>Ban de 3 dias</td><td>Ban de 30 dias</td><td class="vermelho">Ban permanente</td></tr>
+            <tr><td>Spam ou flood</td><td>Silenciado por 1 hora</td><td>Silenciado por 1 dia</td><td>Ban de 3 dias</td></tr>
+            <tr><td>Ameaça ou divulgação de dados pessoais</td><td class="vermelho">Ban permanente</td><td>—</td><td>—</td></tr>
+          </tbody>
+        </table></div>
+        <ul>
+          <li><b>Denúncias:</b> <span class="cmd">/denuncia jogador o que aconteceu</span> (1 por minuto). A equipe recebe na hora e você é avisado quando ela for resolvida.</li>
+          <li><b>Segurança da conta:</b> não use a mesma senha de outros servidores e nunca passe sua senha a ninguém. A equipe nunca pede sua senha.</li>
+          <li>Há anti-cheat e registro de ações. A equipe analisa os alertas; ninguém é banido automaticamente.</li>
+        </ul>
+      </section>
+
+      <section id="rotina" class="sec" data-palavras="reinicio reinício reset meia-noite">
+        <h2><span>{n('rotina')}</span>Rotina do servidor</h2>
+        <ul>
+          <li><b>Reinício diário à meia-noite</b> (horário de Brasília), com avisos antes. É nele que o Minerar e o Nether viram mundos novos; quem estava lá volta para o Spawn.</li>
+          <li>Dicas automáticas a cada 5 minutos no chat, marcadas com <span class="vermelho">[➜]</span>.</li>
+          <li>Ao entrar, a mensagem de boas-vindas traz atalhos clicáveis para <span class="cmd">/tutorial</span> <span class="cmd">/kit nb</span> <span class="cmd">/warps</span> <span class="cmd">/comprarvip</span> <span class="cmd">/discord</span>.</li>
+        </ul>
+      </section>
+
+      <section id="comandos" class="sec" data-palavras="comando">
+        <h2><span>{n('comandos')}</span>Comandos do jogador</h2>
+        <div class="tabela" style="--tmin:560px"><table>
+          <thead><tr><th>Comando</th><th>O que faz</th></tr></thead>
+          <tbody>
+            <tr><td><span class="cmd">/register senha senha</span> <span class="cmd">/login senha</span></td><td>Criar a conta e entrar</td></tr>
+            <tr><td><span class="cmd">/tutorial</span></td><td>Como o servidor funciona</td></tr>
+            <tr><td><span class="cmd">/spawn</span> <span class="cmd">/minerar</span> <span class="cmd">/warp lugar</span> <span class="cmd">/warps</span></td><td>Ir para os mundos</td></tr>
+            <tr><td><span class="cmd">/sethome nome</span> <span class="cmd">/home</span> <span class="cmd">/delhome nome</span></td><td>Homes</td></tr>
+            <tr><td><span class="cmd">/call jogador</span> <span class="cmd">/tpaccept</span> <span class="cmd">/tpdeny</span></td><td>Pedir e responder teleporte</td></tr>
+            <tr><td><span class="cmd">/kit</span> <span class="cmd">/kit nb</span> <span class="cmd">/kit vip</span></td><td>Kits</td></tr>
+            <tr><td><span class="cmd">/money</span> <span class="cmd">/money pay</span> <span class="cmd">/money top</span></td><td>Coins e ranking</td></tr>
+            <tr><td><span class="cmd">/magnata</span></td><td>Quem é o mais rico</td></tr>
+            <tr><td><span class="cmd">/g mensagem</span> <span class="cmd">/tell jogador mensagem</span></td><td>Chat global e mensagem privada</td></tr>
+            <tr><td><span class="cmd">/cmodify jogador</span> <span class="cmd">/cmodify -jogador</span> <span class="cmd">/cinfo</span></td><td>Acesso aos seus baús, portas e fornalhas</td></tr>
+            <tr><td><span class="cmd">/vip</span> <span class="cmd">/diasvip</span> <span class="cmd">/ativarvip</span> <span class="cmd">/vendervip</span> <span class="cmd">/mercadovip</span> <span class="cmd">/comprarvip</span></td><td>VIP</td></tr>
+            <tr><td><span class="cmd">/pvp on</span> <span class="cmd">/pvp off</span></td><td>Ligar e desligar o próprio PvP (VIP)</td></tr>
+            <tr><td><span class="cmd">/fly</span></td><td>Voar (VIP)</td></tr>
+            <tr><td><span class="cmd">/dragao</span></td><td>Situação do dragão do The End</td></tr>
+            <tr><td><span class="cmd">/denuncia jogador motivo</span></td><td>Avisar a equipe</td></tr>
+            <tr><td><span class="cmd">/players</span> <span class="cmd">/ping</span></td><td>Jogadores online e ping</td></tr>
+            <tr><td><span class="cmd">/discord</span></td><td>Link do Discord</td></tr>
+          </tbody>
+        </table></div>
+      </section>
+    </div>
+  </div>
+</Base>
+
+<script>
+  const norm = (s: string) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+  const campo = document.getElementById('busca') as HTMLInputElement | null;
+  const resultado = document.getElementById('resultado');
+  const vazio = document.getElementById('vazio');
+  const secoes = Array.from(document.querySelectorAll<HTMLElement>('.sec'));
+  const textos = new Map(secoes.map((s) => [s, norm(`${s.textContent ?? ''} ${s.dataset.palavras ?? ''}`)]));
+
+  function filtrar() {
+    const q = norm(campo?.value.trim() ?? '');
+    let total = 0;
+    for (const s of secoes) {
+      const mostra = !q || (textos.get(s) ?? '').includes(q);
+      s.hidden = !mostra;
+      document.querySelector<HTMLElement>(`[data-indice="${s.id}"]`)?.toggleAttribute('hidden', !mostra);
+      if (mostra) total++;
+    }
+    if (vazio) vazio.hidden = total > 0;
+    if (resultado) resultado.textContent = q ? (total === 1 ? '1 seção encontrada' : `${total} seções encontradas`) : '13 seções';
+  }
+  campo?.addEventListener('input', filtrar);
+</script>
+
+<style>
+  .topo { padding-block: 80px 40px; display: flex; flex-direction: column; gap: 20px; }
+  .busca { max-width: 720px; display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+  .busca label { font-size: 13px; font-weight: 600; color: var(--texto-3); }
+  .busca input { width: 100%; height: 52px; background: var(--fundo-2); border: 1px solid #3a3a40; border-radius: 10px; color: var(--branco); font: inherit; font-size: 16px; padding: 0 18px; }
+  .busca input:focus { outline: 2px solid var(--vermelho); outline-offset: 1px; }
+  .busca input::placeholder { color: #8a8a93; }
+  .busca span { font-size: 13px; color: var(--texto-3); }
+  .corpo { padding-block: 16px 56px; display: flex; flex-wrap: wrap; gap: 40px; align-items: flex-start; }
+  .indice { flex: 1 1 240px; max-width: 100%; display: flex; flex-direction: column; gap: 2px; background: #18181b; border: 1px solid #26262b; border-radius: 14px; padding: 16px; position: sticky; top: 16px; }
+  .indice > span { font-size: 12px; font-weight: 700; letter-spacing: 2px; color: var(--texto-3); padding: 4px 12px 10px; }
+  .indice a { color: var(--texto-2); text-decoration: none; font-size: 15px; padding: 9px 12px; border-radius: 8px; display: flex; gap: 10px; }
+  .indice a:hover { background: var(--fundo-2); color: var(--branco); }
+  .indice a[hidden] { display: none; }
+  .indice a b { font-family: var(--mono); font-weight: 500; font-size: 14px; color: var(--vermelho-claro); }
+  @media (max-width: 860px) {
+    .indice { position: static; flex-direction: row; flex-wrap: wrap; gap: 6px; }
+    .indice > span { width: 100%; }
+    .indice a { background: var(--fundo-2); padding: 8px 12px; font-size: 14px; }
+  }
+  .secoes { flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 16px; }
+  .vazio { background: var(--fundo-2); border: 1px dashed #3a3a40; border-radius: 16px; padding: 40px; text-align: center; color: var(--texto-2); }
+  .sec { background: var(--fundo-2); border: 1px solid var(--linha); border-radius: 16px; padding: clamp(22px, 4vw, 36px); display: flex; flex-direction: column; gap: 18px; scroll-margin-top: 24px; }
+  .sec[hidden] { display: none; }
+  .sec h2 { font-family: var(--titulo); font-weight: 900; font-size: clamp(26px, 3vw, 32px); display: flex; align-items: center; gap: 14px; }
+  .sec h2 span { font-family: var(--mono); font-weight: 500; font-size: 14px; color: var(--vermelho-claro); }
+  .sec h3 { margin-top: 8px; font-size: 19px; font-weight: 700; }
+  .sec p, .sec li { color: var(--texto-2); font-size: 16px; line-height: 1.65; }
+  .sec ul { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; }
+  .sec b { color: var(--branco); }
+  .sec b.tag-vip { color: #ffaa00; } .sec b.tag-magnata { color: #55ff55; } .sec b.tag-diretor { color: #aa0000; } .sec b.tag-admin { color: #ff5555; }
+  .vermelho { color: var(--vermelho-claro) !important; }
+  .destaque { background: var(--vermelho); padding: 20px 24px; font-size: 20px; font-weight: 700; }
+  .mini { background: var(--fundo); border-radius: 10px; padding: 16px; display: flex; flex-direction: column; gap: 6px; }
+  .mini span { color: var(--texto-3); font-size: 13px; }
+  .mini b { font-size: 18px; }
+  .kit { background: var(--fundo); border: 1px solid transparent; border-radius: 12px; padding: 22px; display: flex; flex-direction: column; gap: 10px; }
+  .kit-vip { border-color: #6b5a1e; }
+  .kit > div { display: flex; justify-content: space-between; align-items: center; }
+  .kit > div b { font-size: 18px; }
+  .kit > span { color: var(--texto-3); font-size: 14px; }
+  .tags { display: flex; gap: 10px; flex-wrap: wrap; font-family: var(--mono); font-size: 15px; }
+  .tags span { background: #0c0c0e; padding: 8px 14px; border-radius: 8px; }
+</style>

@@ -1,0 +1,64 @@
+---
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { novidadesOrdenadas, nomesTipo, formatarData } from '../../data/novidades';
+
+const posts = await novidadesOrdenadas();
+const renderizados = await Promise.all(posts.map(async (p) => ({ post: p, Conteudo: (await render(p)).Content })));
+const tiposUsados = [...new Set(posts.map((p) => p.data.tipo))];
+---
+<Base titulo="Novidades" descricao="Tudo o que entra, muda ou é corrigido no Invictus.">
+  <section class="container topo">
+    <div class="rotulo">Diário do servidor</div>
+    <h1 class="titulo h1">Novidades</h1>
+    <p class="lead">Tudo o que entra, muda ou é corrigido no Invictus, do mais novo para o mais antigo.</p>
+    <div class="filtros" role="group" aria-label="Filtrar novidades">
+      <button type="button" class="chip" aria-pressed="true" data-filtro="todas">Todas</button>
+      {tiposUsados.map((t) => <button type="button" class="chip" aria-pressed="false" data-filtro={t}>{nomesTipo[t]}</button>)}
+    </div>
+  </section>
+
+  <section class="container lista">
+    {renderizados.map(({ post, Conteudo }) => (
+      <article class="post" id={post.id} data-tipo={post.data.tipo}>
+        <time datetime={post.data.data.toISOString()}>{formatarData(post.data.data)}</time>
+        <div class="post-in">
+          <span class={`selo ${post.data.tipo === 'lancamento' ? '' : 'selo-grafite'}`}>{post.data.etiqueta ?? nomesTipo[post.data.tipo]}</span>
+          <h2><a href={`/novidades/${post.id}/`}>{post.data.titulo}</a></h2>
+          <div class="texto"><Conteudo /></div>
+        </div>
+      </article>
+    ))}
+  </section>
+</Base>
+
+<script>
+  const botoes = document.querySelectorAll<HTMLButtonElement>('[data-filtro]');
+  const posts = document.querySelectorAll<HTMLElement>('.post');
+  botoes.forEach((b) => b.addEventListener('click', () => {
+    const f = b.dataset.filtro;
+    botoes.forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+    posts.forEach((p) => { p.hidden = f !== 'todas' && p.dataset.tipo !== f; });
+  }));
+</script>
+
+<style>
+  .topo { max-width: 1080px; padding-block: 80px 40px; display: flex; flex-direction: column; gap: 20px; }
+  .filtros { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+  .chip { border: 1px solid #3a3a40; color: var(--texto-2); font-size: 14px; font-weight: 600; padding: 8px 16px; min-height: 40px; border-radius: 999px; background: transparent; cursor: pointer; }
+  .chip:hover { border-color: var(--texto-2); }
+  .chip[aria-pressed='true'] { background: var(--branco); color: var(--preto); border-color: var(--branco); }
+  .lista { max-width: 1080px; padding-bottom: 56px; }
+  .post { display: flex; flex-wrap: wrap; gap: 12px 32px; padding: 40px 0; border-top: 1px solid var(--linha); }
+  .post[hidden] { display: none; }
+  time { flex: 0 0 180px; color: var(--texto-3); font-size: 15px; font-family: var(--mono); padding-top: 6px; }
+  .post-in { flex: 1 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 14px; }
+  h2 { font-size: clamp(24px, 3vw, 30px); font-weight: 700; line-height: 1.25; }
+  h2 a { color: var(--branco); text-decoration: none; }
+  h2 a:hover { color: var(--vermelho-claro); }
+  .texto :global(p), .texto :global(li) { color: var(--texto-2); font-size: 17px; line-height: 1.65; }
+  .texto :global(p + p), .texto :global(ul) { margin-top: 12px; }
+  .texto :global(ul) { padding-left: 20px; }
+  .texto :global(code) { font-family: var(--mono); font-size: .875em; color: var(--vermelho-claro); background: #26262b; padding: 2px 7px; border-radius: 4px; }
+  .texto :global(strong) { color: var(--branco); }
+</style>

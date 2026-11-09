@@ -1,0 +1,49 @@
+---
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import BotaoDirect from '../../components/BotaoDirect.astro';
+import { novidadesOrdenadas, nomesTipo, formatarData } from '../../data/novidades';
+import { servidor } from '../../data/servidor';
+
+export async function getStaticPaths() {
+  const posts = await novidadesOrdenadas();
+  return posts.map((post) => ({ params: { id: post.id }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const { titulo, data, tipo, etiqueta, resumo } = post.data;
+---
+<Base titulo={titulo} descricao={resumo}>
+  <article class="container artigo">
+    <a href="/novidades/" class="voltar">← Todas as novidades</a>
+    <div class="meta">
+      <span class={`selo ${tipo === 'lancamento' ? '' : 'selo-grafite'}`}>{etiqueta ?? nomesTipo[tipo]}</span>
+      <time datetime={data.toISOString()}>{formatarData(data)}</time>
+    </div>
+    <h1 class="titulo">{titulo}</h1>
+    <div class="texto"><Content /></div>
+    {servidor.preLancamento && (
+      <aside class="blk chamada">
+        <div><b>Pré-venda do VIP aberta</b><span>Garanta o seu antes do lançamento, dia {servidor.lancamentoTexto}.</span></div>
+        <BotaoDirect />
+      </aside>
+    )}
+  </article>
+</Base>
+
+<style>
+  .artigo { max-width: 820px; padding-block: 64px 40px; display: flex; flex-direction: column; gap: 22px; }
+  .voltar { font-weight: 600; text-decoration: none; }
+  .meta { display: flex; gap: 12px; align-items: center; }
+  time { color: var(--texto-3); font-family: var(--mono); font-size: 14px; }
+  h1 { font-size: clamp(34px, 5vw, 52px); line-height: 1.1; }
+  .texto :global(p), .texto :global(li) { color: var(--texto-2); font-size: 18px; line-height: 1.7; }
+  .texto :global(p + p), .texto :global(ul) { margin-top: 14px; }
+  .texto :global(ul) { padding-left: 22px; }
+  .texto :global(code) { font-family: var(--mono); font-size: .875em; color: var(--vermelho-claro); background: #26262b; padding: 2px 7px; border-radius: 4px; }
+  .texto :global(strong) { color: var(--branco); }
+  .chamada { margin-top: 24px; background: #1f1214; border: 1px solid var(--vermelho); padding: 24px; display: flex; flex-wrap: wrap; gap: 16px; align-items: center; justify-content: space-between; }
+  .chamada div { display: flex; flex-direction: column; gap: 4px; }
+  .chamada span { color: var(--texto-2); }
+</style>

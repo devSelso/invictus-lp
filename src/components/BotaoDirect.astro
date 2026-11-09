@@ -1,0 +1,20 @@
+---
+// Abre o direct do Instagram e copia a mensagem da pré-venda.
+// O Instagram não aceita mensagem pronta pelo link, então ela vai para a área de transferência.
+import { links, vip } from '../data/servidor';
+
+interface Props {
+  estilo?: 'vermelho' | 'branco' | 'preto';
+  texto?: string;
+  class?: string;
+}
+const { estilo = 'vermelho', texto = 'Quero o VIP antecipado', class: classe = '' } = Astro.props;
+---
+<a
+  href={links.direct}
+  target="_blank"
+  rel="noopener"
+  class={`btn blk btn-${estilo} ${classe}`}
+  data-copiar={vip.mensagemDirect}
+  data-copiado="Mensagem copiada: cole no direct"
+>{texto}</a>

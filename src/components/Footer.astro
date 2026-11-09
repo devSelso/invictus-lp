@@ -1,0 +1,31 @@
+---
+import { links, servidor } from '../data/servidor';
+---
+<footer class="rodape">
+  <div class="container rodape-in">
+    <div class="sobre">
+      <span class="nome">INVICTUS</span>
+      <p>Servidor de Minecraft {servidor.versao}. Survival clássico com PvP, economia e VIP.</p>
+    </div>
+    <nav aria-label="Rodapé" class="cols">
+      <div><b>JOGAR</b><a href="/como-entrar/">Como entrar</a><a href="/regras/">Regras</a></div>
+      <div><b>SERVIDOR</b><a href="/vip/">VIP</a><a href="/novidades/">Novidades</a></div>
+      <div><b>REDES</b><a href={links.instagram} target="_blank" rel="noopener">Instagram</a><a href={links.tiktok} target="_blank" rel="noopener">TikTok</a></div>
+    </nav>
+  </div>
+  <div class="container aviso">Não é um produto oficial do Minecraft. Não é aprovado nem associado à Mojang ou à Microsoft.</div>
+</footer>
+
+<style>
+  .rodape { border-top: 1px solid #26262b; background: #101012; margin-top: 40px; }
+  .rodape-in { padding-block: 56px; display: flex; flex-wrap: wrap; gap: 40px; justify-content: space-between; }
+  .sobre { display: flex; flex-direction: column; gap: 12px; max-width: 360px; }
+  .nome { font-family: var(--titulo); font-weight: 900; font-size: 22px; letter-spacing: 5px; }
+  .sobre p { color: var(--texto-3); font-size: 14px; line-height: 1.6; }
+  .cols { display: flex; gap: 48px; flex-wrap: wrap; }
+  .cols div { display: flex; flex-direction: column; gap: 10px; font-size: 14px; }
+  .cols b { color: var(--texto-3); font-size: 12px; letter-spacing: 2px; }
+  .cols a { color: #e4e4ea; text-decoration: none; }
+  .cols a:hover { color: var(--vermelho-claro); }
+  .aviso { padding-block: 20px 32px; border-top: 1px solid #1f1f23; color: #8a8a93; font-size: 12px; line-height: 1.6; }
+</style>

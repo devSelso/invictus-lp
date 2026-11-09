@@ -1,0 +1,223 @@
+---
+import Base from '../layouts/Base.astro';
+import BotaoDirect from '../components/BotaoDirect.astro';
+import { servidor, vip, chancesOvo, chanceGaiola, chancesProvisorias } from '../data/servidor';
+
+const maior = Math.max(...chancesOvo.map((c) => c.chance));
+const pct = (n: number) => `${String(n).replace('.', ',')}%`;
+---
+<Base titulo="VIP" descricao="Vantagens do VIP do Invictus, como funciona o código, mercado de VIP e a tabela de chances dos prêmios da ativação.">
+  <section class="container topo">
+    <div class="topo-txt">
+      <div class="linha">
+        <div class="rotulo">VIP Invictus</div>
+        {servidor.preLancamento && <span class="selo">Pré-venda aberta</span>}
+      </div>
+      <h1 class="titulo grande">Voe. Teleporte. <span>Negocie.</span></h1>
+      <p class="lead">O VIP chega como um código. Ative para você ou venda para outro jogador por Coins. E cada ativação sorteia prêmios, com as chances publicadas aqui.</p>
+    </div>
+    <div class="blk preco">
+      <div class="linha">
+        {servidor.preLancamento && <span class="selo">Pré-venda</span>}
+        {vip.precoProvisorio && <span class="selo selo-escuro">Valor inicial</span>}
+      </div>
+      {servidor.preLancamento && (
+        <>
+          <h2 class="titulo">VIP antecipado</h2>
+          <p>Lançamento dia <b>{servidor.lancamentoTexto}</b>. Garanta seu VIP antes e comece com vantagem desde o primeiro minuto.</p>
+        </>
+      )}
+      <div class="valor"><span class="titulo">{vip.preco}</span><span>{vip.periodo}</span></div>
+      <p>Os dias se somam ao VIP que ainda estiver ativo.</p>
+      {servidor.preLancamento ? (
+        <>
+          <BotaoDirect />
+          <small>Abre o direct do <b>@{servidor.instagram}</b> no Instagram com a mensagem "{vip.mensagemDirect}" copiada. É só colar e enviar.</small>
+        </>
+      ) : (
+        <>
+          <span class="btn blk btn-vermelho" aria-disabled="true">Compra em breve</span>
+          <small>A plataforma de venda ainda está sendo escolhida.</small>
+        </>
+      )}
+    </div>
+  </section>
+
+  {servidor.preLancamento && (
+    <section class="container">
+      <div class="blk pre">
+        <div>
+          <span class="pre-rot">SÓ NA PRÉ-VENDA · ATÉ {servidor.lancamentoCurto}</span>
+          <h2 class="titulo">Vantagens exclusivas para quem chegar primeiro</h2>
+          {vip.bonusPreVenda.length ? (
+            <ul>{vip.bonusPreVenda.map((b) => <li>{b}</li>)}</ul>
+          ) : (
+            <p>Quem garantir o VIP antes do lançamento leva bônus que não vão existir depois. Os detalhes saem em breve no Instagram e no TikTok <b>@{servidor.instagram}</b>.</p>
+          )}
+        </div>
+        <BotaoDirect estilo="branco" />
+      </div>
+    </section>
+  )}
+
+  <section class="container secao">
+    <div class="rotulo">01 · Vantagens</div>
+    <h2 class="titulo h2" style="margin:16px 0 40px">O que o VIP libera</h2>
+    <div class="grade" style="--min:300px;gap:14px">
+      <div class="card"><h3>Voo</h3><p>No Spawn, no Mundo 1 e no Minerar. Não funciona no Nether, no The End nem em combate.</p><span class="cmd fixo">/fly</span></div>
+      <div class="card"><h3>PvP do seu jeito</h3><p>Ligue e desligue o próprio PvP fora do Spawn e fora de combate, com 3 minutos entre trocas.</p><span class="cmd fixo">/pvp off</span></div>
+      <div class="card"><h3>Teleporte na hora</h3><p>Todo teleporte é instantâneo, inclusive em combate.</p></div>
+      <div class="card"><h3>Homes ilimitadas</h3><p>Salve quantos pontos quiser. Jogador comum fica em 10.</p></div>
+      <div class="card"><h3>Lojas de placa</h3><p>Crie lojas de baú e placa sem limite. Só VIP pode criar.</p></div>
+      <div class="card"><h3>Kit VIP diário</h3><p>Espada, picareta, machado e pá de diamante, 8 maçãs douradas, 16 frascos de experiência, bancada e fornalha. A cada 24 horas.</p><span class="cmd fixo">/kit vip</span></div>
+      <div class="card largo">
+        <div><h3>Destaque no servidor</h3><p>Nome em dourado no tab e em cima da cabeça, e a tag VIP dourada em negrito no chat.</p></div>
+        <span class="chat-linha"><b class="tag-vip">VIP</b> SeuNome: <span>bora minerar?</span></span>
+      </div>
+    </div>
+  </section>
+
+  <section class="container secao">
+    <div class="rotulo">02 · Como funciona</div>
+    <h2 class="titulo h2" style="margin:16px 0 40px">Um código, dois caminhos</h2>
+    <div class="caminhos">
+      <div class="blk passo1"><span class="titulo">1</span><h3>Compre o VIP</h3><p>Você recebe um código. Trate como dinheiro: não passe para ninguém.</p></div>
+      <div class="grade" style="--min:260px;gap:14px;flex:2 1 520px">
+        <div class="card"><span class="cam">CAMINHO A</span><h3>Ative para você</h3><p>Com o inventário vazio (a armadura vestida pode ficar), porque os prêmios vão direto para ele. Cada código vale uma vez.</p><span class="cmd fixo">/ativarvip código</span></div>
+        <div class="card"><span class="cam">CAMINHO B</span><h3>Venda por Coins</h3><p>Coloque à venda no mercado de VIP com o preço que quiser, sem taxa. O servidor avisa todo mundo.</p><span class="cmd fixo">/vendervip código preço</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="container secao">
+    <div class="secao-topo">
+      <div><div class="rotulo">03 · Prêmios da ativação</div><h2 class="titulo h2">Chances às claras</h2></div>
+      <p class="muted" style="max-width:460px;line-height:1.6">Cada ativação dá um sorteio de ovo de criatura e uma chance de ganhar uma gaiola. Prêmios raros são anunciados para o servidor todo.{chancesProvisorias && ' Valores iniciais: podem mudar até a abertura.'}</p>
+    </div>
+    <div class="premios">
+      <div class="tabela-chances">
+        {chancesOvo.map((c) => (
+          <div class="faixa-chance">
+            <div class="fc-topo"><b style={`color:${c.cor}`}>{c.nome}</b><span>{pct(c.chance)}</span></div>
+            <div class="barra"><div style={`background:${c.cor};width:${(c.chance / maior) * 100}%`}></div></div>
+            <span class="muted">{c.detalhe ?? c.ovos.map((o, i) => (i === 0 ? o[0].toUpperCase() + o.slice(1) : o)).join(', ')}</span>
+          </div>
+        ))}
+        <div class="fc-topo gaiola"><b>Chance de gaiola (spawner)</b><span>{pct(chanceGaiola)}</span></div>
+      </div>
+      <div class="blk simulador">
+        <span class="pre-rot" style="color:var(--rosa)">SIMULADOR</span>
+        <h3 class="titulo">Teste a sua sorte</h3>
+        <p>Simula uma ativação com as chances acima. É só uma brincadeira: nada aqui vale no jogo.</p>
+        <div class="resultado" aria-live="polite">
+          <span id="sim-n" class="muted" hidden></span>
+          <b id="sim-ovo">Clique em Ativar para sortear.</b>
+          <span id="sim-gaiola"></span>
+        </div>
+        <button type="button" id="sim-btn" class="btn blk btn-branco">Ativar</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="container secao">
+    <div class="blk mercado">
+      <div class="mercado-txt">
+        <div class="rotulo">04 · Mercado de VIP</div>
+        <h2 class="titulo" style="font-size:clamp(32px,4vw,44px)">VIP também se compra com Coins</h2>
+        <p class="muted" style="line-height:1.6">Jogadores compram e vendem VIP entre si. Quem faz a troca é o servidor, então não tem risco de golpe. Comprar já ativa o VIP: precisa do inventário vazio e dos Coins.</p>
+      </div>
+      <dl>
+        <div><dt><span class="cmd">/mercadovip</span></dt><dd>Menu com os VIPs à venda, do mais barato ao mais caro</dd></div>
+        <div><dt><span class="cmd">/vendervip código preço</span></dt><dd>Coloca à venda</dd></div>
+        <div><dt><span class="cmd">/vendervip cancelar código</span></dt><dd>Tira da venda</dd></div>
+        <div><dt><span class="cmd">/vip</span></dt><dd>Menu com todas as vantagens</dd></div>
+        <div><dt><span class="cmd">/diasvip</span></dt><dd>Quantos dias faltam</dd></div>
+      </dl>
+    </div>
+  </section>
+</Base>
+
+<script define:vars={{ chances: chancesOvo, gaiola: chanceGaiola }}>
+  let vezes = 0;
+  const sortear = (lista) => lista[Math.floor(Math.random() * lista.length)];
+  document.getElementById('sim-btn')?.addEventListener('click', () => {
+    vezes++;
+    let r = Math.random() * 100;
+    let texto = 'Sem ovo desta vez';
+    let cor = '#9A9AA3';
+    for (const c of chances) {
+      if (r < c.chance) {
+        if (c.ovos.length) {
+          let ovo = sortear(c.ovos);
+          if (c.pesos) {
+            let p = Math.random() * c.chance;
+            ovo = c.ovos[p < c.pesos[0] ? 0 : 1];
+          }
+          texto = `${c.nome}: ovo de ${ovo}`;
+          cor = c.cor;
+        }
+        break;
+      }
+      r -= c.chance;
+    }
+    const n = document.getElementById('sim-n');
+    const ovoEl = document.getElementById('sim-ovo');
+    const gaiolaEl = document.getElementById('sim-gaiola');
+    if (n) { n.hidden = false; n.textContent = `Ativação nº ${vezes}`; }
+    if (ovoEl) { ovoEl.textContent = texto; ovoEl.style.color = cor; }
+    if (gaiolaEl) gaiolaEl.textContent = Math.random() * 100 < gaiola ? 'E ganhou uma gaiola!' : 'Sem gaiola.';
+  });
+</script>
+
+<style>
+  .topo { padding-block: 80px 48px; display: flex; flex-wrap: wrap; gap: 40px; align-items: center; }
+  .topo-txt { flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 22px; }
+  .linha { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .grande { font-size: clamp(52px, 7.5vw, 88px); line-height: .95; }
+  .grande span { color: var(--vermelho-claro); }
+  .preco { flex: 1 1 340px; background: var(--pergaminho); color: var(--preto); padding: 36px; display: flex; flex-direction: column; gap: 16px; }
+  .preco h2 { font-size: 30px; line-height: 1.1; }
+  .preco p { font-size: 15px; color: #3a3a40; }
+  .valor { display: flex; align-items: baseline; gap: 10px; }
+  .valor .titulo { font-size: 64px; line-height: 1; }
+  .valor span:last-child { font-size: 17px; color: #3a3a40; }
+  .preco small { font-size: 13px; color: #5a5a60; text-align: center; line-height: 1.5; }
+  .pre { background: var(--vermelho); padding: clamp(28px, 5vw, 44px); display: flex; flex-wrap: wrap; gap: 32px; align-items: center; justify-content: space-between; }
+  .pre > div { display: flex; flex-direction: column; gap: 12px; max-width: 720px; }
+  .pre-rot { font-size: 12px; font-weight: 700; letter-spacing: 2px; color: var(--rosa); }
+  .pre h2 { font-size: clamp(30px, 4vw, 44px); }
+  .pre p, .pre li { font-size: 17px; color: var(--rosa); line-height: 1.55; }
+  .pre b { color: var(--branco); }
+  .fixo { align-self: flex-start; }
+  .largo { grid-column: 1 / -1; flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px; }
+  .largo > div { display: flex; flex-direction: column; gap: 8px; }
+  .chat-linha { font-family: var(--mono); font-size: 17px; background: #0c0c0e; padding: 12px 18px; border-radius: 8px; }
+  .chat-linha span { color: var(--texto-2); }
+  .caminhos { display: flex; flex-wrap: wrap; gap: 14px; align-items: stretch; }
+  .passo1 { flex: 1 1 260px; background: var(--vermelho); padding: 32px; display: flex; flex-direction: column; gap: 12px; }
+  .passo1 > .titulo { font-size: 44px; line-height: 1; }
+  .passo1 h3 { font-size: 22px; }
+  .passo1 p { color: var(--rosa); font-size: 15px; line-height: 1.6; }
+  .cam { font-size: 12px; font-weight: 700; letter-spacing: 2px; color: var(--vermelho-claro); }
+  .premios { display: flex; flex-wrap: wrap; gap: 16px; align-items: stretch; }
+  .tabela-chances { flex: 999 1 520px; min-width: 0; background: var(--fundo-2); border: 1px solid var(--linha); border-radius: 16px; padding: clamp(22px, 4vw, 32px); display: flex; flex-direction: column; gap: 20px; }
+  .faixa-chance { display: flex; flex-direction: column; gap: 8px; }
+  .fc-topo { display: flex; justify-content: space-between; gap: 16px; font-size: 17px; }
+  .fc-topo span { font-family: var(--mono); }
+  .barra { height: 10px; background: var(--fundo); border-radius: 2px; overflow: hidden; }
+  .barra div { height: 100%; }
+  .faixa-chance .muted { font-size: 14px; }
+  .gaiola { border-top: 1px solid var(--linha); padding-top: 18px; }
+  .simulador { flex: 1 1 320px; background: var(--vermelho); padding: 32px; display: flex; flex-direction: column; gap: 16px; }
+  .simulador h3 { font-size: 30px; line-height: 1.1; }
+  .simulador p { font-size: 15px; color: var(--rosa); line-height: 1.5; }
+  .resultado { background: var(--preto); padding: 22px; display: flex; flex-direction: column; gap: 8px; min-height: 132px; justify-content: center; }
+  .resultado b { font-size: 21px; }
+  .resultado span { font-size: 15px; color: var(--texto-2); }
+  .mercado { background: var(--fundo-2); padding: clamp(28px, 5vw, 48px); display: flex; flex-wrap: wrap; gap: 40px; }
+  .mercado-txt { flex: 1 1 360px; display: flex; flex-direction: column; gap: 16px; }
+  .mercado dl { flex: 1 1 420px; margin: 0; display: flex; flex-direction: column; }
+  .mercado dl div { display: flex; justify-content: space-between; gap: 8px 16px; padding: 14px 0; border-bottom: 1px solid var(--linha); flex-wrap: wrap; }
+  .mercado dl div:last-child { border-bottom: 0; }
+  .mercado dd { margin: 0; color: var(--texto-2); }
+</style>
