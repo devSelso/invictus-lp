@@ -1,31 +1,36 @@
 ---
+import Elmo from './Elmo.astro';
 import { links, servidor } from '../data/servidor';
 ---
 <footer class="rodape">
   <div class="container rodape-in">
     <div class="sobre">
-      <span class="nome">INVICTUS</span>
-      <p>Servidor de Minecraft {servidor.versao}. Survival clássico com PvP, economia e VIP.</p>
+      <span class="marca"><span class="marca-icone"><Elmo largura={18} simples /></span>INVICTUS</span>
+      <p>Survival clássico na {servidor.versao}, com PvP, economia em Coins e VIP.</p>
+      <p class="ip">IP <b>{servidor.ip}</b></p>
     </div>
     <nav aria-label="Rodapé" class="cols">
-      <div><b>JOGAR</b><a href="/como-entrar/">Como entrar</a><a href="/regras/">Regras</a></div>
-      <div><b>SERVIDOR</b><a href="/vip/">VIP</a><a href="/novidades/">Novidades</a></div>
-      <div><b>REDES</b><a href={links.instagram} target="_blank" rel="noopener">Instagram</a><a href={links.tiktok} target="_blank" rel="noopener">TikTok</a></div>
+      <div><b>Jogar</b><a href="/como-entrar/">Como entrar</a><a href="/regras/">Regras</a></div>
+      <div><b>Servidor</b><a href="/vip/">VIP</a><a href="/novidades/">Novidades</a></div>
+      <div><b>Redes</b><a href={links.instagram} target="_blank" rel="noopener">Instagram</a><a href={links.tiktok} target="_blank" rel="noopener">TikTok</a></div>
     </nav>
   </div>
   <div class="container aviso">Não é um produto oficial do Minecraft. Não é aprovado nem associado à Mojang ou à Microsoft.</div>
+  <div class="grama" aria-hidden="true"></div>
 </footer>
 
 <style>
-  .rodape { border-top: 1px solid #26262b; background: #101012; margin-top: 40px; }
-  .rodape-in { padding-block: 56px; display: flex; flex-wrap: wrap; gap: 40px; justify-content: space-between; }
-  .sobre { display: flex; flex-direction: column; gap: 12px; max-width: 360px; }
-  .nome { font-family: var(--titulo); font-weight: 900; font-size: 22px; letter-spacing: 5px; }
-  .sobre p { color: var(--texto-3); font-size: 14px; line-height: 1.6; }
-  .cols { display: flex; gap: 48px; flex-wrap: wrap; }
-  .cols div { display: flex; flex-direction: column; gap: 10px; font-size: 14px; }
-  .cols b { color: var(--texto-3); font-size: 12px; letter-spacing: 2px; }
-  .cols a { color: #e4e4ea; text-decoration: none; }
-  .cols a:hover { color: var(--vermelho-claro); }
-  .aviso { padding-block: 20px 32px; border-top: 1px solid #1f1f23; color: #8a8a93; font-size: 12px; line-height: 1.6; }
+  .rodape { margin-top: 120px; border-top: 1px solid var(--linha); background: rgba(11, 11, 14, 0.94); }
+  .rodape-in { padding-block: 56px 40px; display: flex; flex-wrap: wrap; gap: 40px; justify-content: space-between; }
+  .sobre { display: flex; flex-direction: column; gap: 12px; max-width: 380px; }
+  .marca { display: flex; align-items: center; gap: 12px; font-family: var(--f-marca); font-weight: 900; font-size: 20px; letter-spacing: 5px; }
+  .marca-icone { width: 34px; height: 34px; background: var(--vermelho); display: grid; place-items: center; }
+  .sobre p { color: var(--texto-3); font-size: 15px; }
+  .ip b { color: var(--vermelho-jogo); font-weight: 600; }
+  .cols { display: flex; gap: 56px; flex-wrap: wrap; }
+  .cols div { display: flex; flex-direction: column; gap: 10px; font-size: 15px; }
+  .cols b { color: var(--texto-3); font-size: 12px; letter-spacing: 3px; text-transform: uppercase; }
+  .cols a { color: var(--texto-2); text-decoration: none; }
+  .cols a:hover { color: var(--vermelho-jogo); }
+  .aviso { padding-block: 18px 28px; border-top: 1px solid var(--linha); color: var(--texto-3); font-size: 13px; }
 </style>

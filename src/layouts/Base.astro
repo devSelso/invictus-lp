@@ -47,7 +47,8 @@ const tituloCompleto = titulo ? `${titulo} · Invictus` : 'Invictus · Servidor 
           if (!aviso || el.querySelector('*')) return;
           const original = el.textContent;
           el.textContent = aviso;
-          window.setTimeout(() => { el.textContent = original; }, 3500);
+          el.setAttribute('data-ok', '');
+          window.setTimeout(() => { el.textContent = original; el.removeAttribute('data-ok'); }, 3000);
         });
       });
 
@@ -57,6 +58,7 @@ const tituloCompleto = titulo ? `${titulo} · Invictus` : 'Invictus · Servidor 
         const dias = Math.ceil((alvo - Date.now()) / 86400000);
         const texto = dias > 1 ? `faltam ${dias} dias` : dias === 1 ? 'é amanhã' : 'já começou';
         document.querySelectorAll<HTMLElement>('[data-dias]').forEach((el) => { el.textContent = texto; });
+        document.querySelectorAll<HTMLElement>('[data-dias-num]').forEach((el) => { el.textContent = String(Math.max(dias, 0)).padStart(2, '0'); });
       }
 
       // Menu do celular.

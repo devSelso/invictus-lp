@@ -1,27 +1,33 @@
-@import '@fontsource/cinzel/latin-700.css';
+@import '@fontsource/orbitron/latin-700.css';
+@import '@fontsource/orbitron/latin-900.css';
+@import '@fontsource/chakra-petch/latin-400.css';
+@import '@fontsource/chakra-petch/latin-500.css';
+@import '@fontsource/chakra-petch/latin-600.css';
+@import '@fontsource/chakra-petch/latin-700.css';
 @import '@fontsource/cinzel/latin-900.css';
-@import '@fontsource-variable/inter/wght.css';
-@import '@fontsource/jetbrains-mono/latin-500.css';
 
+/* Kit visual do Invictus: o mesmo "Scanner" dos Reels. */
 :root {
+  --vazio: #0b0b0e;
+  --painel: #131317;
+  --painel-2: #1a1a1f;
+  --linha: #2a2a31;
+  --grade: rgba(200, 29, 37, 0.12);
   --vermelho: #c81d25;
-  --vermelho-claro: #ff5555;
-  --preto: #1a1a1d;
-  --grafite: #2e2e33;
+  --vermelho-jogo: #ff5555;
   --branco: #ffffff;
-  --pergaminho: #f3f2ee;
-  --fundo: #141416;
-  --fundo-2: #1c1c20;
-  --fundo-3: #232327;
-  --linha: #2a2a30;
-  --texto: #ffffff;
-  --texto-2: #c9c9d1;
-  --texto-3: #9a9aa3;
-  --rosa: #ffe1e1;
-  --titulo: 'Cinzel', serif;
-  --corpo: 'Inter Variable', 'Inter', system-ui, sans-serif;
-  --mono: 'JetBrains Mono', ui-monospace, monospace;
-  --largura: 1280px;
+  --texto-2: #c4c4cc;
+  --texto-3: #8e8e98;
+  --online: #55ff55;
+  --ouro: #ffaa00;
+  --brilho: 0 0 28px rgba(255, 85, 85, 0.55);
+  --brilho-caixa: 0 0 32px rgba(255, 85, 85, 0.35);
+
+  --f-titulo: 'Orbitron', 'Chakra Petch', sans-serif;
+  --f-texto: 'Chakra Petch', system-ui, sans-serif;
+  --f-marca: 'Cinzel', serif;
+
+  --largura: 1240px;
   color-scheme: dark;
 }
 
@@ -29,93 +35,114 @@
 html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 body {
   margin: 0;
-  background: var(--fundo);
-  color: var(--texto);
-  font-family: var(--corpo);
-  font-size: 16px;
-  line-height: 1.5;
+  background-color: var(--vazio);
+  background-image:
+    linear-gradient(var(--grade) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grade) 1px, transparent 1px);
+  background-size: 54px 54px;
+  color: var(--branco);
+  font-family: var(--f-texto);
+  font-size: 17px;
+  line-height: 1.55;
   overflow-x: hidden;
 }
 img, svg { display: block; max-width: 100%; }
-a { color: var(--vermelho-claro); }
+a { color: var(--vermelho-jogo); text-underline-offset: 3px; }
 a:hover { color: var(--branco); }
-button { font: inherit; }
-:focus-visible { outline: 2px solid var(--vermelho-claro); outline-offset: 2px; }
-
-h1, h2, h3 { margin: 0; }
-p { margin: 0; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--vermelho-jogo); outline-offset: 3px; }
+h1, h2, h3, p { margin: 0; }
 
 .container { max-width: var(--largura); margin: 0 auto; padding-inline: 24px; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 
-/* Recorte "de bloco" nos cantos */
-.blk {
-  clip-path: polygon(0 10px, 10px 10px, 10px 0, calc(100% - 10px) 0, calc(100% - 10px) 10px, 100% 10px, 100% calc(100% - 10px), calc(100% - 10px) calc(100% - 10px), calc(100% - 10px) 100%, 10px 100%, 10px calc(100% - 10px), 0 calc(100% - 10px));
-}
-
-.titulo { font-family: var(--titulo); font-weight: 900; line-height: 1.05; }
-.h1 { font-size: clamp(48px, 7vw, 88px); line-height: 1; }
-.h2 { font-size: clamp(34px, 4.6vw, 56px); }
-.lead { font-size: clamp(17px, 1.6vw, 20px); line-height: 1.5; color: var(--texto-2); max-width: 680px; }
+/* Tipografia */
+.t-titulo { font-family: var(--f-titulo); font-weight: 900; text-transform: uppercase; line-height: 1.02; letter-spacing: 0.02em; }
+.t-brilho { text-shadow: var(--brilho); }
+.t-h1 { font-size: clamp(38px, 6.4vw, 84px); }
+.t-h2 { font-size: clamp(30px, 4.4vw, 56px); }
+.t-h3 { font-size: clamp(20px, 2vw, 24px); }
+.vermelho { color: var(--vermelho-jogo); }
+.lead { font-size: clamp(18px, 1.8vw, 21px); color: var(--texto-2); max-width: 62ch; }
 .muted { color: var(--texto-3); }
 
-.rotulo {
-  font-size: 13px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
-  color: var(--vermelho-claro); display: flex; align-items: center; gap: 10px;
+/* Etiqueta de HUD: maiúsculas espaçadas, como nos Reels */
+.hud {
+  font-family: var(--f-texto); font-weight: 700; font-size: 13px; letter-spacing: 4px;
+  text-transform: uppercase; color: var(--vermelho-jogo);
+  display: inline-flex; align-items: center; gap: 10px;
 }
-.rotulo::before { content: ''; width: 10px; height: 10px; background: var(--vermelho); flex: none; }
+.hud .ponto { width: 8px; height: 8px; background: var(--vermelho-jogo); box-shadow: 0 0 10px var(--vermelho-jogo); animation: piscar 1.4s steps(2, start) infinite; }
+.hud.verde { color: var(--online); }
+.hud.verde .ponto { background: var(--online); box-shadow: 0 0 10px var(--online); }
 
+/* Comando do jogo */
 .cmd {
-  font-family: var(--mono); font-size: 0.875em; color: var(--vermelho-claro);
-  background: #26262b; padding: 2px 7px; border-radius: 4px; white-space: nowrap;
+  font-family: var(--f-texto); font-weight: 600; font-size: 0.92em; color: var(--vermelho-jogo);
+  background: rgba(255, 85, 85, 0.08); border: 1px solid rgba(255, 85, 85, 0.25);
+  padding: 1px 7px; white-space: nowrap;
 }
 
-.selo {
-  display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: 1px;
-  padding: 4px 10px; border-radius: 999px; background: var(--vermelho); color: var(--branco);
-  text-transform: uppercase; align-self: flex-start;
-}
-.selo-escuro { background: var(--preto); }
-.selo-grafite { background: var(--grafite); }
-
+/* Botões */
 .btn {
-  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-  border: 0; cursor: pointer; text-decoration: none; font-weight: 700; font-size: 15px;
-  padding: 14px 24px; min-height: 48px; transition: filter .15s;
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  min-height: 52px; padding: 0 26px; border: 2px solid transparent; cursor: pointer;
+  font-family: var(--f-titulo); font-weight: 900; font-size: 15px; letter-spacing: 3px;
+  text-transform: uppercase; text-decoration: none; text-align: center; line-height: 1.25;
+  transition: box-shadow .2s, background .2s, color .2s;
 }
-.btn:hover { filter: brightness(1.12); }
-.btn-vermelho { background: var(--vermelho); color: var(--branco); }
-.btn-vermelho:hover { color: var(--branco); }
-.btn-branco { background: var(--branco); color: var(--preto); }
-.btn-branco:hover { color: var(--preto); }
-.btn-preto { background: var(--preto); color: var(--branco); }
-.btn-preto:hover { color: var(--branco); }
-.btn-claro { background: #e2e0d9; color: var(--preto); }
-.btn-claro:hover { color: var(--preto); }
-
-.card {
-  background: var(--fundo-2); border: 1px solid var(--linha); border-radius: 14px;
-  padding: 28px; display: flex; flex-direction: column; gap: 12px;
+@media (max-width: 560px) {
+  .btn { letter-spacing: 2px; font-size: 14px; padding: 0 18px; }
+  .acoes { flex-direction: column; align-items: stretch; }
 }
-.card h3 { font-size: 20px; font-weight: 700; }
-.card p { color: #b4b4bc; font-size: 15px; line-height: 1.6; }
+.btn-vermelho { background: var(--vermelho); border-color: var(--vermelho-jogo); color: var(--branco); box-shadow: 0 0 24px rgba(255, 85, 85, 0.4); }
+.btn-vermelho:hover { color: var(--branco); box-shadow: 0 0 40px rgba(255, 85, 85, 0.7); }
+.btn-contorno { border-color: rgba(255, 255, 255, 0.5); color: var(--branco); background: rgba(11, 11, 14, 0.6); }
+.btn-contorno:hover { border-color: var(--branco); color: var(--branco); background: rgba(255, 255, 255, 0.06); }
+.btn-branco { background: var(--branco); color: var(--vazio); }
+.btn-branco:hover { color: var(--vazio); box-shadow: 0 0 32px rgba(255, 255, 255, 0.35); }
+.btn[data-ok] { background: #0f2a10; border-color: var(--online); color: var(--online); box-shadow: 0 0 24px rgba(85, 255, 85, 0.35); }
 
-.grade { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--min, 300px)), 1fr)); }
+/* Painel com cantos de mira */
+.mira { position: relative; }
+.mira::before, .mira::after {
+  content: ''; position: absolute; width: 22px; height: 22px; pointer-events: none;
+  border: 3px solid var(--vermelho-jogo);
+}
+.mira::before { top: -9px; left: -9px; border-right: 0; border-bottom: 0; }
+.mira::after { bottom: -9px; right: -9px; border-left: 0; border-top: 0; }
+.mira.branca::before, .mira.branca::after { border-color: var(--branco); }
 
-.secao { padding-block: 80px 40px; }
-.secao-topo { display: flex; justify-content: space-between; align-items: end; gap: 24px; flex-wrap: wrap; margin-bottom: 40px; }
-.secao-topo .h2 { margin-top: 16px; }
+.painel { background: rgba(19, 19, 23, 0.92); border: 1px solid var(--linha); }
+.painel-vermelho { background: rgba(11, 11, 14, 0.92); border: 2px solid var(--vermelho-jogo); box-shadow: var(--brilho-caixa); }
 
-.tabela { overflow-x: auto; border: 1px solid var(--linha); border-radius: 10px; }
-.tabela table { border-collapse: collapse; width: 100%; min-width: var(--tmin, 600px); font-size: 15px; }
-.tabela th { text-align: left; background: var(--fundo-3); font-weight: 700; padding: 12px 14px; }
+/* Seções */
+.secao { padding-block: 104px 0; }
+.cabeca { display: flex; flex-direction: column; gap: 16px; margin-bottom: 44px; max-width: 760px; }
+.cabeca p { color: var(--texto-2); }
+
+/* Tabelas */
+.tabela { overflow-x: auto; border: 1px solid var(--linha); background: rgba(11, 11, 14, 0.7); }
+.tabela table { border-collapse: collapse; width: 100%; min-width: var(--tmin, 600px); font-size: 16px; }
+.tabela th { text-align: left; background: var(--painel-2); font-family: var(--f-texto); font-weight: 700; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; color: var(--texto-2); padding: 12px 14px; }
 .tabela td { padding: 12px 14px; border-top: 1px solid var(--linha); color: var(--texto-2); vertical-align: top; }
-.tabela td:first-child { color: var(--texto-3); font-weight: 600; }
+.tabela td:first-child { color: var(--branco); font-weight: 600; }
 
+/* Linha do chat do jogo */
 .chat {
-  font-family: var(--mono); font-size: 15px; line-height: 1.7; background: #0c0c0e;
-  border: 1px solid var(--linha); border-radius: 10px; padding: 18px 20px; color: #e4e4ea;
-  overflow-x: auto;
+  font-family: var(--f-texto); font-weight: 500; font-size: 17px; background: rgba(0, 0, 0, 0.55);
+  border-left: 3px solid var(--vermelho-jogo); padding: 14px 18px; color: #e8e8ee; overflow-x: auto;
+}
+
+/* Faixa de grama em pixel, igual ao fim dos Reels */
+.grama {
+  height: 72px;
+  background:
+    linear-gradient(#5b9a2e 0 14px, #4a8325 14px 20px, transparent 20px),
+    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.18) 0 2px, transparent 2px 54px),
+    linear-gradient(#6b4a2b, #57391f);
+  background-size: 100% 100%, 54px 100%, 100% 100%;
+  box-shadow: inset 0 -12px 0 rgba(0, 0, 0, 0.25);
 }
 
 /* Cores das tags do jogo */
@@ -123,3 +150,8 @@ p { margin: 0; }
 .tag-admin { color: #ff5555; }
 .tag-magnata { color: #55ff55; }
 .tag-vip { color: #ffaa00; }
+
+@keyframes piscar { to { visibility: hidden; } }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}

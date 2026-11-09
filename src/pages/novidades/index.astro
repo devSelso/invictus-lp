@@ -9,8 +9,8 @@ const tiposUsados = [...new Set(posts.map((p) => p.data.tipo))];
 ---
 <Base titulo="Novidades" descricao="Tudo o que entra, muda ou é corrigido no Invictus.">
   <section class="container topo">
-    <div class="rotulo">Diário do servidor</div>
-    <h1 class="titulo h1">Novidades</h1>
+    <span class="hud"><span class="ponto"></span>Diário do servidor</span>
+    <h1 class="t-titulo t-h1 t-brilho">Novidades</h1>
     <p class="lead">Tudo o que entra, muda ou é corrigido no Invictus, do mais novo para o mais antigo.</p>
     <div class="filtros" role="group" aria-label="Filtrar novidades">
       <button type="button" class="chip" aria-pressed="true" data-filtro="todas">Todas</button>
@@ -20,10 +20,12 @@ const tiposUsados = [...new Set(posts.map((p) => p.data.tipo))];
 
   <section class="container lista">
     {renderizados.map(({ post, Conteudo }) => (
-      <article class="post" id={post.id} data-tipo={post.data.tipo}>
-        <time datetime={post.data.data.toISOString()}>{formatarData(post.data.data)}</time>
+      <article class:list={['post', { destaque: post.data.tipo === 'lancamento' }]} id={post.id} data-tipo={post.data.tipo}>
+        <div class="lado">
+          <span class="etq">{post.data.etiqueta ?? nomesTipo[post.data.tipo]}</span>
+          <time datetime={post.data.data.toISOString()}>{formatarData(post.data.data)}</time>
+        </div>
         <div class="post-in">
-          <span class={`selo ${post.data.tipo === 'lancamento' ? '' : 'selo-grafite'}`}>{post.data.etiqueta ?? nomesTipo[post.data.tipo]}</span>
           <h2><a href={`/novidades/${post.id}/`}>{post.data.titulo}</a></h2>
           <div class="texto"><Conteudo /></div>
         </div>
@@ -43,22 +45,25 @@ const tiposUsados = [...new Set(posts.map((p) => p.data.tipo))];
 </script>
 
 <style>
-  .topo { max-width: 1080px; padding-block: 80px 40px; display: flex; flex-direction: column; gap: 20px; }
-  .filtros { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
-  .chip { border: 1px solid #3a3a40; color: var(--texto-2); font-size: 14px; font-weight: 600; padding: 8px 16px; min-height: 40px; border-radius: 999px; background: transparent; cursor: pointer; }
+  .topo { max-width: 1040px; padding-block: 80px 48px; display: flex; flex-direction: column; gap: 22px; }
+  .filtros { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
+  .chip { border: 1px solid var(--linha); background: rgba(11, 11, 14, 0.7); color: var(--texto-2); font-weight: 700; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; padding: 0 16px; min-height: 42px; cursor: pointer; }
   .chip:hover { border-color: var(--texto-2); }
-  .chip[aria-pressed='true'] { background: var(--branco); color: var(--preto); border-color: var(--branco); }
-  .lista { max-width: 1080px; padding-bottom: 56px; }
-  .post { display: flex; flex-wrap: wrap; gap: 12px 32px; padding: 40px 0; border-top: 1px solid var(--linha); }
+  .chip[aria-pressed='true'] { border-color: var(--vermelho-jogo); color: var(--branco); background: rgba(200, 29, 37, 0.25); box-shadow: 0 0 18px rgba(255, 85, 85, 0.3); }
+  .lista { max-width: 1040px; display: flex; flex-direction: column; gap: 12px; }
+  .post { display: flex; flex-wrap: wrap; gap: 16px 40px; padding: clamp(22px, 3vw, 34px); background: rgba(19, 19, 23, 0.92); border: 1px solid var(--linha); }
   .post[hidden] { display: none; }
-  time { flex: 0 0 180px; color: var(--texto-3); font-size: 15px; font-family: var(--mono); padding-top: 6px; }
-  .post-in { flex: 1 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 14px; }
-  h2 { font-size: clamp(24px, 3vw, 30px); font-weight: 700; line-height: 1.25; }
+  .destaque { border: 2px solid var(--vermelho-jogo); box-shadow: var(--brilho-caixa); }
+  .lado { flex: 0 0 170px; display: flex; flex-direction: column; gap: 6px; }
+  .etq { font-size: 12px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--vermelho-jogo); }
+  time { color: var(--texto-3); font-size: 15px; }
+  .post-in { flex: 1 1 480px; min-width: 0; display: flex; flex-direction: column; gap: 12px; }
+  h2 { font-size: clamp(22px, 2.6vw, 28px); font-weight: 700; line-height: 1.25; }
   h2 a { color: var(--branco); text-decoration: none; }
-  h2 a:hover { color: var(--vermelho-claro); }
-  .texto :global(p), .texto :global(li) { color: var(--texto-2); font-size: 17px; line-height: 1.65; }
+  h2 a:hover { color: var(--vermelho-jogo); }
+  .texto :global(p), .texto :global(li) { color: var(--texto-2); line-height: 1.65; }
   .texto :global(p + p), .texto :global(ul) { margin-top: 12px; }
   .texto :global(ul) { padding-left: 20px; }
-  .texto :global(code) { font-family: var(--mono); font-size: .875em; color: var(--vermelho-claro); background: #26262b; padding: 2px 7px; border-radius: 4px; }
+  .texto :global(code) { font-family: var(--f-texto); font-weight: 600; color: var(--vermelho-jogo); background: rgba(255, 85, 85, 0.08); border: 1px solid rgba(255, 85, 85, 0.25); padding: 1px 7px; }
   .texto :global(strong) { color: var(--branco); }
 </style>

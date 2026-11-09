@@ -21,8 +21,8 @@ const n = (id: string) => String(secoes.findIndex(([s]) => s === id) + 1).padSta
 ---
 <Base titulo="Regras e funcionamento" descricao="Todas as regras do Invictus: mundos, proteção, PvP, teleportes, homes, kits, economia, VIP, gaiolas, chat, punições e comandos.">
   <section class="container topo">
-    <div class="rotulo">Regras e funcionamento</div>
-    <h1 class="titulo h1">Como tudo funciona</h1>
+    <span class="hud"><span class="ponto"></span>Regras e funcionamento</span>
+    <h1 class="t-titulo t-h1 t-brilho">Como tudo funciona</h1>
     <p class="lead">Tudo o que você precisa saber para jogar sem surpresa. Busque por um assunto ou use o índice.</p>
     <div class="busca">
       <label for="busca">Buscar nas regras</label>
@@ -83,7 +83,7 @@ const n = (id: string) => String(secoes.findIndex(([s]) => s === id) + 1).padSta
 
       <section id="protecao" class="sec" data-palavras="proteger claim construção casa bau baus">
         <h2><span>{n('protecao')}</span>Proteção de construções</h2>
-        <div class="blk destaque">Todo bloco que você coloca é seu. Só você pode quebrá-lo.</div>
+        <div class="destaque">Todo bloco que você coloca é seu. Só você pode quebrá-lo.</div>
         <ul>
           <li><b>Ninguém coloca bloco encostado no seu</b>, nas 6 faces. Na diagonal pode.</li>
           <li><b>Blocos livres:</b> pedregulho, areia e cascalho não têm dono; qualquer um quebra.</li>
@@ -99,7 +99,7 @@ const n = (id: string) => String(secoes.findIndex(([s]) => s === id) + 1).padSta
 
       <section id="pvp" class="sec" data-palavras="luta matar deslogar">
         <h2><span>{n('pvp')}</span>PvP e combate</h2>
-        <div class="grade" style="--min:180px;gap:10px">
+        <div class="minis">
           <div class="mini"><span>Spawn</span><b>Sempre desligado</b></div>
           <div class="mini"><span>Mundo 1 e Minerar</span><b class="vermelho">Ligado à noite</b></div>
           <div class="mini"><span>Nether e The End</span><b class="vermelho">Sempre ligado</b></div>
@@ -137,7 +137,7 @@ const n = (id: string) => String(secoes.findIndex(([s]) => s === id) + 1).padSta
         </ul>
         <h3>Kits</h3>
         <p>Você começa sem itens. <span class="cmd">/kit</span> abre o menu.</p>
-        <div class="grade" style="--min:280px;gap:12px">
+        <div class="kits">
           <div class="kit"><div><b>Normal</b><span class="cmd">/kit nb</span></div><p>Espada, picareta, machado e pá de madeira; 8 pães; bancada; fornalha.</p><span>A cada 24 horas</span></div>
           <div class="kit kit-vip"><div><b class="tag-vip">VIP</b><span class="cmd">/kit vip</span></div><p>Espada, picareta, machado e pá de diamante; 8 maçãs douradas; 16 frascos de experiência; bancada; fornalha.</p><span>A cada 24 horas</span></div>
         </div>
@@ -272,46 +272,50 @@ const n = (id: string) => String(secoes.findIndex(([s]) => s === id) + 1).padSta
 </script>
 
 <style>
-  .topo { padding-block: 80px 40px; display: flex; flex-direction: column; gap: 20px; }
+  .topo { padding-block: 80px 40px; display: flex; flex-direction: column; gap: 22px; }
   .busca { max-width: 720px; display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
-  .busca label { font-size: 13px; font-weight: 600; color: var(--texto-3); }
-  .busca input { width: 100%; height: 52px; background: var(--fundo-2); border: 1px solid #3a3a40; border-radius: 10px; color: var(--branco); font: inherit; font-size: 16px; padding: 0 18px; }
-  .busca input:focus { outline: 2px solid var(--vermelho); outline-offset: 1px; }
-  .busca input::placeholder { color: #8a8a93; }
-  .busca span { font-size: 13px; color: var(--texto-3); }
-  .corpo { padding-block: 16px 56px; display: flex; flex-wrap: wrap; gap: 40px; align-items: flex-start; }
-  .indice { flex: 1 1 240px; max-width: 100%; display: flex; flex-direction: column; gap: 2px; background: #18181b; border: 1px solid #26262b; border-radius: 14px; padding: 16px; position: sticky; top: 16px; }
-  .indice > span { font-size: 12px; font-weight: 700; letter-spacing: 2px; color: var(--texto-3); padding: 4px 12px 10px; }
-  .indice a { color: var(--texto-2); text-decoration: none; font-size: 15px; padding: 9px 12px; border-radius: 8px; display: flex; gap: 10px; }
-  .indice a:hover { background: var(--fundo-2); color: var(--branco); }
+  .busca label { font-size: 13px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--texto-3); }
+  .busca input { width: 100%; height: 56px; background: rgba(11, 11, 14, 0.9); border: 2px solid var(--vermelho-jogo); box-shadow: var(--brilho-caixa); color: var(--branco); font: inherit; font-size: 18px; padding: 0 18px; border-radius: 0; }
+  .busca input:focus { outline: none; box-shadow: 0 0 40px rgba(255, 85, 85, 0.55); }
+  .busca input::placeholder { color: var(--texto-3); }
+  .busca span { font-size: 14px; color: var(--texto-3); }
+  .corpo { padding-block: 24px 0; display: flex; flex-wrap: wrap; gap: 40px; align-items: flex-start; }
+  .indice { flex: 1 1 240px; max-width: 100%; display: flex; flex-direction: column; gap: 2px; background: rgba(19, 19, 23, 0.92); border: 1px solid var(--linha); padding: 16px; position: sticky; top: 92px; }
+  .indice > span { font-size: 12px; font-weight: 700; letter-spacing: 3px; color: var(--texto-3); padding: 4px 12px 10px; }
+  .indice a { color: var(--texto-2); text-decoration: none; font-weight: 500; padding: 8px 12px; display: flex; gap: 12px; border-left: 2px solid transparent; }
+  .indice a:hover { color: var(--branco); border-left-color: var(--vermelho-jogo); background: rgba(255, 85, 85, 0.06); }
   .indice a[hidden] { display: none; }
-  .indice a b { font-family: var(--mono); font-weight: 500; font-size: 14px; color: var(--vermelho-claro); }
+  .indice a b { font-family: var(--f-titulo); font-weight: 700; font-size: 13px; color: var(--vermelho-jogo); padding-top: 3px; }
   @media (max-width: 860px) {
     .indice { position: static; flex-direction: row; flex-wrap: wrap; gap: 6px; }
     .indice > span { width: 100%; }
-    .indice a { background: var(--fundo-2); padding: 8px 12px; font-size: 14px; }
+    .indice a { border: 1px solid var(--linha); padding: 8px 12px; font-size: 15px; }
   }
-  .secoes { flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 16px; }
-  .vazio { background: var(--fundo-2); border: 1px dashed #3a3a40; border-radius: 16px; padding: 40px; text-align: center; color: var(--texto-2); }
-  .sec { background: var(--fundo-2); border: 1px solid var(--linha); border-radius: 16px; padding: clamp(22px, 4vw, 36px); display: flex; flex-direction: column; gap: 18px; scroll-margin-top: 24px; }
+  .secoes { flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 14px; }
+  .vazio { border: 1px dashed var(--texto-3); padding: 40px; text-align: center; color: var(--texto-2); }
+  .sec { background: rgba(19, 19, 23, 0.92); border: 1px solid var(--linha); padding: clamp(22px, 4vw, 36px); display: flex; flex-direction: column; gap: 18px; scroll-margin-top: 100px; }
   .sec[hidden] { display: none; }
-  .sec h2 { font-family: var(--titulo); font-weight: 900; font-size: clamp(26px, 3vw, 32px); display: flex; align-items: center; gap: 14px; }
-  .sec h2 span { font-family: var(--mono); font-weight: 500; font-size: 14px; color: var(--vermelho-claro); }
-  .sec h3 { margin-top: 8px; font-size: 19px; font-weight: 700; }
-  .sec p, .sec li { color: var(--texto-2); font-size: 16px; line-height: 1.65; }
-  .sec ul { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; }
+  .sec h2 { font-family: var(--f-titulo); font-weight: 900; text-transform: uppercase; font-size: clamp(22px, 2.6vw, 28px); display: flex; align-items: baseline; gap: 14px; }
+  .sec h2 span { font-size: 15px; color: var(--vermelho-jogo); text-shadow: var(--brilho); }
+  .sec h3 { margin-top: 8px; font-size: 19px; font-weight: 700; color: var(--vermelho-jogo); }
+  .sec p, .sec li { color: var(--texto-2); line-height: 1.65; }
+  .sec ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .sec ul li { position: relative; padding-left: 20px; }
+  .sec ul li::before { content: ''; position: absolute; left: 0; top: 0.68em; width: 6px; height: 6px; background: var(--vermelho-jogo); }
   .sec b { color: var(--branco); }
   .sec b.tag-vip { color: #ffaa00; } .sec b.tag-magnata { color: #55ff55; } .sec b.tag-diretor { color: #aa0000; } .sec b.tag-admin { color: #ff5555; }
-  .vermelho { color: var(--vermelho-claro) !important; }
-  .destaque { background: var(--vermelho); padding: 20px 24px; font-size: 20px; font-weight: 700; }
-  .mini { background: var(--fundo); border-radius: 10px; padding: 16px; display: flex; flex-direction: column; gap: 6px; }
-  .mini span { color: var(--texto-3); font-size: 13px; }
-  .mini b { font-size: 18px; }
-  .kit { background: var(--fundo); border: 1px solid transparent; border-radius: 12px; padding: 22px; display: flex; flex-direction: column; gap: 10px; }
-  .kit-vip { border-color: #6b5a1e; }
+  .vermelho { color: var(--vermelho-jogo) !important; }
+  .destaque { border: 2px solid var(--vermelho-jogo); box-shadow: var(--brilho-caixa); background: rgba(200, 29, 37, 0.18); padding: 18px 22px; font-size: 20px; font-weight: 700; }
+  .minis { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr)); gap: 10px; }
+  .mini { background: rgba(11, 11, 14, 0.8); border: 1px solid var(--linha); padding: 16px; display: flex; flex-direction: column; gap: 6px; }
+  .mini span { color: var(--texto-3); font-size: 14px; }
+  .mini b { font-family: var(--f-titulo); font-weight: 700; font-size: 16px; text-transform: uppercase; }
+  .kits { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 12px; }
+  .kit { background: rgba(11, 11, 14, 0.8); border: 1px solid var(--linha); padding: 22px; display: flex; flex-direction: column; gap: 10px; }
+  .kit-vip { border-color: rgba(255, 170, 0, 0.5); }
   .kit > div { display: flex; justify-content: space-between; align-items: center; }
-  .kit > div b { font-size: 18px; }
+  .kit > div b { font-family: var(--f-titulo); font-size: 18px; text-transform: uppercase; }
   .kit > span { color: var(--texto-3); font-size: 14px; }
-  .tags { display: flex; gap: 10px; flex-wrap: wrap; font-family: var(--mono); font-size: 15px; }
-  .tags span { background: #0c0c0e; padding: 8px 14px; border-radius: 8px; }
+  .tags { display: flex; gap: 10px; flex-wrap: wrap; }
+  .tags span { background: rgba(0, 0, 0, 0.55); padding: 8px 14px; font-weight: 500; }
 </style>

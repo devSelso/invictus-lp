@@ -1,6 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
-import Elmo from '../components/Elmo.astro';
+import ServidorCard from '../components/ServidorCard.astro';
 import BotaoDirect from '../components/BotaoDirect.astro';
 import NovidadeCard from '../components/NovidadeCard.astro';
 import { servidor, links, vip } from '../data/servidor';
@@ -8,285 +8,244 @@ import { novidadesOrdenadas } from '../data/novidades';
 
 const ultimas = (await novidadesOrdenadas()).slice(0, 3);
 
-const motivos = [
-  { t: 'Todo bloco que você coloca é seu', d: 'Sem terreno para comprar e sem comando para proteger. Ninguém quebra o que você construiu, e baús, portas e fornalhas já nascem trancados.' },
-  { t: 'Mundos de recurso novos todo dia', d: 'O Minerar e o Nether resetam à meia-noite. Todo dia tem minério intocado esperando, e o seu Mundo 1 fica para sempre.' },
-  { t: 'A noite é perigosa', d: 'PvP clássico da 1.8. De dia o Mundo 1 é tranquilo; quando escurece, o PvP liga. No Nether e no The End ele nunca desliga.' },
-  { t: 'Vire o Magnata', d: 'Economia em Coins, loja do servidor e lojas de jogadores. O mais rico ganha a tag verde Magnata, e o servidor todo fica sabendo.' },
-  { t: 'O dragão volta a cada 6 horas', d: 'A ilha clássica do The End, com torres e cristais. Derrotou? Em 6 horas ele renasce.', cmd: '/dragao' },
-  { t: 'VIP que vira moeda', d: 'Todo VIP é um código. Ative para você ou venda para outro jogador por Coins, com a troca feita pelo servidor, sem risco de golpe.' },
+// Valores reais do servidor, no formato dos cartões do Reels.
+const leitura = [
+  { valor: '1.8', titulo: 'PvP clássico', texto: 'De dia o Mundo 1 é tranquilo. Quando escurece, o PvP liga. No Nether e no The End ele nunca desliga.' },
+  { valor: '∞', titulo: 'Construção protegida', texto: 'Todo bloco que você coloca é seu, sem comando. Baús, portas e fornalhas já nascem trancados.' },
+  { valor: '00:00', titulo: 'Recursos novos todo dia', texto: 'O Minerar e o Nether resetam à meia-noite. Todo dia tem minério intocado.' },
+  { valor: '10K', titulo: 'Mundo 1 de 10.000 blocos', texto: 'Um mapa de 10.000 × 10.000 para morar, e suas construções ficam para sempre.' },
+  { valor: '6H', titulo: 'Dragão que renasce', texto: 'Derrotou o dragão do The End? Seis horas depois ele volta, e o servidor avisa todo mundo.' },
+  { valor: '201', titulo: 'Itens na loja', texto: 'A loja do Spawn vende e compra blocos de construção. O mais rico do servidor ganha a tag Magnata.' },
 ];
 
 const mundos = [
-  { nome: 'Spawn', cmd: '/spawn', cor: '#F3F2EE', chip: ['#1A1A1D', '#FFFFFF'], d: 'Vila medieval flutuante. Loja do servidor na praça.', pvp: 'Desligado', construir: 'Não', reset: 'Nunca' },
-  { nome: 'Mundo 1', cmd: '/warp mundo1', cor: '#3B6D11', chip: ['#173404', '#C0DD97'], d: '10.000 × 10.000 blocos. Sua casa, para sempre.', pvp: 'Só à noite', construir: 'Sim, com dono', reset: 'Nunca' },
-  { nome: 'Minerar', cmd: '/minerar', cor: '#5F5E5A', chip: ['#2C2C2A', '#D3D1C7'], d: '5.000 × 5.000, sem monstros. Nada tem dono.', pvp: 'Só à noite', construir: 'Sim, sem dono', reset: 'Todo dia' },
-  { nome: 'Nether', cmd: '/warp nether', cor: '#791F1F', chip: ['#501313', '#F7C1C1'], d: 'Só entra quem vestir armadura completa de diamante.', pvp: 'Sempre', construir: 'Sim, sem dono', reset: 'Todo dia' },
-  { nome: 'The End', cmd: '/warp end', cor: '#26215C', chip: ['#26215C', '#CECBF6'], d: 'Ilha central clássica. O dragão se derrota com arco.', pvp: 'Sempre', construir: 'Não', reset: 'Nunca' },
+  { nome: 'Spawn', cmd: '/spawn', cor: '#F3F2EE', d: 'Vila medieval flutuante, com a loja do servidor', pvp: 'Sem PvP', reset: 'Fixo' },
+  { nome: 'Mundo 1', cmd: '/warp mundo1', cor: '#4E8A3A', d: '10.000 × 10.000 blocos, onde você constrói e mora', pvp: 'PvP à noite', reset: 'Fixo' },
+  { nome: 'Minerar', cmd: '/minerar', cor: '#6E6E73', d: '5.000 × 5.000, sem monstros, nada tem dono', pvp: 'PvP à noite', reset: 'Reset 00:00' },
+  { nome: 'Nether', cmd: '/warp nether', cor: '#8E2323', d: 'Só entra quem vestir armadura completa de diamante', pvp: 'PvP sempre', reset: 'Reset 00:00' },
+  { nome: 'The End', cmd: '/warp end', cor: '#3B2F7A', d: 'Ilha central clássica, dragão no arco', pvp: 'PvP sempre', reset: 'Fixo' },
+];
+
+const vantagensVip = [
+  'Voo no Spawn, no Mundo 1 e no Minerar',
+  'Teleporte na hora, até em combate',
+  'Homes sem limite',
+  'Lojas de placa sem limite',
+  'Kit de diamante a cada 24 horas',
+  'Tag VIP dourada no chat',
 ];
 
 const perguntas = [
   { p: 'Preciso de Minecraft original?', r: 'Não. O servidor aceita original e pirata. No primeiro acesso você cria uma senha com <span class="cmd">/register</span>.' },
-  { p: 'Qual versão eu uso?', r: `Minecraft ${servidor.versao}, Java Edition. O endereço é <span class="cmd">${servidor.ip}</span>.` },
-  { p: 'Quando o servidor abre?', r: `Dia ${servidor.lancamentoTexto} de 2026. Até lá, garanta seu VIP na pré-venda e siga @${servidor.instagram} no Instagram e no TikTok.` },
-  { p: 'Como protejo minha casa?', r: 'Você não precisa fazer nada: todo bloco que você coloca já é seu. O terreno natural não tem dono, então construa o próprio chão.' },
-  { p: 'O que acontece quando eu morro?', r: 'Você volta ao Spawn e os itens do inventário caem no lugar da morte. Seus Coins ficam na conta.' },
+  { p: 'Qual versão eu uso?', r: `Minecraft ${servidor.versao}, Java Edition. O IP é <span class="cmd">${servidor.ip}</span>.` },
+  { p: 'Quando o servidor abre?', r: `Dia ${servidor.lancamentoTexto}. Até lá dá para garantir o VIP na pré-venda e acompanhar tudo no @${servidor.instagram}.` },
+  { p: 'Como protejo minha casa?', r: 'Não precisa fazer nada: todo bloco que você coloca já é seu. O terreno natural não tem dono, então construa o próprio chão.' },
+  { p: 'O que acontece quando eu morro?', r: 'Você volta ao Spawn e os itens do inventário caem onde você morreu. Os Coins ficam na conta.' },
 ];
 ---
 <Base>
   <section class="hero">
-    <div class="grid-fundo" aria-hidden="true"></div>
+    <div class="varredura" aria-hidden="true"></div>
     <div class="container hero-in">
-      <div class="hero-texto">
-        <div class="blk lanc">
-          <span class="titulo">LANÇAMENTO {servidor.lancamentoCurto}</span>
-          <span class="lanc-dias" data-dias>{servidor.lancamentoTexto}</span>
-        </div>
-        <div class="chips">
-          <span>Minecraft {servidor.versao}</span><span>Java Edition</span><span>Aceita original e pirata</span>
-        </div>
-        <h1 class="titulo nome">INVICTUS</h1>
-        <p class="hero-lead">Survival clássico com o PvP da 1.8. Construa, junte Coins e domine a noite, como nos servidores brasileiros de 2010 a 2014.</p>
+      <div class="hero-txt">
+        <span class="hud"><span class="ponto"></span>Servidor encontrado</span>
+        <h1 class="t-titulo t-h1 t-brilho">O survival raiz abre dia <span class="vermelho">{servidor.lancamentoCurto}</span></h1>
+        <p class="lead">Minecraft {servidor.versao} com o PvP da 1.8, economia em Coins e construção protegida sem comando. Do jeito dos servidores brasileiros de 2010 a 2014.</p>
         <div class="acoes">
-          <div class="blk ip">
-            <div class="ip-txt"><span>ENDEREÇO DO SERVIDOR</span><b>{servidor.ip}</b></div>
-            <button type="button" class="btn blk btn-vermelho" data-copiar={servidor.ip} data-copiado="Copiado!">Copiar IP</button>
+          {servidor.preLancamento ? <BotaoDirect /> : <a class="btn btn-vermelho" href="/como-entrar/">Como entrar</a>}
+          <a class="btn btn-contorno" href={servidor.preLancamento ? '/como-entrar/' : '/vip/'}>{servidor.preLancamento ? 'Como entrar' : 'Ver o VIP'}</a>
+        </div>
+      </div>
+      <div class="hero-card">
+        <ServidorCard animar />
+      </div>
+    </div>
+  </section>
+
+  <section class="container secao">
+    <div class="cabeca">
+      <span class="hud">Leitura do servidor</span>
+      <h2 class="t-titulo t-h2">O que te espera lá dentro</h2>
+    </div>
+    <ul class="leitura">
+      {leitura.map((l) => (
+        <li>
+          <div><h3>{l.titulo}</h3><p>{l.texto}</p></div>
+          <span class="valor">{l.valor}</span>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  {servidor.preLancamento && (
+    <section class="container secao">
+      <div class="pre mira">
+        <div class="pre-txt">
+          <span class="hud"><span class="ponto"></span>Pré-venda até {servidor.lancamentoCurto}</span>
+          <h2 class="t-titulo t-h2 t-brilho">VIP antecipado</h2>
+          <p>Garanta o VIP antes da abertura e entre no dia {servidor.lancamentoCurto.split('/')[0]} já voando. {vip.bonusPreVenda.length ? 'Quem compra agora leva também:' : `Quem compra na pré-venda ganha bônus exclusivos, que saem em breve no @${servidor.instagram}.`}</p>
+          {vip.bonusPreVenda.length > 0 && <ul class="bonus">{vip.bonusPreVenda.map((b) => <li>{b}</li>)}</ul>}
+          <ul class="vantagens">
+            {vantagensVip.map((v) => <li>{v}</li>)}
+          </ul>
+          <div class="preco">
+            <span class="t-titulo">{vip.preco}</span><span>{vip.periodo}</span>
+            {vip.precoProvisorio && <span class="selo">valor inicial</span>}
           </div>
-          <a href="/como-entrar/" class="btn blk btn-branco">Como entrar</a>
-        </div>
-        <div class="redes">
-          <a href={links.instagram} target="_blank" rel="noopener">Instagram @{servidor.instagram}</a>
-          <a href={links.tiktok} target="_blank" rel="noopener">TikTok @{servidor.tiktok}</a>
-          <span>Jogadores online: em breve</span>
-        </div>
-        {servidor.preLancamento && (
-          <div class="pre">
-            <div>
-              <span class="pre-rot">PRÉ-VENDA ABERTA</span>
-              <b>Garanta seu VIP antes do dia {servidor.lancamentoCurto.split('/')[0]}</b>
-              <span class="muted">{vip.bonusPreVenda.length ? vip.bonusPreVenda.join(' · ') : 'Vantagens exclusivas da pré-venda: anúncio em breve.'}</span>
-            </div>
+          <div class="acoes">
             <BotaoDirect />
+            <a class="btn btn-contorno" href="/vip/">Ver tudo do VIP</a>
           </div>
-        )}
-      </div>
-      <div class="hero-elmo blk" aria-hidden="true">
-        <span class="px px1"></span><span class="px px2"></span>
-        <Elmo largura={250} />
-      </div>
-    </div>
-  </section>
-
-  <div class="faixa-branca">
-    <div class="container faixa-in titulo">
-      <span>PVP DA 1.8</span><i>◆</i><span>ECONOMIA EM COINS</span><i>◆</i><span>PROTEÇÃO AUTOMÁTICA</span><i>◆</i><span>RESET DIÁRIO</span><i>◆</i><span>TUDO EM PORTUGUÊS</span>
-    </div>
-  </div>
-
-  <section class="container secao" style="padding-top:112px">
-    <div class="rotulo">01 · Por que jogar</div>
-    <h2 class="titulo h2" style="margin:16px 0 48px;max-width:820px">Simples de entender. Difícil de largar.</h2>
-    <div class="grade" style="--min:340px">
-      {motivos.map((m, i) => (
-        <article class="card motivo">
-          <span class="num">/{String(i + 1).padStart(2, '0')}</span>
-          <h3>{m.t}</h3>
-          <p>{m.d}{m.cmd && <> Use <span class="cmd">{m.cmd}</span> para saber quando.</>}</p>
-        </article>
-      ))}
-    </div>
-  </section>
-
-  <section class="container secao">
-    <div class="secao-topo">
-      <div><div class="rotulo">02 · Os mundos</div><h2 class="titulo h2">Cinco mundos, um inventário</h2></div>
-      <p class="muted" style="max-width:420px;line-height:1.6">No jogo, <span class="cmd">/warps</span> abre um menu com todos os destinos. Morreu em qualquer mundo? Você volta ao Spawn.</p>
-    </div>
-    <div class="grade" style="--min:220px">
-      {mundos.map((m) => (
-        <article class="mundo">
-          <div class="mundo-cor" style={`background:${m.cor}`}><span style={`color:${m.chip[0]};background:${m.chip[1]}`}>{m.cmd}</span></div>
-          <div class="mundo-in">
-            <h3 class="titulo">{m.nome}</h3>
-            <p>{m.d}</p>
-            <dl>
-              <div><dt>PvP</dt><dd class={m.pvp === 'Desligado' ? '' : 'vermelho'}>{m.pvp}</dd></div>
-              <div><dt>Construir</dt><dd>{m.construir}</dd></div>
-              <div><dt>Reset</dt><dd>{m.reset}</dd></div>
-            </dl>
-          </div>
-        </article>
-      ))}
-    </div>
-  </section>
-
-  <section class="container secao">
-    <div class="blk passos">
-      <div class="passos-txt">
-        <div class="rotulo">03 · Primeira vez</div>
-        <h2 class="titulo" style="font-size:clamp(32px,4vw,48px)">Do zero ao primeiro bloco em 4 passos</h2>
-        <p class="muted" style="line-height:1.6">Nunca jogou em servidor? O guia completo explica cada passo, do launcher ao primeiro kit.</p>
-        <a href="/como-entrar/" style="font-weight:700">Ver o guia completo →</a>
-      </div>
-      <ol>
-        <li><span class="titulo">1</span><b>Abra a 1.8.8</b><span>No launcher, escolha a versão 1.8.8.</span></li>
-        <li><span class="titulo">2</span><b>Adicione o servidor</b><span>Multijogador, Adicionar servidor, cole o IP.</span></li>
-        <li><span class="titulo">3</span><b>Crie sua senha</b><span><span class="cmd">/register</span> no primeiro acesso, <span class="cmd">/login</span> nos outros.</span></li>
-        <li><span class="titulo">4</span><b>Pegue seu kit</b><span><span class="cmd">/tutorial</span> e depois <span class="cmd">/kit nb</span>.</span></li>
-      </ol>
-    </div>
-  </section>
-
-  <section class="container secao">
-    <div class="blk vipb">
-      <div class="vipb-a">
-        <div class="vipb-topo"><div class="rotulo" style="color:var(--vermelho)">04 · VIP</div>{servidor.preLancamento && <span class="selo">Pré-venda aberta</span>}</div>
-        <h2 class="titulo" style="font-size:clamp(40px,5vw,56px);line-height:1">{servidor.preLancamento ? 'VIP antecipado' : 'Jogue sem esperar'}</h2>
-        {servidor.preLancamento && (
-          <div class="vipb-bonus">
-            <b>Quem compra na pré-venda leva vantagens exclusivas</b>
-            <span>{vip.bonusPreVenda.length ? vip.bonusPreVenda.join(' · ') : `Os bônus da pré-venda serão anunciados em breve no Instagram e no TikTok @${servidor.instagram}.`}</span>
-          </div>
-        )}
-        <p>{servidor.preLancamento ? `Garanta seu VIP antes do lançamento, dia ${servidor.lancamentoTexto}. Voo, teleporte na hora e homes sem limite desde o primeiro dia. Chame a gente no direct do Instagram @${servidor.instagram}: a mensagem já vai pronta.` : 'Voo, teleporte na hora e homes sem limite. E cada ativação sorteia prêmios, com chances publicadas aqui no site.'}</p>
-        <div class="preco"><span class="titulo">{vip.preco}</span><span>{vip.periodo}</span>{vip.precoProvisorio && <span class="selo selo-escuro">Valor inicial</span>}</div>
-        <div class="acoes">
-          {servidor.preLancamento && <BotaoDirect />}
-          <a href="/vip/" class="btn blk btn-claro">Ver vantagens e chances</a>
+          <p class="nota">O botão abre o direct do @{servidor.instagram} e copia a mensagem "{vip.mensagemDirect}". É só colar e enviar.</p>
+        </div>
+        <div class="contagem" aria-label={`Lançamento dia ${servidor.lancamentoTexto}`}>
+          <span class="dias t-titulo" data-dias-num>--</span>
+          <span class="dias-rot">dias para abrir</span>
+          <span class="data t-titulo">{servidor.lancamentoCurto}</span>
         </div>
       </div>
-      <ul class="vipb-b">
-        <li>Voo no Spawn, no Mundo 1 e no Minerar</li>
-        <li>Teleportes instantâneos, até em combate</li>
-        <li>Homes ilimitadas</li>
-        <li>Lojas de placa sem limite</li>
-        <li>Kit VIP de diamante a cada 24 horas</li>
-        <li>Tag <b class="tag-vip">VIP</b> dourada no chat</li>
-      </ul>
+    </section>
+  )}
+
+  <section class="container secao">
+    <div class="cabeca">
+      <span class="hud">Mundos</span>
+      <h2 class="t-titulo t-h2">Cinco mundos, um inventário</h2>
+      <p>No jogo, <span class="cmd">/warps</span> abre o menu com todos. Morreu em qualquer um, você volta ao Spawn.</p>
     </div>
+    <ul class="mundos">
+      {mundos.map((m) => (
+        <li>
+          <span class="m-icone" style={`background:${m.cor}`}></span>
+          <div class="m-txt">
+            <div class="m-topo"><h3>{m.nome}</h3><span class="cmd">{m.cmd}</span></div>
+            <p>{m.d}</p>
+          </div>
+          <div class="m-chips">
+            <span class:list={['chip', { quente: m.pvp !== 'Sem PvP' }]}>{m.pvp}</span>
+            <span class="chip">{m.reset}</span>
+          </div>
+        </li>
+      ))}
+    </ul>
   </section>
 
   <section class="container secao">
-    <div class="secao-topo">
-      <div><div class="rotulo">05 · Novidades</div><h2 class="titulo h2">O que mudou</h2></div>
-      <a href="/novidades/" style="font-weight:700">Todas as novidades →</a>
+    <div class="cabeca">
+      <span class="hud">Primeira vez</span>
+      <h2 class="t-titulo t-h2">Do launcher ao primeiro kit</h2>
     </div>
-    <div class="grade" style="--min:320px">
+    <ol class="passos">
+      <li><span class="n t-titulo">1</span><div><h3>Abra a versão 1.8.8</h3><p>No launcher, escolha a 1.8.8 e clique em Jogar.</p></div></li>
+      <li><span class="n t-titulo">2</span><div><h3>Adicione o servidor</h3><p>Multijogador, Adicionar servidor, cole <span class="cmd">{servidor.ip}</span>.</p></div></li>
+      <li><span class="n t-titulo">3</span><div><h3>Crie sua senha</h3><p><span class="cmd">/register</span> na primeira vez e <span class="cmd">/login</span> nas outras.</p></div></li>
+      <li><span class="n t-titulo">4</span><div><h3>Pegue o kit</h3><p><span class="cmd">/tutorial</span> e depois <span class="cmd">/kit nb</span>.</p></div></li>
+    </ol>
+    <a class="mais" href="/como-entrar/">Guia completo para quem nunca jogou em servidor</a>
+  </section>
+
+  <section class="container secao">
+    <div class="cabeca linha">
+      <div><span class="hud">Novidades</span><h2 class="t-titulo t-h2" style="margin-top:16px">O que mudou</h2></div>
+      <a class="mais" href="/novidades/">Ver todas</a>
+    </div>
+    <div class="novs">
       {ultimas.map((post) => <NovidadeCard post={post} />)}
     </div>
   </section>
 
   <section class="container secao faq">
-    <div style="flex:1 1 320px"><div class="rotulo">06 · Dúvidas</div><h2 class="titulo" style="margin-top:16px;font-size:clamp(34px,4vw,48px)">Perguntas frequentes</h2></div>
+    <div class="cabeca"><span class="hud">Dúvidas</span><h2 class="t-titulo t-h2">Perguntas frequentes</h2></div>
     <div class="faq-lista">
       {perguntas.map((q) => (
         <details>
-          <summary>{q.p}<span aria-hidden="true">+</span></summary>
+          <summary>{q.p}<span aria-hidden="true"></span></summary>
           <p set:html={q.r} />
         </details>
       ))}
     </div>
   </section>
 
-  <section class="container secao" style="padding-bottom:72px">
-    <div class="blk cta">
-      <div>
-        <h2 class="titulo" style="font-size:clamp(34px,4.4vw,52px)">Lançamento dia {servidor.lancamentoTexto}</h2>
-        <p>Siga <b>@{servidor.instagram}</b> no Instagram e no TikTok: lá saem a data de abertura, as novidades e os eventos.</p>
-      </div>
-      <div class="acoes">
-        <a href={links.instagram} target="_blank" rel="noopener" class="btn blk btn-preto">Instagram</a>
-        <a href={links.tiktok} target="_blank" rel="noopener" class="btn blk btn-branco">TikTok</a>
-      </div>
-    </div>
+  <section class="container secao final">
+    <h2 class="t-titulo t-brilho">Entra dia <span class="vermelho">{servidor.lancamentoCurto}</span></h2>
+    <ServidorCard />
+    <p class="ate t-titulo">Te vejo lá</p>
+    <p class="redes">Novidades no <a href={links.instagram} target="_blank" rel="noopener">Instagram</a> e no <a href={links.tiktok} target="_blank" rel="noopener">TikTok</a>, @{servidor.instagram}.</p>
   </section>
 </Base>
 
 <style>
-  .hero { position: relative; overflow: hidden; border-bottom: 1px solid #26262b; }
-  .grid-fundo { position: absolute; inset: 0; background-image: linear-gradient(#1d1d21 1px, transparent 1px), linear-gradient(90deg, #1d1d21 1px, transparent 1px); background-size: 48px 48px; }
-  .hero-in { position: relative; padding-block: 72px 88px; display: flex; flex-wrap: wrap; gap: 56px; align-items: center; }
-  .hero-texto { flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 26px; }
-  .lanc { align-self: flex-start; background: var(--branco); color: var(--preto); padding: 12px 20px; display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
-  .lanc .titulo { font-size: 20px; letter-spacing: 2px; }
-  .lanc-dias { font-family: var(--mono); font-size: 15px; background: var(--vermelho); color: var(--branco); padding: 4px 10px; }
-  .chips { display: flex; gap: 10px; flex-wrap: wrap; }
-  .chips span { border: 1px solid #3a3a40; color: var(--texto-2); font-size: 13px; font-weight: 600; padding: 6px 12px; border-radius: 999px; background: var(--fundo); }
-  .nome { font-size: clamp(40px, 11.5vw, 128px); line-height: .95; letter-spacing: clamp(2px, 0.8vw, 10px); }
-  .hero-lead { font-size: clamp(18px, 2vw, 24px); line-height: 1.45; color: #e4e4ea; max-width: 620px; }
-  .acoes { display: flex; flex-wrap: wrap; gap: 12px; align-items: stretch; }
-  .ip { background: var(--fundo-3); display: flex; align-items: center; gap: 16px; padding: 10px 10px 10px 20px; flex-wrap: wrap; }
-  .ip-txt { display: flex; flex-direction: column; gap: 2px; }
-  .ip-txt span { font-size: 11px; font-weight: 700; letter-spacing: 2px; color: var(--texto-3); }
-  .ip-txt b { font-family: var(--mono); font-weight: 500; font-size: 18px; }
-  .redes { display: flex; gap: 10px 28px; flex-wrap: wrap; font-size: 14px; color: var(--texto-3); }
-  .redes a { color: var(--texto-2); }
-  .pre { border: 1px solid var(--vermelho); background: #1f1214; border-radius: 14px; padding: 18px 20px; display: flex; flex-wrap: wrap; gap: 16px; align-items: center; justify-content: space-between; max-width: 680px; }
-  .pre > div { display: flex; flex-direction: column; gap: 4px; }
-  .pre-rot { font-size: 12px; font-weight: 700; letter-spacing: 2px; color: var(--vermelho-claro); }
-  .pre b { font-size: 18px; }
-  .pre .muted { font-size: 14px; }
-  .hero-elmo { flex: 0 1 400px; aspect-ratio: 10 / 11; background: var(--vermelho); display: flex; align-items: center; justify-content: center; position: relative; margin-inline: auto; }
-  .px { position: absolute; width: 20px; height: 20px; background: var(--fundo); }
-  .px1 { left: 20px; top: 20px; } .px2 { right: 20px; bottom: 20px; }
-  @media (max-width: 820px) { .hero-elmo { display: none; } .hero-in { padding-block: 48px 56px; } }
+  .hero { position: relative; overflow: hidden; border-bottom: 1px solid var(--linha); }
+  .varredura { position: absolute; left: 0; right: 0; top: 0; height: 120px; background: linear-gradient(to bottom, transparent, rgba(255, 85, 85, 0.10) 80%, rgba(255, 85, 85, 0.45) 99%, transparent); animation: varrer 3.2s linear infinite; pointer-events: none; }
+  @keyframes varrer { from { transform: translateY(-120px); } to { transform: translateY(900px); } }
+  .hero-in { position: relative; min-height: min(720px, calc(100svh - 108px)); padding-block: 72px; display: flex; flex-wrap: wrap; align-items: center; gap: 56px; }
+  .hero-txt { flex: 999 1 540px; min-width: 0; display: flex; flex-direction: column; gap: 26px; }
+  .hero-txt h1 { max-width: 13ch; }
+  .hero-card { flex: 1 1 360px; display: flex; justify-content: center; }
+  .acoes { display: flex; flex-wrap: wrap; gap: 12px; }
 
-  .faixa-branca { background: var(--branco); color: var(--preto); }
-  .faixa-in { padding-block: 16px; display: flex; gap: 12px 28px; flex-wrap: wrap; justify-content: space-between; font-size: 16px; letter-spacing: 3px; }
-  .faixa-in i { color: var(--vermelho); font-style: normal; }
-  @media (max-width: 820px) { .faixa-in { justify-content: center; font-size: 13px; } .faixa-in i { display: none; } }
+  .leitura { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 520px), 1fr)); gap: 12px; }
+  .leitura li { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 22px 26px; background: rgba(19, 19, 23, 0.92); border: 1px solid var(--linha); border-left: 4px solid var(--vermelho-jogo); }
+  .leitura h3 { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+  .leitura p { color: var(--texto-2); font-size: 16px; }
+  .valor { font-family: var(--f-titulo); font-weight: 900; font-size: clamp(30px, 3.4vw, 42px); color: var(--vermelho-jogo); text-shadow: var(--brilho); flex: none; min-width: 3ch; text-align: right; }
 
-  .motivo { padding: 32px; gap: 14px; }
-  .motivo h3 { font-size: 24px; }
-  .motivo p { font-size: 16px; }
-  .motivo:hover { border-color: var(--vermelho); }
-  .num { font-family: var(--mono); color: var(--vermelho-claro); font-size: 14px; }
+  .pre { display: flex; flex-wrap: wrap; background: rgba(11, 11, 14, 0.94); border: 2px solid var(--vermelho-jogo); box-shadow: 0 0 60px rgba(255, 85, 85, 0.25); }
+  .pre-txt { flex: 999 1 520px; padding: clamp(28px, 5vw, 56px); display: flex; flex-direction: column; gap: 20px; }
+  .pre-txt > p { color: var(--texto-2); max-width: 60ch; }
+  .vantagens, .bonus { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap: 10px 24px; }
+  .vantagens li, .bonus li { position: relative; padding-left: 20px; font-weight: 500; }
+  .vantagens li::before, .bonus li::before { content: ''; position: absolute; left: 0; top: 0.62em; width: 8px; height: 8px; background: var(--vermelho-jogo); }
+  .bonus li { color: var(--ouro); }
+  .bonus li::before { background: var(--ouro); }
+  .preco { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+  .preco .t-titulo { font-size: 40px; }
+  .preco > span:nth-child(2) { color: var(--texto-2); }
+  .selo { font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; border: 1px solid var(--texto-3); color: var(--texto-2); padding: 3px 10px; }
+  .nota { font-size: 14px; color: var(--texto-3); }
+  .contagem { flex: 1 1 280px; background: var(--vermelho); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; padding: 48px 24px; text-align: center; }
+  .dias { font-size: clamp(96px, 12vw, 160px); line-height: .9; text-shadow: 0 0 40px rgba(255, 255, 255, 0.35); }
+  .dias-rot { font-weight: 700; letter-spacing: 4px; text-transform: uppercase; }
+  .data { margin-top: 20px; font-size: 22px; padding: 6px 16px; border: 2px solid var(--branco); }
 
-  .mundo { background: var(--fundo-2); border: 1px solid var(--linha); border-radius: 14px; overflow: hidden; transition: transform .2s; }
-  .mundo:hover { transform: translateY(-4px); }
-  .mundo-cor { height: 120px; display: flex; align-items: end; padding: 16px; }
-  .mundo-cor span { font-family: var(--mono); font-size: 13px; padding: 3px 8px; border-radius: 4px; }
-  .mundo-in { padding: 20px; display: flex; flex-direction: column; gap: 12px; }
-  .mundo-in h3 { font-size: 24px; }
-  .mundo-in p { color: #b4b4bc; font-size: 14px; }
-  dl { margin: 0; display: flex; flex-direction: column; gap: 6px; font-size: 13px; border-top: 1px solid var(--linha); padding-top: 12px; }
-  dl div { display: flex; justify-content: space-between; gap: 8px; }
-  dt { color: var(--texto-3); } dd { margin: 0; text-align: right; }
-  .vermelho { color: var(--vermelho-claro); }
+  .mundos { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+  .mundos li { display: flex; align-items: center; gap: 20px; padding: 14px; background: rgba(19, 19, 23, 0.92); border: 1px solid var(--linha); flex-wrap: wrap; }
+  .mundos li:hover { border-color: var(--vermelho-jogo); }
+  .m-icone { width: 64px; height: 64px; flex: none; box-shadow: inset 0 0 0 4px rgba(0, 0, 0, 0.25); }
+  .m-txt { flex: 1 1 280px; min-width: 0; }
+  .m-topo { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .m-topo h3 { font-family: var(--f-titulo); font-weight: 900; font-size: 20px; text-transform: uppercase; }
+  .m-txt p { color: var(--texto-2); font-size: 16px; }
+  .m-chips { display: flex; gap: 8px; flex-wrap: wrap; }
+  .chip { font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; padding: 5px 10px; border: 1px solid var(--linha); color: var(--texto-2); white-space: nowrap; }
+  .chip.quente { border-color: rgba(255, 85, 85, 0.5); color: var(--vermelho-jogo); }
 
-  .passos { background: var(--fundo-2); padding: clamp(28px, 5vw, 56px); display: flex; flex-wrap: wrap; gap: 48px; }
-  .passos-txt { flex: 1 1 320px; display: flex; flex-direction: column; gap: 18px; }
-  .passos ol { flex: 2 1 520px; margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 12px; }
-  .passos li { background: var(--fundo); border-radius: 12px; padding: 24px; display: flex; flex-direction: column; gap: 10px; }
-  .passos li > .titulo { font-size: 36px; color: var(--vermelho); }
-  .passos li b { font-size: 18px; }
-  .passos li > span:last-child { color: #b4b4bc; font-size: 15px; }
+  .passos { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); gap: 12px; }
+  .passos li { display: flex; gap: 18px; padding: 24px; background: rgba(19, 19, 23, 0.92); border: 1px solid var(--linha); }
+  .n { font-size: 40px; line-height: 1; color: var(--vermelho-jogo); text-shadow: var(--brilho); }
+  .passos h3 { font-size: 19px; font-weight: 700; margin-bottom: 6px; }
+  .passos p { color: var(--texto-2); font-size: 16px; }
+  .mais { display: inline-block; margin-top: 24px; font-weight: 600; letter-spacing: 1px; }
+  .cabeca.linha { flex-direction: row; flex-wrap: wrap; align-items: end; justify-content: space-between; max-width: none; }
+  .cabeca.linha .mais { margin-top: 0; }
 
-  .vipb { background: var(--pergaminho); color: var(--preto); display: flex; flex-wrap: wrap; }
-  .vipb-a { flex: 1 1 460px; padding: clamp(28px, 5vw, 56px); display: flex; flex-direction: column; gap: 20px; }
-  .vipb-topo { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
-  .vipb-bonus { background: var(--preto); color: var(--branco); padding: 16px 18px; display: flex; flex-direction: column; gap: 4px; }
-  .vipb-bonus span { font-size: 14px; color: var(--texto-2); }
-  .vipb-a > p { font-size: 17px; line-height: 1.6; color: #3a3a40; }
-  .preco { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
-  .preco .titulo { font-size: 44px; }
-  .preco > span:nth-child(2) { color: #3a3a40; }
-  .vipb-b { flex: 1 1 420px; margin: 0; list-style: none; background: var(--preto); color: var(--branco); padding: clamp(28px, 5vw, 56px); display: flex; flex-direction: column; justify-content: center; }
-  .vipb-b li { display: flex; gap: 14px; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--grafite); font-size: 17px; }
-  .vipb-b li:last-child { border-bottom: 0; }
-  .vipb-b li::before { content: ''; width: 10px; height: 10px; background: var(--vermelho); flex: none; }
+  .novs { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 12px; }
 
-  .faq { display: flex; flex-wrap: wrap; gap: 48px; }
-  .faq-lista { flex: 2 1 560px; }
+  .faq { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 40px; }
+  .faq .t-h2 { font-size: clamp(28px, 3vw, 40px); }
+  @media (max-width: 860px) { .faq { grid-template-columns: minmax(0, 1fr); gap: 0; } }
   details { border-bottom: 1px solid var(--linha); padding: 22px 0; }
-  summary { cursor: pointer; list-style: none; font-size: 19px; font-weight: 600; display: flex; justify-content: space-between; gap: 16px; }
+  details:first-child { padding-top: 0; }
+  summary { cursor: pointer; list-style: none; font-size: 19px; font-weight: 600; display: flex; justify-content: space-between; align-items: center; gap: 16px; }
   summary::-webkit-details-marker { display: none; }
-  summary span { color: var(--vermelho-claro); transition: transform .2s; }
-  details[open] summary span { transform: rotate(45deg); }
-  details p { margin-top: 14px; color: #b4b4bc; font-size: 16px; line-height: 1.6; }
+  summary span { width: 14px; height: 14px; flex: none; position: relative; }
+  summary span::before, summary span::after { content: ''; position: absolute; background: var(--vermelho-jogo); left: 0; right: 0; top: 6px; height: 2px; transition: transform .2s; }
+  summary span::after { transform: rotate(90deg); }
+  details[open] summary span::after { transform: rotate(0); }
+  details p { margin-top: 12px; color: var(--texto-2); }
 
-  .cta { background: var(--vermelho); padding: clamp(36px, 6vw, 72px) clamp(24px, 5vw, 56px); display: flex; flex-wrap: wrap; gap: 32px; align-items: center; justify-content: space-between; }
-  .cta > div:first-child { display: flex; flex-direction: column; gap: 12px; max-width: 640px; }
-  .cta p { font-size: 18px; color: var(--rosa); }
-  .cta p b { color: var(--branco); }
+  .final { display: flex; flex-direction: column; align-items: center; gap: 32px; text-align: center; }
+  .final h2 { font-size: clamp(40px, 7vw, 88px); }
+  .ate { font-size: clamp(22px, 3vw, 30px); letter-spacing: 3px; }
+  .redes { color: var(--texto-3); }
 </style>

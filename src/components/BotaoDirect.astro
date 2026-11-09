@@ -4,7 +4,7 @@
 import { links, vip } from '../data/servidor';
 
 interface Props {
-  estilo?: 'vermelho' | 'branco' | 'preto';
+  estilo?: 'vermelho' | 'branco' | 'contorno';
   texto?: string;
   class?: string;
 }
@@ -14,7 +14,7 @@ const { estilo = 'vermelho', texto = 'Quero o VIP antecipado', class: classe = '
   href={links.direct}
   target="_blank"
   rel="noopener"
-  class={`btn blk btn-${estilo} ${classe}`}
+  class={`btn btn-${estilo} ${classe}`}
   data-copiar={vip.mensagemDirect}
-  data-copiado="Mensagem copiada: cole no direct"
+  data-copiado="Mensagem copiada, cole no direct"
 >{texto}</a>

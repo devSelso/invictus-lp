@@ -1,110 +1,81 @@
 ---
 import Base from '../layouts/Base.astro';
-import Elmo from '../components/Elmo.astro';
+import ServidorCard from '../components/ServidorCard.astro';
 import { servidor } from '../data/servidor';
+
+const passos = [
+  { t: 'Abra o Minecraft na versão 1.8.8', d: 'O Invictus roda na 1.8.8, a versão do PvP clássico. No launcher, crie ou escolha um perfil com a 1.8.8 e clique em Jogar.' },
+  { t: 'Adicione o servidor', d: `Vá em Multijogador e depois em Adicionar servidor. Dê o nome Invictus, cole o IP e confirme. O elmo vermelho aparece na sua lista.`, chat: servidor.ip },
+  { t: 'No primeiro acesso, crie sua senha', d: 'Como o servidor aceita Minecraft pirata, sua conta é protegida por senha. Digite a mesma senha duas vezes.', chat: '/register suaSenha suaSenha' },
+  { t: 'Nas outras vezes, entre com ela', d: 'Toda vez que voltar ao servidor, use a senha que você criou.', chat: '/login suaSenha' },
+  { t: 'Veja o tutorial', d: 'A mensagem de boas-vindas traz atalhos clicáveis. O tutorial explica como o servidor funciona.', chat: '/tutorial' },
+  { t: 'Pegue o kit inicial', d: 'Você começa sem itens. O kit Normal traz espada, picareta, machado e pá de madeira, 8 pães, bancada e fornalha, e pode ser pego de novo a cada 24 horas.', chat: '/kit nb' },
+];
 ---
 <Base titulo="Como entrar" descricao="Passo a passo para entrar no Invictus: versão 1.8.8, adicionar o servidor, criar sua senha e pegar o primeiro kit.">
   <section class="container topo">
     <div class="topo-txt">
-      <div class="rotulo">Guia para iniciantes</div>
-      <h1 class="titulo h1">Como entrar</h1>
-      <p class="lead">Nunca jogou em servidor? Sem problema. Em seis passos você sai do launcher e chega ao Spawn com seu primeiro kit.</p>
+      <span class="hud"><span class="ponto"></span>Guia para iniciantes</span>
+      <h1 class="t-titulo t-h1 t-brilho">Como entrar</h1>
+      <p class="lead">Nunca jogou em servidor? Em seis passos você sai do launcher e chega ao Spawn com o primeiro kit.</p>
     </div>
-    <dl class="blk resumo">
-      <div><dt>Versão</dt><dd>{servidor.versao} (Java)</dd></div>
-      <div><dt>Conta original</dt><dd>Não precisa</dd></div>
-      <div><dt>Endereço</dt><dd class="ip">{servidor.ip}</dd></div>
-      <div><dt>Lançamento</dt><dd>{servidor.lancamentoTexto}</dd></div>
-      <button type="button" class="btn blk btn-vermelho" data-copiar={servidor.ip} data-copiado="Copiado!">Copiar IP</button>
-    </dl>
+    <ServidorCard />
   </section>
 
   <section class="container">
     <ol class="passos">
-      <li>
-        <span class="n titulo">1</span>
-        <div class="txt"><h2>Abra o Minecraft na versão 1.8.8</h2><p>O Invictus roda na 1.8.8, a versão do PvP clássico. No launcher, crie ou escolha um perfil com a versão 1.8.8 e clique em Jogar.</p></div>
-      </li>
-      <li>
-        <span class="n titulo">2</span>
-        <div class="txt"><h2>Adicione o servidor</h2><p>No menu, vá em Multijogador e depois em Adicionar servidor. Dê o nome Invictus, cole o endereço <span class="cmd">{servidor.ip}</span> e confirme. O elmo vermelho aparece na sua lista.</p></div>
-        <div class="lista-mc">
-          <div class="icone"><Elmo largura={34} simples /></div>
-          <div class="mc-txt"><span>Invictus</span><b>INVICTUS</b></div>
-        </div>
-      </li>
-      <li>
-        <span class="n titulo">3</span>
-        <div class="txt"><h2>No primeiro acesso, crie sua senha</h2><p>Como o servidor aceita Minecraft pirata, sua conta é protegida por uma senha. Digite no chat a mesma senha duas vezes.</p></div>
-        <div class="chat">/register <span class="v">suaSenha suaSenha</span></div>
-      </li>
-      <li>
-        <span class="n titulo">4</span>
-        <div class="txt"><h2>Nas outras vezes, entre com ela</h2><p>Toda vez que voltar ao servidor, use a senha que você criou.</p></div>
-        <div class="chat">/login <span class="v">suaSenha</span></div>
-      </li>
-      <li>
-        <span class="n titulo">5</span>
-        <div class="txt"><h2>Veja o tutorial</h2><p>Ao entrar, a mensagem de boas-vindas traz atalhos clicáveis. Comece pelo tutorial: ele explica como o servidor funciona.</p></div>
-        <div class="chat">/tutorial</div>
-      </li>
-      <li>
-        <span class="n titulo">6</span>
-        <div class="txt"><h2>Pegue seu kit inicial</h2><p>Você começa sem itens. O kit Normal traz espada, picareta, machado e pá de madeira, 8 pães, bancada e fornalha. Dá para pegar de novo a cada 24 horas.</p></div>
-        <div class="chat">/kit nb</div>
-      </li>
+      {passos.map((p, i) => (
+        <li>
+          <span class="n t-titulo">{i + 1}</span>
+          <div class="txt"><h2>{p.t}</h2><p>{p.d}</p></div>
+          {p.chat && <div class="chat">{p.chat}</div>}
+        </li>
+      ))}
     </ol>
   </section>
 
-  <section class="container grade extras" style="--min:380px">
-    <div class="blk seg">
-      <div class="rotulo" style="color:var(--vermelho)">Segurança da conta</div>
-      <h2 class="titulo">Sua senha é só sua</h2>
+  <section class="container extras">
+    <div class="seg mira">
+      <span class="hud">Segurança da conta</span>
+      <h2 class="t-titulo">Sua senha é só sua</h2>
       <ul>
         <li>Não use a mesma senha de outros servidores.</li>
         <li>Nunca passe sua senha para ninguém.</li>
         <li>A equipe nunca pede sua senha.</li>
       </ul>
     </div>
-    <div class="blk depois">
-      <div class="rotulo">E agora?</div>
-      <h2 class="titulo">Seus primeiros minutos</h2>
-      <div class="itens">
-        <p><span class="cmd">/warps</span> mostra todos os mundos com explicação.</p>
-        <p><span class="cmd">/minerar</span> leva ao mundo de recursos, sem monstros.</p>
-        <p><span class="cmd">/warp mundo1</span> leva ao mundo onde você constrói.</p>
-        <p><span class="cmd">/sethome casa</span> salva um ponto para voltar com <span class="cmd">/home casa</span>.</p>
-      </div>
-      <a href="/regras/" style="font-weight:700">Ler as regras e todos os comandos →</a>
+    <div class="depois">
+      <span class="hud">Primeiros minutos</span>
+      <h2 class="t-titulo">E depois do kit</h2>
+      <ul>
+        <li><span class="cmd">/warps</span> mostra todos os mundos com explicação.</li>
+        <li><span class="cmd">/minerar</span> leva ao mundo de recursos, sem monstros.</li>
+        <li><span class="cmd">/warp mundo1</span> leva ao mundo onde você constrói.</li>
+        <li><span class="cmd">/sethome casa</span> salva um ponto, e <span class="cmd">/home casa</span> volta para ele.</li>
+      </ul>
+      <a href="/regras/">Regras e todos os comandos</a>
     </div>
   </section>
 </Base>
 
 <style>
-  .topo { padding-block: 80px 48px; display: flex; flex-wrap: wrap; gap: 48px; align-items: end; }
-  .topo-txt { flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 20px; }
-  .resumo { flex: 1 1 320px; margin: 0; background: var(--fundo-2); padding: 24px; display: flex; flex-direction: column; gap: 14px; }
-  .resumo div { display: flex; justify-content: space-between; gap: 12px; }
-  .resumo dt { color: var(--texto-3); }
-  .resumo dd { margin: 0; font-weight: 700; text-align: right; }
-  .resumo .ip { font-family: var(--mono); font-weight: 500; color: var(--vermelho-claro); }
-  .passos { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 16px; }
-  .passos li { display: flex; flex-wrap: wrap; gap: 24px 32px; background: var(--fundo-2); border: 1px solid var(--linha); border-radius: 16px; padding: clamp(24px, 4vw, 36px); }
-  .n { flex: 0 0 80px; font-size: clamp(52px, 6vw, 72px); line-height: 1; color: var(--vermelho); }
-  .txt { flex: 1 1 340px; display: flex; flex-direction: column; gap: 12px; }
-  .txt h2 { font-size: clamp(22px, 2.4vw, 28px); font-weight: 700; }
-  .txt p { color: #b4b4bc; font-size: 17px; line-height: 1.6; }
-  .passos .chat, .lista-mc { flex: 1 1 300px; align-self: center; }
-  .v { color: var(--vermelho-claro); }
-  .lista-mc { background: #0c0c0e; border: 1px solid var(--linha); border-radius: 10px; padding: 16px; display: flex; gap: 14px; align-items: center; }
-  .icone { width: 52px; height: 52px; background: var(--vermelho); display: flex; align-items: center; justify-content: center; flex: none; }
-  .mc-txt { display: flex; flex-direction: column; gap: 4px; font-family: var(--mono); font-size: 14px; }
-  .mc-txt b { color: var(--vermelho-claro); font-weight: 500; }
-  .extras { padding-block: 16px 48px; }
-  .seg, .depois { padding: clamp(28px, 4vw, 40px); display: flex; flex-direction: column; gap: 16px; }
-  .seg { background: var(--pergaminho); color: var(--preto); }
-  .seg h2, .depois h2 { font-size: 34px; line-height: 1.1; }
-  .seg ul { margin: 0; padding-left: 20px; font-size: 16px; line-height: 1.8; color: #3a3a40; }
-  .depois { background: var(--fundo-2); }
-  .itens { display: flex; flex-direction: column; gap: 12px; color: var(--texto-2); }
+  .topo { padding-block: 80px 64px; display: flex; flex-wrap: wrap; gap: 48px; align-items: center; justify-content: space-between; }
+  .topo-txt { flex: 1 1 480px; display: flex; flex-direction: column; gap: 22px; }
+  .passos { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .passos li { display: flex; flex-wrap: wrap; align-items: center; gap: 20px 32px; padding: clamp(22px, 3vw, 30px); background: rgba(19, 19, 23, 0.92); border: 1px solid var(--linha); border-left: 4px solid var(--vermelho-jogo); }
+  .n { flex: 0 0 56px; font-size: 52px; line-height: 1; color: var(--vermelho-jogo); text-shadow: var(--brilho); }
+  .txt { flex: 1 1 360px; display: flex; flex-direction: column; gap: 8px; }
+  .txt h2 { font-size: clamp(20px, 2.2vw, 24px); font-weight: 700; }
+  .txt p { color: var(--texto-2); }
+  .passos .chat { flex: 1 1 280px; }
+  .extras { padding-top: 64px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: 24px; }
+  .seg, .depois { padding: clamp(26px, 4vw, 40px); display: flex; flex-direction: column; gap: 16px; }
+  .seg { background: rgba(11, 11, 14, 0.94); border: 2px solid var(--vermelho-jogo); box-shadow: var(--brilho-caixa); }
+  .depois { background: rgba(19, 19, 23, 0.92); border: 1px solid var(--linha); }
+  .seg h2, .depois h2 { font-size: clamp(24px, 2.6vw, 30px); }
+  ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px; color: var(--texto-2); }
+  li { line-height: 1.6; }
+  .seg li, .depois li { position: relative; padding-left: 20px; }
+  .seg li::before, .depois li::before { content: ''; position: absolute; left: 0; top: 0.65em; width: 8px; height: 8px; background: var(--vermelho-jogo); }
+  .depois a { font-weight: 600; }
 </style>
