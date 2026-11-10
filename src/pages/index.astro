@@ -67,11 +67,11 @@ const perguntas = [
       <span class="hud">Leitura do servidor</span>
       <h2 class="t-titulo t-h2">O que te espera lá dentro</h2>
     </div>
-    <ul class="leitura">
+    <ul class="dados">
       {leitura.map((l) => (
-        <li>
+        <li class="dado">
           <div><h3>{l.titulo}</h3><p>{l.texto}</p></div>
-          <span class="valor">{l.valor}</span>
+          <span class="dado-valor">{l.valor}</span>
         </li>
       ))}
     </ul>
@@ -176,22 +176,18 @@ const perguntas = [
 
 <style>
   .hero { position: relative; overflow: hidden; border-bottom: 1px solid var(--linha); }
-  .varredura { position: absolute; left: 0; right: 0; top: 0; height: 120px; background: linear-gradient(to bottom, transparent, rgba(255, 85, 85, 0.10) 80%, rgba(255, 85, 85, 0.45) 99%, transparent); animation: varrer 3.2s linear infinite; pointer-events: none; }
-  @keyframes varrer { from { transform: translateY(-120px); } to { transform: translateY(900px); } }
-  .hero-in { position: relative; min-height: min(720px, calc(100svh - 108px)); padding-block: 72px; display: flex; flex-wrap: wrap; align-items: center; gap: 56px; }
-  .hero-txt { flex: 999 1 540px; min-width: 0; display: flex; flex-direction: column; gap: 26px; }
-  .hero-txt h1 { max-width: 13ch; }
-  .hero-card { flex: 1 1 360px; display: flex; justify-content: center; }
-  .acoes { display: flex; flex-wrap: wrap; gap: 12px; }
-
-  .leitura { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 520px), 1fr)); gap: 12px; }
-  .leitura li { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 22px 26px; background: rgba(19, 19, 23, 0.92); border: 1px solid var(--linha); border-left: 4px solid var(--vermelho-jogo); }
-  .leitura h3 { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
-  .leitura p { color: var(--texto-2); font-size: 16px; }
-  .valor { font-family: var(--f-titulo); font-weight: 900; font-size: clamp(30px, 3.4vw, 42px); color: var(--vermelho-jogo); text-shadow: var(--brilho); flex: none; min-width: 3ch; text-align: right; }
+  /* A varredura é só uma linha fina, atrás do conteúdo: não passa por cima do texto. */
+  .varredura { position: absolute; left: 0; right: 0; top: 0; height: 2px; background: var(--vermelho-jogo); opacity: 0.35; box-shadow: 0 0 16px 2px rgba(255, 85, 85, 0.35); animation: varrer 4s linear infinite; pointer-events: none; z-index: 0; }
+  @keyframes varrer { from { top: 0; opacity: 0; } 10% { opacity: 0.35; } 90% { opacity: 0.35; } to { top: 100%; opacity: 0; } }
+  .hero-in { position: relative; z-index: 1; padding-block: clamp(48px, 9vw, 104px); display: flex; flex-wrap: wrap; align-items: center; gap: 48px 64px; }
+  .hero-txt { flex: 999 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 24px; }
+  .hero-txt h1 { max-width: 14ch; }
+  .hero-txt .lead { max-width: 52ch; }
+  .hero-card { flex: 1 1 340px; display: flex; justify-content: center; }
+  @media (min-width: 1000px) { .hero-in { min-height: min(680px, calc(100svh - 108px)); } }
 
   .pre { display: flex; flex-wrap: wrap; background: rgba(11, 11, 14, 0.94); border: 2px solid var(--vermelho-jogo); box-shadow: 0 0 60px rgba(255, 85, 85, 0.25); }
-  .pre-txt { flex: 999 1 520px; padding: clamp(28px, 5vw, 56px); display: flex; flex-direction: column; gap: 20px; }
+  .pre-txt { flex: 999 1 480px; min-width: 0; padding: clamp(22px, 5vw, 56px); display: flex; flex-direction: column; gap: 20px; }
   .pre-txt > p { color: var(--texto-2); max-width: 60ch; }
   .vantagens, .bonus { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap: 10px 24px; }
   .vantagens li, .bonus li { position: relative; padding-left: 20px; font-weight: 500; }
@@ -204,15 +200,21 @@ const perguntas = [
   .selo { font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; border: 1px solid var(--texto-3); color: var(--texto-2); padding: 3px 10px; }
   .nota { font-size: 14px; color: var(--texto-3); }
   .contagem { flex: 1 1 280px; background: var(--vermelho); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; padding: 48px 24px; text-align: center; }
-  .dias { font-size: clamp(96px, 12vw, 160px); line-height: .9; text-shadow: 0 0 40px rgba(255, 255, 255, 0.35); }
+  .dias { font-size: clamp(80px, 12vw, 160px); line-height: .9; text-shadow: 0 0 40px rgba(255, 255, 255, 0.35); }
+  @media (max-width: 600px) { .contagem { padding: 32px 20px; } }
   .dias-rot { font-weight: 700; letter-spacing: 4px; text-transform: uppercase; }
   .data { margin-top: 20px; font-size: 22px; padding: 6px 16px; border: 2px solid var(--branco); }
 
   .mundos { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
-  .mundos li { display: flex; align-items: center; gap: 20px; padding: 14px; background: rgba(19, 19, 23, 0.92); border: 1px solid var(--linha); flex-wrap: wrap; }
+  .mundos li { display: grid; grid-template-columns: 64px minmax(0, 1fr) auto; align-items: center; gap: 12px 20px; padding: 14px; background: rgba(19, 19, 23, 0.92); border: 1px solid var(--linha); }
   .mundos li:hover { border-color: var(--vermelho-jogo); }
-  .m-icone { width: 64px; height: 64px; flex: none; box-shadow: inset 0 0 0 4px rgba(0, 0, 0, 0.25); }
-  .m-txt { flex: 1 1 280px; min-width: 0; }
+  .m-icone { width: 64px; height: 64px; box-shadow: inset 0 0 0 4px rgba(0, 0, 0, 0.25); }
+  .m-txt { min-width: 0; }
+  @media (max-width: 640px) {
+    .mundos li { grid-template-columns: 44px minmax(0, 1fr); align-items: start; }
+    .m-icone { width: 44px; height: 44px; }
+    .m-chips { grid-column: 2; }
+  }
   .m-topo { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
   .m-topo h3 { font-family: var(--f-titulo); font-weight: 900; font-size: 20px; text-transform: uppercase; }
   .m-txt p { color: var(--texto-2); font-size: 16px; }
@@ -245,7 +247,8 @@ const perguntas = [
   details p { margin-top: 12px; color: var(--texto-2); }
 
   .final { display: flex; flex-direction: column; align-items: center; gap: 32px; text-align: center; }
-  .final h2 { font-size: clamp(40px, 7vw, 88px); }
+  .final h2 { font-size: clamp(36px, 7vw, 88px); }
+  .final :global(.card) { text-align: left; }
   .ate { font-size: clamp(22px, 3vw, 30px); letter-spacing: 3px; }
   .redes { color: var(--texto-3); }
 </style>

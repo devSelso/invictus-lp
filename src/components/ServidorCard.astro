@@ -39,13 +39,12 @@ const { animar = false } = Astro.props;
   .ip { text-align: center; color: var(--texto-3); font-size: 14px; letter-spacing: 2px; text-transform: uppercase; }
   .ip b { color: var(--branco); font-weight: 600; letter-spacing: 1px; }
 
-  /* Entrada: o card "trava" no alvo, como no Reels */
-  .animar .card { animation: travar .7s cubic-bezier(.2, .9, .3, 1.2) .25s both; }
-  .animar .card::before, .animar .card::after { animation: cantos .5s ease-out .7s both; }
-  .animar .conectar { animation: surgir .4s ease-out .9s both; }
-  @keyframes travar { from { opacity: 0; transform: scale(1.18); filter: blur(4px); } to { opacity: 1; transform: none; filter: none; } }
-  @keyframes cantos { from { opacity: 0; width: 60px; height: 60px; } to { opacity: 1; } }
-  @keyframes surgir { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  /* Entrada: os cantos de mira "travam" no card, como no Reels.
+     A animação nunca esconde nada: se o navegador pausar ou atrasar, o card continua visível. */
+  .animar .card::before, .animar .card::after { animation: cantos .6s cubic-bezier(.2, .9, .3, 1.2) .2s backwards; }
+  .animar .card { animation: pulso 1s ease-out .6s; }
+  @keyframes cantos { from { width: 64px; height: 64px; } }
+  @keyframes pulso { 0% { box-shadow: var(--brilho-caixa); } 40% { box-shadow: 0 0 60px rgba(255, 85, 85, 0.75); } 100% { box-shadow: var(--brilho-caixa); } }
   @media (max-width: 420px) {
     .icone { width: 72px; height: 72px; }
     .nome { font-size: 21px; }
