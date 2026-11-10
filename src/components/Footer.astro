@@ -16,6 +16,7 @@ import { links, servidor } from '../data/servidor';
       <div><b>Redes</b><a href={links.discord} target="_blank" rel="noopener" class="com-icone"><IconeDiscord tamanho={16} />Discord</a><a href={links.instagram} target="_blank" rel="noopener">Instagram</a><a href={links.tiktok} target="_blank" rel="noopener">TikTok</a></div>
     </nav>
   </div>
+  <div class="container creditos">Mapas: Spawn <a href="https://www.planetminecraft.com/project/free-medieval-spawn-hub/" target="_blank" rel="noopener">Medieval Spawn hub</a>, de FLORALBUILDS, e arena <a href="https://www.planetminecraft.com/project/the-spider-arena/" target="_blank" rel="noopener">The Spider Arena</a>, de Kahcerus, ambos do Planet Minecraft.</div>
   <div class="container aviso">Não é um produto oficial do Minecraft. Não é aprovado nem associado à Mojang ou à Microsoft.</div>
   <div class="grama" aria-hidden="true"></div>
 </footer>
@@ -34,5 +35,9 @@ import { links, servidor } from '../data/servidor';
   .cols a { color: var(--texto-2); text-decoration: none; }
   .com-icone { display: inline-flex; align-items: center; gap: 8px; }
   .cols a:hover { color: var(--vermelho-jogo); }
+  .creditos { padding-block: 18px 0; border-top: 1px solid var(--linha); color: var(--texto-3); font-size: 13px; }
+  .creditos a { color: var(--texto-2); }
+  .creditos a:hover { color: var(--vermelho-jogo); }
+  .creditos + .aviso { border-top: 0; padding-top: 8px; }
   .aviso { padding-block: 18px 28px; border-top: 1px solid var(--linha); color: var(--texto-3); font-size: 13px; }
 </style>
