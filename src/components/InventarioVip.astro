@@ -1,0 +1,124 @@
+---
+// Inventário do Minecraft com o pacote do VIP. Passar o mouse, focar ou tocar num item
+// mostra o nome e os encantamentos no painel ao lado, como o tooltip do jogo.
+import ItemMc from './ItemMc.astro';
+import Elmo from './Elmo.astro';
+import { armadura, inventario, atalhos, type ItemMc as Item } from '../data/pacote-vip';
+
+const linhas = [inventario.slice(0, 9), inventario.slice(9, 18), inventario.slice(18, 27)];
+const primeiro = atalhos[0] as Item;
+const qtdTexto = (i: Item) => (i.qtd && i.qtd > 1 ? `${i.qtd} unidades` : '1 unidade');
+---
+<div class="inv-wrap">
+  <div class="gui" role="group" aria-label="Inventário com o pacote do VIP">
+    <div class="gui-topo">
+      <div class="armadura">
+        {armadura.map((i) => (
+          <button type="button" class:list={['slot', { brilho: i.encantado }]} data-item data-nome={i.nome} data-enc={(i.encantamentos ?? []).join('|')} data-qtd={qtdTexto(i)} data-raro={i.raro ? '1' : ''} data-detalhe={i.detalhe ?? ''} aria-label={i.nome}>
+            <ItemMc icone={i.icone} cores={i.cores} />
+          </button>
+        ))}
+      </div>
+      <div class="jogador" aria-hidden="true">
+        <Elmo largura={70} />
+        <span>Você, VIP</span>
+      </div>
+    </div>
+    <span class="gui-rot">Inventário</span>
+    <div class="grade">
+      {linhas.flat().map((i) => i ? (
+        <button type="button" class:list={['slot', { brilho: i.encantado }]} data-item data-nome={i.nome} data-enc={(i.encantamentos ?? []).join('|')} data-qtd={qtdTexto(i)} data-raro={i.raro ? '1' : ''} data-detalhe={i.detalhe ?? ''} aria-label={`${i.nome}, ${qtdTexto(i)}`}>
+          <ItemMc icone={i.icone} cores={i.cores} />
+          {i.qtd && i.qtd > 1 && <span class="qtd">{i.qtd}</span>}
+        </button>
+      ) : <span class="slot vazio" aria-hidden="true"></span>)}
+    </div>
+    <div class="grade atalhos">
+      {atalhos.map((i) => i ? (
+        <button type="button" class:list={['slot', { brilho: i.encantado }]} data-item data-nome={i.nome} data-enc={(i.encantamentos ?? []).join('|')} data-qtd={qtdTexto(i)} data-raro={i.raro ? '1' : ''} data-detalhe={i.detalhe ?? ''} aria-label={`${i.nome}, ${qtdTexto(i)}`}>
+          <ItemMc icone={i.icone} cores={i.cores} />
+          {i.qtd && i.qtd > 1 && <span class="qtd">{i.qtd}</span>}
+        </button>
+      ) : <span class="slot vazio" aria-hidden="true"></span>)}
+    </div>
+  </div>
+
+  <div class="tooltip" aria-live="polite">
+    <b class="t-nome">{primeiro.nome}</b>
+    <ul class="t-enc">{(primeiro.encantamentos ?? []).map((e) => <li>{e}</li>)}</ul>
+    <span class="t-detalhe" hidden></span>
+    <span class="t-qtd">{qtdTexto(primeiro)}</span>
+    <span class="t-dica">Passe o mouse ou toque nos itens</span>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.inv-wrap').forEach((wrap) => {
+    const nome = wrap.querySelector<HTMLElement>('.t-nome');
+    const enc = wrap.querySelector<HTMLElement>('.t-enc');
+    const qtd = wrap.querySelector<HTMLElement>('.t-qtd');
+    const det = wrap.querySelector<HTMLElement>('.t-detalhe');
+    const slots = wrap.querySelectorAll<HTMLButtonElement>('[data-item]');
+    const mostrar = (b: HTMLButtonElement) => {
+      slots.forEach((s) => s.classList.toggle('ativo', s === b));
+      if (nome) { nome.textContent = b.dataset.nome ?? ''; nome.classList.toggle('raro', b.dataset.raro === '1'); }
+      if (enc) {
+        enc.replaceChildren(...(b.dataset.enc ? b.dataset.enc.split('|') : []).map((t) => {
+          const li = document.createElement('li'); li.textContent = t; return li;
+        }));
+      }
+      if (det) { det.textContent = b.dataset.detalhe ?? ''; det.hidden = !b.dataset.detalhe; }
+      if (qtd) qtd.textContent = b.dataset.qtd ?? '';
+    };
+    slots.forEach((b) => {
+      b.addEventListener('mouseenter', () => mostrar(b));
+      b.addEventListener('focus', () => mostrar(b));
+      b.addEventListener('click', () => mostrar(b));
+    });
+    const inicial = wrap.querySelector<HTMLButtonElement>('.atalhos [data-item]');
+    if (inicial) mostrar(inicial);
+  });
+</script>
+
+<style>
+  .inv-wrap { --s: clamp(30px, 8.4vw, 50px); display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start; }
+  .gui {
+    background: #c6c6c6; padding: 10px; display: flex; flex-direction: column; gap: 6px;
+    box-shadow: inset 3px 3px 0 #fff, inset -3px -3px 0 #555, 0 0 0 3px #000, 0 0 40px rgba(255, 85, 85, 0.25);
+    image-rendering: pixelated;
+  }
+  .gui-topo { display: flex; gap: 10px; margin-bottom: 4px; }
+  .armadura { display: grid; gap: 0; }
+  .jogador { flex: 1; background: #000; box-shadow: inset 2px 2px 0 #373737, inset -2px -2px 0 #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; min-height: calc(var(--s) * 4); }
+  .jogador span { color: #ffaa00; font-weight: 700; font-size: 13px; }
+  .gui-rot { color: #3f3f3f; font-weight: 600; font-size: 14px; }
+  .grade { display: grid; grid-template-columns: repeat(9, var(--s)); }
+  .atalhos { margin-top: 8px; }
+  .slot {
+    width: var(--s); height: var(--s); padding: calc(var(--s) * 0.14); position: relative;
+    background: #8b8b8b; border: 0; cursor: pointer; display: block;
+    box-shadow: inset 2px 2px 0 #373737, inset -2px -2px 0 #fff;
+  }
+  .slot.vazio { cursor: default; }
+  .slot :global(svg) { width: 100%; height: 100%; display: block; }
+  button.slot:hover, button.slot:focus-visible, button.slot.ativo { background: #a9a9a9; outline: none; }
+  button.slot.ativo { box-shadow: inset 2px 2px 0 #373737, inset -2px -2px 0 #fff, inset 0 0 0 3px #ff5555; }
+  .brilho :global(svg) { animation: encantado 2.4s ease-in-out infinite; }
+  @keyframes encantado {
+    0%, 100% { filter: drop-shadow(0 0 1px rgba(170, 90, 255, 0.6)) brightness(1); }
+    50% { filter: drop-shadow(0 0 4px rgba(190, 110, 255, 0.95)) brightness(1.25) saturate(1.2); }
+  }
+  .qtd { position: absolute; right: 2px; bottom: 0; color: #fff; font-weight: 700; font-size: calc(var(--s) * 0.32); line-height: 1; text-shadow: 2px 2px 0 #3f3f3f; }
+
+  .tooltip {
+    flex: 1 1 240px; min-width: 0; background: rgba(16, 0, 16, 0.94); padding: 14px 16px;
+    border: 2px solid; border-image: linear-gradient(#5000ff, #28007f) 1; box-shadow: 0 0 0 2px #100010;
+    display: flex; flex-direction: column; gap: 4px; font-size: 17px;
+  }
+  .t-nome { color: #fff; font-weight: 700; font-size: 19px; }
+  .t-nome.raro { color: #ff55ff; }
+  .t-enc { list-style: none; margin: 0; padding: 0; color: #aaaaaa; }
+  .t-detalhe { color: #5555ff; }
+  .t-qtd { color: #8e8e98; font-size: 15px; margin-top: 4px; }
+  .t-dica { color: #6f6f78; font-size: 13px; margin-top: 10px; }
+</style>

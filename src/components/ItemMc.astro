@@ -1,0 +1,92 @@
+---
+// Ícone de item no estilo do Minecraft, em pixel art 16 × 16 desenhada para o site
+// (não usa texturas do jogo). Cada letra do mapa é uma cor; '.' é transparente.
+import type { Icone } from '../data/pacote-vip';
+
+interface Props { icone: Icone; cores?: Record<string, string> }
+const { icone, cores = {} } = Astro.props;
+
+const mapas: Record<Icone, string[]> = {
+  espada: [
+    '..............kk', '.............kek', '............kedk', '...........kedk.',
+    '..........kedk..', '.........kedk...', '....kk..kedk....', '....kDkkedk.....',
+    '.....kDddk......', '......kDk.......', '.....kwkDk......', '....kwk.kk......',
+    '...kwk..........', '..kwk...........', '.kWk............', '.kk.............',
+  ],
+  picareta: [
+    '....kkkkkkk.....', '..kkeddddddkk...', '.kdDkkkkkkedk...', '.kkk....kwkkdk..',
+    '........kwk.kdk.', '.......kwk..kDk.', '......kwk...kDk.', '.....kwk.....kk.',
+    '....kwk.........', '...kwk..........', '..kwk...........', '.kWk............', '.kk.............',
+  ],
+  machado: [
+    '......kkkk......', '.....keddk......', '....keddddk.....', '....kdDkddk.....',
+    '....kDkwkdk.....', '....kkkwkkk.....', '......kwk.......', '.....kwk........',
+    '....kwk.........', '...kwk..........', '..kwk...........', '.kWk............', '.kk.............',
+  ],
+  pa: [
+    '..........kkk...', '.........keddk..', '........keddDk..', '........kddDk...',
+    '.........kDk....', '........kwk.....', '.......kwk......', '......kwk.......',
+    '.....kwk........', '....kwk.........', '...kwk..........', '..kWk...........', '..kk............',
+  ],
+  capacete: [
+    '...kkkkkkkkkk...', '..kddddddddddk..', '..kdeeddddddDk..', '..kdkkkkkkkkDk..',
+    '..kDk......kDk..', '..kkk......kkk..',
+  ],
+  peitoral: [
+    '.kkkk......kkkk.', '.kddk......kddk.', '.kdddkkkkkkdddk.', '.kdedddddddddDk.',
+    '.kkkdddddddDkkk.', '...kdddddddDk...', '...kdddddddDk...', '...kdddddddDk...',
+    '...kDDDDDDDDk...', '...kkkkkkkkkk...',
+  ],
+  calca: [
+    '...kkkkkkkkkk...', '...kddddddddk...', '...kdeDDDDDdk...', '...kdddkkdddk...',
+    '...kddk..kddk...', '...kddk..kddk...', '...kddk..kddk...', '...kDDk..kDDk...',
+    '...kkkk..kkkk...',
+  ],
+  botas: [
+    '..kkkk....kkkk..', '..kddk....kddk..', '..kddk....kddk..', '.kdddk....kdddk.',
+    'kddDDk....kDDddk', 'kkkkkk....kkkkkk',
+  ],
+  maca: [
+    '.......kk.......', '......kWk.kk....', '......kwkklk....', '....kkkwkkk.....',
+    '...kggggggGk....', '..kgyyggggGGk...', '.kgyggggggGGGk..', '.kggggggggGGGk..',
+    '.kggggggggGGGk..', '..kgggggGGGGk...', '...kkGGGGGkk....', '.....kkkkk......',
+  ],
+  pocao: [
+    '......kkkk......', '......kwwk......', '......kcck......', '.....kcceck.....',
+    '....kcppppck....', '...kcppppppck...', '...kcpPppppck...', '...kcppppPpck...',
+    '...kcpppppPck...', '....kcPPPPck....', '.....kkkkkk.....',
+  ],
+  bloco: [
+    'hhhhhhhhhhhhhhhb', 'haaaaaaaaaaaaaab', 'haahaaaaabaaaaab', 'haaaaaaaaaaahaab',
+    'haaaabaaaaaaaaab', 'haaaaaaaahaaaaab', 'habaaaaaaaaaabab', 'haaaaahaaaaaaaab',
+    'haaaaaaaaabaaaab', 'haahaaaaaaaaaaab', 'haaaaaaabaaaahab', 'haaaaaaaaaaaaaab',
+    'habaaahaaaaabaab', 'haaaaaaaaaaaaaab', 'haaaaaaaaahaaaab', 'bbbbbbbbbbbbbbbb',
+  ],
+};
+
+const paleta: Record<string, string> = {
+  k: '#141414', d: '#4fe3d6', D: '#1f9c93', e: '#c9fffa',
+  w: '#a07a46', W: '#5d4321', g: '#f9d74a', G: '#c78b14', y: '#fff7b8', l: '#5bbd3c',
+  c: '#dcefff', p: '#cd5cab', P: '#8a3572', a: '#888', b: '#555', h: '#bbb',
+  ...cores,
+};
+
+// Junta pixels vizinhos da mesma cor numa linha em um só retângulo.
+const mapa = mapas[icone];
+const topo = Math.floor((16 - mapa.length) / 2);
+const retangulos: { x: number; y: number; w: number; cor: string }[] = [];
+mapa.forEach((linha, y) => {
+  let x = 0;
+  while (x < 16) {
+    const ch = linha[x] ?? '.';
+    if (ch === '.') { x++; continue; }
+    let fim = x + 1;
+    while (fim < 16 && linha[fim] === ch) fim++;
+    retangulos.push({ x, y: y + topo, w: fim - x, cor: paleta[ch] ?? '#f0f' });
+    x = fim;
+  }
+});
+---
+<svg viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true" focusable="false">
+  {retangulos.map((r) => <rect x={r.x} y={r.y} width={r.w} height="1" fill={r.cor} />)}
+</svg>

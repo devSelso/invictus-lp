@@ -37,7 +37,7 @@ const vantagensVip = [
 
 const perguntas = [
   { p: 'Preciso de Minecraft original?', r: 'Não. O servidor aceita original e pirata. No primeiro acesso você cria uma senha com <span class="cmd">/register</span>.' },
-  { p: 'Qual versão eu uso?', r: `Minecraft ${servidor.versao}, Java Edition. O IP é <span class="cmd">${servidor.ip}</span>.` },
+  { p: 'Qual versão eu uso?', r: `Minecraft ${servidor.versao}, Java Edition. ${servidor.ip ? `O IP é <span class="cmd">${servidor.ip}</span>.` : `O IP ainda não foi divulgado. Entre no <a href="${links.discord}" target="_blank" rel="noopener">Discord</a> para saber assim que sair.`}` },
   { p: 'Quando o servidor abre?', r: `Dia ${servidor.lancamentoTexto}. Até lá dá para garantir o VIP na pré-venda e acompanhar tudo no @${servidor.instagram}.` },
   { p: 'Como protejo minha casa?', r: 'Não precisa fazer nada: todo bloco que você coloca já é seu. O terreno natural não tem dono, então construa o próprio chão.' },
   { p: 'O que acontece quando eu morro?', r: 'Você volta ao Spawn e os itens do inventário caem onde você morreu. Os Coins ficam na conta.' },
@@ -137,7 +137,7 @@ const perguntas = [
     </div>
     <ol class="passos">
       <li><span class="n t-titulo">1</span><div><h3>Abra a versão 1.8.8</h3><p>No launcher, escolha a 1.8.8 e clique em Jogar.</p></div></li>
-      <li><span class="n t-titulo">2</span><div><h3>Adicione o servidor</h3><p>Multijogador, Adicionar servidor, cole <span class="cmd">{servidor.ip}</span>.</p></div></li>
+      <li><span class="n t-titulo">2</span><div><h3>Adicione o servidor</h3><p>Multijogador, Adicionar servidor, cole {servidor.ip ? <span class="cmd">{servidor.ip}</span> : 'o IP (em breve)'}.</p></div></li>
       <li><span class="n t-titulo">3</span><div><h3>Crie sua senha</h3><p><span class="cmd">/register</span> na primeira vez e <span class="cmd">/login</span> nas outras.</p></div></li>
       <li><span class="n t-titulo">4</span><div><h3>Pegue o kit</h3><p><span class="cmd">/tutorial</span> e depois <span class="cmd">/kit nb</span>.</p></div></li>
     </ol>
@@ -170,7 +170,7 @@ const perguntas = [
     <h2 class="t-titulo t-brilho">Entra dia <span class="vermelho">{servidor.lancamentoCurto}</span></h2>
     <ServidorCard />
     <p class="ate t-titulo">Te vejo lá</p>
-    <p class="redes">Novidades no <a href={links.instagram} target="_blank" rel="noopener">Instagram</a> e no <a href={links.tiktok} target="_blank" rel="noopener">TikTok</a>, @{servidor.instagram}.</p>
+    <p class="redes">Novidades no <a href={links.discord} target="_blank" rel="noopener">Discord</a>, no <a href={links.instagram} target="_blank" rel="noopener">Instagram</a> e no <a href={links.tiktok} target="_blank" rel="noopener">TikTok</a> @{servidor.instagram}.</p>
   </section>
 </Base>
 

@@ -1,7 +1,8 @@
 ---
 // O servidor como aparece na lista de servidores do Minecraft, igual ao CTA dos Reels.
 import Elmo from './Elmo.astro';
-import { servidor } from '../data/servidor';
+import IconeDiscord from './IconeDiscord.astro';
+import { servidor, links } from '../data/servidor';
 
 interface Props { animar?: boolean }
 const { animar = false } = Astro.props;
@@ -18,8 +19,17 @@ const { animar = false } = Astro.props;
       <span class="status">{servidor.preLancamento ? `abre ${servidor.lancamentoCurto}` : 'online'}</span>
     </div>
   </div>
-  <button type="button" class="btn btn-vermelho conectar" data-copiar={servidor.ip} data-copiado="IP copiado">Conectar</button>
-  <p class="ip">IP <b>{servidor.ip}</b> · versão {servidor.versao} · aceita pirata</p>
+  {servidor.ip ? (
+    <>
+      <button type="button" class="btn btn-vermelho conectar" data-copiar={servidor.ip} data-copiado="IP copiado">Conectar</button>
+      <p class="ip">IP <b>{servidor.ip}</b> · versão {servidor.versao} · aceita pirata</p>
+    </>
+  ) : (
+    <>
+      <a class="btn btn-vermelho conectar" href={links.discord} target="_blank" rel="noopener"><IconeDiscord tamanho={26} />Entrar no Discord</a>
+      <p class="ip">IP em breve · versão {servidor.versao} · aceita pirata</p>
+    </>
+  )}
 </div>
 
 <style>
@@ -35,7 +45,7 @@ const { animar = false } = Astro.props;
   .desc { color: var(--texto-2); font-weight: 500; }
   .status { color: var(--online); font-weight: 600; font-size: 15px; display: flex; align-items: center; gap: 8px; }
   .status::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--online); box-shadow: 0 0 8px var(--online); }
-  .conectar { width: 100%; min-height: 64px; font-size: 20px; letter-spacing: 6px; }
+  .conectar { width: 100%; min-height: 64px; font-size: clamp(15px, 1.6vw, 20px); letter-spacing: clamp(2px, 0.4vw, 6px); white-space: nowrap; }
   .ip { text-align: center; color: var(--texto-3); font-size: 14px; letter-spacing: 2px; text-transform: uppercase; }
   .ip b { color: var(--branco); font-weight: 600; letter-spacing: 1px; }
 
@@ -48,6 +58,6 @@ const { animar = false } = Astro.props;
   @media (max-width: 420px) {
     .icone { width: 72px; height: 72px; }
     .nome { font-size: 21px; }
-    .conectar { font-size: 17px; letter-spacing: 4px; }
+    .conectar { font-size: 15px; letter-spacing: 2px; }
   }
 </style>

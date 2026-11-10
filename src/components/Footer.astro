@@ -1,5 +1,6 @@
 ---
 import Elmo from './Elmo.astro';
+import IconeDiscord from './IconeDiscord.astro';
 import { links, servidor } from '../data/servidor';
 ---
 <footer class="rodape">
@@ -7,12 +8,12 @@ import { links, servidor } from '../data/servidor';
     <div class="sobre">
       <span class="marca"><span class="marca-icone"><Elmo largura={18} simples /></span>INVICTUS</span>
       <p>Survival clássico na {servidor.versao}, com PvP, economia em Coins e VIP.</p>
-      <p class="ip">IP <b>{servidor.ip}</b></p>
+      {servidor.ip ? <p class="ip">IP <b>{servidor.ip}</b></p> : <p class="ip">IP em breve. <a href={links.discord} target="_blank" rel="noopener">Entre no Discord</a> para saber primeiro.</p>}
     </div>
     <nav aria-label="Rodapé" class="cols">
       <div><b>Jogar</b><a href="/como-entrar/">Como entrar</a><a href="/regras/">Regras</a></div>
       <div><b>Servidor</b><a href="/vip/">VIP</a><a href="/novidades/">Novidades</a></div>
-      <div><b>Redes</b><a href={links.instagram} target="_blank" rel="noopener">Instagram</a><a href={links.tiktok} target="_blank" rel="noopener">TikTok</a></div>
+      <div><b>Redes</b><a href={links.discord} target="_blank" rel="noopener" class="com-icone"><IconeDiscord tamanho={16} />Discord</a><a href={links.instagram} target="_blank" rel="noopener">Instagram</a><a href={links.tiktok} target="_blank" rel="noopener">TikTok</a></div>
     </nav>
   </div>
   <div class="container aviso">Não é um produto oficial do Minecraft. Não é aprovado nem associado à Mojang ou à Microsoft.</div>
@@ -31,6 +32,7 @@ import { links, servidor } from '../data/servidor';
   .cols div { display: flex; flex-direction: column; gap: 10px; font-size: 15px; }
   .cols b { color: var(--texto-3); font-size: 12px; letter-spacing: 3px; text-transform: uppercase; }
   .cols a { color: var(--texto-2); text-decoration: none; }
+  .com-icone { display: inline-flex; align-items: center; gap: 8px; }
   .cols a:hover { color: var(--vermelho-jogo); }
   .aviso { padding-block: 18px 28px; border-top: 1px solid var(--linha); color: var(--texto-3); font-size: 13px; }
 </style>

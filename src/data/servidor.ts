@@ -3,7 +3,8 @@
 export const servidor = {
   nome: 'Invictus',
   versao: '1.8.8',
-  ip: '91.197.6.134:21201',
+  // IP do servidor. null = ainda não divulgado: o site esconde o IP e manda para o Discord.
+  ip: null as string | null,
   // Data e hora de abertura (horário de Brasília).
   lancamento: '2026-11-16T00:00:00-03:00',
   lancamentoTexto: '16 de novembro',
@@ -12,10 +13,11 @@ export const servidor = {
   preLancamento: true,
   instagram: 'rede.invictus',
   tiktok: 'rede.invictus',
-  discord: null as string | null, // link do Discord quando existir
+  discord: 'https://discord.gg/Huf73KyKzu',
 };
 
 export const links = {
+  discord: servidor.discord,
   instagram: `https://www.instagram.com/${servidor.instagram}`,
   tiktok: `https://www.tiktok.com/@${servidor.tiktok}`,
   direct: `https://ig.me/m/${servidor.instagram}`,
@@ -28,10 +30,7 @@ export const vip = {
   mensagemDirect: 'Quero ter acesso ao VIP antecipado',
   // Bônus exclusivos da pré-venda. Lista vazia = "anúncio em breve".
   bonusPreVenda: [] as string[],
-  // O que vem em toda ativação. Lista vazia = a seção do pacote some do site.
-  // Em definição (2026-11-09): quando o pacote for decidido no servidor, preencher aqui.
-  // Formato: { valor: '4', item: 'Armadura de diamante', detalhe: 'Proteção IV e Inquebrável III.' }
-  pacote: [] as { valor: string; item: string; detalhe: string }[],
+  // O pacote da ativação fica em src/data/pacote-vip.ts.
   // Promoção de data especial (Natal, Dia das Crianças...). Ligada, o VIP também sorteia ovo e gaiola,
   // e o site mostra a tabela de chances e o simulador. Desligada no lançamento.
   promocao: { ativa: false, nome: '' },

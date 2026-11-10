@@ -1,7 +1,9 @@
 ---
 import Base from '../layouts/Base.astro';
 import BotaoDirect from '../components/BotaoDirect.astro';
+import InventarioVip from '../components/InventarioVip.astro';
 import { servidor, vip, chancesOvo, chanceGaiola, chancesProvisorias } from '../data/servidor';
+import { extras } from '../data/pacote-vip';
 
 const maior = Math.max(...chancesOvo.map((c) => c.chance));
 const pct = (n: number) => `${String(n).replace('.', ',')}%`;
@@ -20,7 +22,8 @@ const vantagens = [
     <div class="topo-txt">
       <span class="hud"><span class="ponto"></span>{servidor.preLancamento ? `Pré-venda até ${servidor.lancamentoCurto}` : 'VIP Invictus'}</span>
       <h1 class="t-titulo t-h1 t-brilho">{servidor.preLancamento ? 'VIP antecipado' : 'VIP Invictus'}</h1>
-      <p class="lead">O VIP chega como um código. Você ativa para você ou vende para outro jogador por Coins.</p>
+      <p class="lead">O VIP chega como um código. Você ativa para você ou vende para outro jogador por Coins. Ao ativar, recebe armadura Proteção IV, ferramentas encantadas, blocos, poções, XP e 10.000 Coins.</p>
+      <a href="#ativacao" class="ver-pacote">Ver o inventário completo</a>
       {servidor.preLancamento && (
         <div class="bonus-box">
           <b>Bônus de quem compra na pré-venda</b>
@@ -53,6 +56,34 @@ const vantagens = [
     </div>
   </section>
 
+  <section class="container secao" id="ativacao">
+    <div class="cabeca">
+      <span class="hud"><span class="ponto"></span>Ao ativar o VIP</span>
+      <h2 class="t-titulo t-h2">Seu inventário no primeiro minuto</h2>
+      <p>Toda ativação entrega este pacote direto no inventário, por isso ele precisa estar vazio na hora (a armadura vestida pode ficar). Passe o mouse ou toque nos itens para ver os encantamentos.</p>
+    </div>
+    <InventarioVip />
+    <ul class="extras">
+      <li class="xp">
+        <span class="xp-nivel">{extras.niveisXp}</span>
+        <div class="xp-barra" aria-hidden="true"><i></i></div>
+        <b>{extras.niveisXp} níveis de XP</b>
+        <span>Para encantar o que quiser na mesa.</span>
+      </li>
+      <li>
+        <span class="extra-valor">{extras.coins}</span>
+        <b>Coins na conta</b>
+        <span>Para começar a economia, na loja ou com outros jogadores.</span>
+      </li>
+      <li>
+        <span class="extra-valor">{extras.xpSkills}</span>
+        <b>XP em cada skill</b>
+        <span>Em todas as skills do mcMMO, menos Machados.</span>
+      </li>
+    </ul>
+    {!vip.promocao.ativa && <p class="promo-nota">Em datas especiais, como Natal e Dia das Crianças, o VIP de promoção também sorteia um ovo de criatura e uma chance de gaiola.</p>}
+  </section>
+
   <section class="container secao">
     <div class="cabeca"><span class="hud">Vantagens</span><h2 class="t-titulo t-h2">O que o VIP libera</h2></div>
     <ul class="dados">
@@ -77,22 +108,6 @@ const vantagens = [
       <div class="c2"><span class="hud">Caminho B</span><h3>Venda por Coins</h3><p>Coloque à venda no mercado de VIP pelo preço que quiser, sem taxa. O servidor avisa todo mundo.</p><span class="cmd">/vendervip código preço</span></div>
     </div>
   </section>
-
-  {vip.pacote.length > 0 && (
-  <section class="container secao">
-    <div class="cabeca">
-      <span class="hud">Pacote da ativação</span>
-      <h2 class="t-titulo t-h2">O que chega no inventário</h2>
-      <p>Toda ativação entrega este pacote. Por isso o inventário precisa estar vazio na hora (a armadura vestida pode ficar).</p>
-    </div>
-    <ul class="dados pacote">
-      {vip.pacote.map((p) => (
-        <li class="dado"><div><h3>{p.item}</h3><p>{p.detalhe}</p></div><span class="dado-valor">{p.valor}</span></li>
-      ))}
-    </ul>
-    {!vip.promocao.ativa && <p class="promo-nota">Em datas especiais, como Natal e Dia das Crianças, o VIP de promoção também sorteia um ovo de criatura e uma chance de gaiola.</p>}
-  </section>
-  )}
 
   {vip.promocao.ativa && (
   <section class="container secao">
@@ -219,7 +234,17 @@ const vantagens = [
   .resultado b { font-size: 21px; }
   .resultado span { color: var(--texto-2); }
 
-  .pacote { grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); }
+  .ver-pacote { font-weight: 600; letter-spacing: 1px; align-self: flex-start; }
+  .extras { list-style: none; margin: 24px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 12px; }
+  .extras li { background: rgba(19, 19, 23, 0.92); border: 1px solid var(--linha); border-left: 4px solid var(--vermelho-jogo); padding: 20px 22px; display: flex; flex-direction: column; gap: 6px; }
+  .extras b { font-size: 19px; }
+  .extras li > span:last-child { color: var(--texto-2); font-size: 16px; }
+  .extra-valor { font-family: var(--f-titulo); font-weight: 900; font-size: 34px; line-height: 1; color: var(--vermelho-jogo); text-shadow: var(--brilho); }
+  /* Barra de XP do jogo, com o nível em verde por cima */
+  .xp { border-left-color: #80ff20 !important; }
+  .xp-nivel { font-family: var(--f-titulo); font-weight: 900; font-size: 34px; line-height: 1; color: #80ff20; text-shadow: 0 0 18px rgba(128, 255, 32, 0.6), 2px 2px 0 #000; }
+  .xp-barra { height: 10px; background: #1b1b1b; box-shadow: inset 0 0 0 1px #000; margin: 4px 0; }
+  .xp-barra i { display: block; height: 100%; width: 100%; background: linear-gradient(#b8ff5a, #5fd11a); }
   .promo-nota { margin-top: 20px; color: var(--texto-3); }
 
   .mercado { background: rgba(19, 19, 23, 0.92); border: 1px solid var(--linha); padding: clamp(26px, 5vw, 48px); display: flex; flex-wrap: wrap; gap: 40px; }
