@@ -64,7 +64,7 @@ const n = (id: string) => String(secoes.findIndex(([s]) => s === id) + 1).padSta
         <h3>Minerar</h3>
         <ul><li>Mundo de recurso, <b>sem monstros</b>. Reseta todo dia à meia-noite (horário de Brasília): tudo o que estiver lá é apagado.</li><li><b>Nada tem dono:</b> qualquer um quebra qualquer bloco e abre qualquer baú.</li><li>Em volta da chegada há uma área de 50 × 50 blocos protegida, sem quebrar, sem colocar e sem PvP.</li><li>O servidor avisa ao entrar, ao colocar o primeiro baú e 10 e 1 minuto antes do reset.</li></ul>
         <h3>Nether</h3>
-        <ul><li><b>Só entra quem estiver com armadura completa de diamante</b> na hora da entrada, por qualquer caminho, inclusive teleporte. Depois de entrar, pode tirar.</li><li>Reseta todo dia à meia-noite e nada tem dono. Não pode colocar cama.</li><li>PvP sempre ligado.</li></ul>
+        <ul><li><b>Só entra quem estiver com armadura completa de diamante</b> na hora da entrada, por qualquer caminho, inclusive teleporte. Depois de entrar, pode tirar.</li><li>Reseta todo dia à meia-noite e nada tem dono. Não pode colocar cama.</li><li>PvP sempre ligado.</li><li><b>Boss do Nether:</b> um <b class="tag-predador">Wither</b> aparece no altar do Wither, a 80 blocos a leste da chegada, e volta 6 horas depois de morrer. Quem dá o golpe final ganha 10.000 Coins e a tag <b class="tag-predador">Predador</b>; ele pode soltar blocos de diamante. <span class="cmd">/wither</span> mostra se está vivo.</li></ul>
         <h3>The End</h3>
         <ul><li>A ilha central clássica da 1.8, com dragão, torres de obsidiana e cristais.</li><li><b>O dragão renasce 6 horas depois de derrotado.</b> <span class="cmd">/dragao</span> mostra se ele está vivo ou quanto falta. A derrota e o renascimento são anunciados para todos.</li><li><b>Prêmio:</b> quem dá o golpe final ganha 5.000 Coins e a tag roxa <b class="tag-destemido">Destemido</b> no chat, que fica com ele até outro jogador matar o dragão. A cada morte, o dragão tem 0,5% de chance de deixar cair uma gaiola. Valores iniciais.</li><li>Não pode colocar blocos, nem para subir nas torres: o dragão se derrota com arco.</li><li>PvP sempre ligado. Não precisa de armadura para entrar.</li></ul>
       </section>
@@ -122,7 +122,8 @@ const n = (id: string) => String(secoes.findIndex(([s]) => s === id) + 1).padSta
         </table></div>
         <ul>
           <li>Comandos: <span class="cmd">/spawn</span> <span class="cmd">/minerar</span> <span class="cmd">/warp lugar</span> <span class="cmd">/warps</span> <span class="cmd">/sethome</span> <span class="cmd">/home</span>.</li>
-          <li><span class="cmd">/call jogador</span> pede para ir até um amigo (até 2 pedidos por minuto). Ele responde com <span class="cmd">/tpaccept</span> ou <span class="cmd">/tpdeny</span>.</li>
+          <li><span class="cmd">/call jogador</span> pede para ir até um amigo (até 2 pedidos por minuto). Ele aceita com <span class="cmd">/bring</span>.</li>
+          <li><b>Arena de PvP:</b> <span class="cmd">/arena</span> leva para a arena, só com a armadura completa de diamante. Lá o PvP fica sempre ligado e quem morre perde os itens. A entrada e as mortes são anunciadas para todos.</li>
           <li>Todo teleporte para o Nether confere a armadura de diamante.</li>
         </ul>
       </section>
@@ -169,8 +170,18 @@ const n = (id: string) => String(secoes.findIndex(([s]) => s === id) + 1).padSta
           <li>A gaiola é um item que guarda o mob, como "Gaiola de Zumbi", e <b>só pode ser colocada no Mundo 1</b>.</li>
           <li><b>Sua gaiola:</b> só você recolhe (quebrando, ela volta como item com o mesmo mob) e troca o mob.</li>
           <li><b>Gaiola natural das masmorras:</b> qualquer um quebra, mas ela se perde. O servidor avisa antes; quebrando de novo em 5 segundos, ela some.</li>
-          <li><b>Trocar o mob:</b> clique com um ovo na gaiola. Gasta 1 ovo e custa Coins. Só funciona no Mundo 1.</li>
+          <li><b>Trocar o mob:</b> clique com um ovo na gaiola. Gasta 1 ovo e custa Coins pela raridade do mob novo. Só funciona no Mundo 1.</li>
+          <li><b>Quanto mais raro, mais rende:</b> a gaiola dá dinheiro pela venda dos drops na loja do servidor, e os drops dos mobs raros valem mais.</li>
         </ul>
+        <div class="tabela" style="--tmin:520px"><table>
+          <thead><tr><th>Raridade</th><th>Mobs</th><th>Troca</th></tr></thead>
+          <tbody>
+            <tr><td><b class="tag-destemido">Épico</b></td><td>Lula, blaze, slime</td><td>10.000 Coins</td></tr>
+            <tr><td><b class="tag-raro">Raro</b></td><td>Pigman, enderman, creeper, cubo de magma</td><td>5.000 Coins</td></tr>
+            <tr><td><b class="tag-magnata">Incomum</b></td><td>Vaca, bruxa, esqueleto, zumbi</td><td>2.500 Coins</td></tr>
+            <tr><td><b>Comum</b></td><td>Aranha, aranha da caverna, galinha, porco, ovelha</td><td>1.000 Coins</td></tr>
+          </tbody>
+        </table></div>
       </section>
 
       <section id="chat" class="sec" data-palavras="mensagem tag tags">
@@ -180,12 +191,16 @@ const n = (id: string) => String(secoes.findIndex(([s]) => s === id) + 1).padSta
           <li><b>Chat global</b> <span class="muted">[G]</span>: <span class="cmd">/g mensagem</span> fala com o servidor todo. Precisa ter um saldo mínimo de Coins (valor inicial: 1.000; falar não custa nada) e esperar 7 segundos entre mensagens.</li>
           <li>3 segundos entre mensagens e no máximo 200 caracteres.</li>
           <li>Mensagem privada: <span class="cmd">/tell jogador mensagem</span>.</li>
+          <li>Só o VIP escreve colorido no chat.</li>
+          <li><b>Tags:</b> aparecem antes do nome, entre colchetes. <span class="cmd">/tag</span> abre o menu para ativar e desativar as suas.</li>
         </ul>
         <div class="tags">
-          <span><b class="tag-diretor">Diretor</b> Nome</span>
-          <span><b class="tag-admin">Admin</b> Nome</span>
-          <span><b class="tag-magnata">Magnata</b> Nome</span>
-          <span><b class="tag-vip">VIP</b> Nome</span>
+          <span><b class="tag-diretor">[Diretor]</b> Nome</span>
+          <span><b class="tag-admin">[Admin]</b> Nome</span>
+          <span><b class="tag-magnata">[Magnata]</b> Nome</span>
+          <span><b class="tag-destemido">[Destemido]</b> Nome</span>
+          <span><b class="tag-predador">[Predador]</b> Nome</span>
+          <span><b class="tag-vip">[VIP]</b> Nome</span>
         </div>
       </section>
 
@@ -215,6 +230,7 @@ const n = (id: string) => String(secoes.findIndex(([s]) => s === id) + 1).padSta
         <ul>
           <li><b>Reinício diário à meia-noite</b> (horário de Brasília), com avisos antes. É nele que o Minerar e o Nether viram mundos novos; quem estava lá volta para o Spawn.</li>
           <li>Dicas automáticas a cada 5 minutos no chat, marcadas com <span class="vermelho">[➜]</span>.</li>
+          <li><b>Eventos automáticos no chat, todo dia</b>, com prêmio em Coins: Matemática, Palavra, FastClick, Loteria, Bolão, Sorteio e uma votação à noite para escolher o próximo. Participe com <span class="cmd">/evento</span>.</li>
           <li>Ao entrar, a mensagem de boas-vindas traz atalhos clicáveis para <span class="cmd">/tutorial</span> <span class="cmd">/kit nb</span> <span class="cmd">/warps</span> <span class="cmd">/comprarvip</span> <span class="cmd">/discord</span>.</li>
         </ul>
       </section>
@@ -228,7 +244,8 @@ const n = (id: string) => String(secoes.findIndex(([s]) => s === id) + 1).padSta
             <tr><td><span class="cmd">/tutorial</span></td><td>Como o servidor funciona</td></tr>
             <tr><td><span class="cmd">/spawn</span> <span class="cmd">/minerar</span> <span class="cmd">/warp lugar</span> <span class="cmd">/warps</span></td><td>Ir para os mundos</td></tr>
             <tr><td><span class="cmd">/sethome nome</span> <span class="cmd">/home</span> <span class="cmd">/delhome nome</span></td><td>Homes</td></tr>
-            <tr><td><span class="cmd">/call jogador</span> <span class="cmd">/tpaccept</span> <span class="cmd">/tpdeny</span></td><td>Pedir e responder teleporte</td></tr>
+            <tr><td><span class="cmd">/call jogador</span> <span class="cmd">/bring</span></td><td>Pedir e aceitar teleporte</td></tr>
+            <tr><td><span class="cmd">/arena</span></td><td>Arena de PvP (armadura de diamante)</td></tr>
             <tr><td><span class="cmd">/kit</span> <span class="cmd">/kit nb</span> <span class="cmd">/kit vip</span></td><td>Kits</td></tr>
             <tr><td><span class="cmd">/money</span> <span class="cmd">/money pay</span> <span class="cmd">/money top</span></td><td>Coins e ranking</td></tr>
             <tr><td><span class="cmd">/magnata</span></td><td>Quem é o mais rico</td></tr>
@@ -237,7 +254,10 @@ const n = (id: string) => String(secoes.findIndex(([s]) => s === id) + 1).padSta
             <tr><td><span class="cmd">/vip</span> <span class="cmd">/diasvip</span> <span class="cmd">/ativarvip</span> <span class="cmd">/vendervip</span> <span class="cmd">/mercadovip</span> <span class="cmd">/comprarvip</span></td><td>VIP</td></tr>
             <tr><td><span class="cmd">/pvp on</span> <span class="cmd">/pvp off</span></td><td>Ligar e desligar o próprio PvP (VIP)</td></tr>
             <tr><td><span class="cmd">/fly</span></td><td>Voar (VIP)</td></tr>
-            <tr><td><span class="cmd">/dragao</span></td><td>Situação do dragão do The End</td></tr>
+            <tr><td><span class="cmd">/dragao</span> <span class="cmd">/wither</span></td><td>Situação dos bosses</td></tr>
+            <tr><td><span class="cmd">/stats</span> <span class="cmd">/inspect jogador</span></td><td>Suas skills e as de outro jogador</td></tr>
+            <tr><td><span class="cmd">/evento</span></td><td>Entrar no evento que está acontecendo</td></tr>
+            <tr><td><span class="cmd">/tag</span> <span class="cmd">/luz</span> <span class="cmd">/ajuda</span></td><td>Suas tags, visão noturna e ajuda</td></tr>
             <tr><td><span class="cmd">/denuncia jogador motivo</span></td><td>Avisar a equipe</td></tr>
             <tr><td><span class="cmd">/players</span> <span class="cmd">/ping</span></td><td>Jogadores online e ping</td></tr>
             <tr><td><span class="cmd">/discord</span></td><td>Link do Discord</td></tr>
@@ -303,7 +323,7 @@ const n = (id: string) => String(secoes.findIndex(([s]) => s === id) + 1).padSta
   .sec ul li { position: relative; padding-left: 20px; }
   .sec ul li::before { content: ''; position: absolute; left: 0; top: 0.68em; width: 6px; height: 6px; background: var(--vermelho-jogo); }
   .sec b { color: var(--branco); }
-  .sec b.tag-vip { color: #ffaa00; } .sec b.tag-magnata { color: #55ff55; } .sec b.tag-diretor { color: #aa0000; } .sec b.tag-admin { color: #ff5555; } .sec b.tag-destemido { color: #d16ad1; }
+  .sec b.tag-vip { color: #ffaa00; } .sec b.tag-magnata { color: #55ff55; } .sec b.tag-diretor { color: #aa0000; } .sec b.tag-admin { color: #ff5555; } .sec b.tag-destemido { color: #d16ad1; } .sec b.tag-predador { color: #c62828; } .sec b.tag-raro { color: #55ffff; }
   .vermelho { color: var(--vermelho-jogo) !important; }
   .destaque { border: 2px solid var(--vermelho-jogo); box-shadow: var(--brilho-caixa); background: rgba(200, 29, 37, 0.18); padding: 18px 22px; font-size: 20px; font-weight: 700; }
   .minis { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr)); gap: 10px; }

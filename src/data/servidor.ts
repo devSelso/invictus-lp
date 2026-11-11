@@ -36,13 +36,14 @@ export const vip = {
   promocao: { ativa: false, nome: '' },
 };
 
-// Tabela de chances do ovo na ativação do VIP (valores iniciais).
+// Tabela de chances do ovo na ativação do VIP. Igual a vip.premio-ovo no config.yml do ServidorCore
+// (raridade pelo rendimento da gaiola, decidida em 2026-11-11). Cores iguais às do jogo.
 export const chancesOvo = [
   { nome: 'Sem ovo', chance: 50, cor: '#6B6B73', ovos: [] as string[], detalhe: 'Fica só a chance da gaiola' },
-  { nome: 'Comum', chance: 30, cor: '#FFFFFF', ovos: ['galinha', 'porco', 'vaca', 'ovelha'] },
-  { nome: 'Incomum', chance: 14, cor: '#FFFF55', ovos: ['zumbi', 'esqueleto', 'aranha', 'aranha da caverna'] },
-  { nome: 'Raro', chance: 5, cor: '#55FFFF', ovos: ['creeper', 'slime', 'enderman', 'bruxa'] },
-  { nome: 'Épico', chance: 1, cor: '#FF55FF', ovos: ['blaze', 'cubo de magma'], detalhe: 'Blaze (0,7%), cubo de magma (0,3%)', pesos: [0.7, 0.3] },
+  { nome: 'Comum', chance: 30, cor: '#FFFFFF', ovos: ['aranha', 'aranha da caverna', 'galinha', 'porco', 'ovelha'] },
+  { nome: 'Incomum', chance: 14, cor: '#55FF55', ovos: ['vaca', 'bruxa', 'esqueleto', 'zumbi'] },
+  { nome: 'Raro', chance: 5, cor: '#55FFFF', ovos: ['pigman', 'enderman', 'creeper', 'cubo de magma'] },
+  { nome: 'Épico', chance: 1, cor: '#FF55FF', ovos: ['lula', 'blaze', 'slime'] },
 ];
 export const chanceGaiola = 5;
 export const chancesProvisorias = true;
