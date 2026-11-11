@@ -16,7 +16,6 @@ const ativo = (href: string) => (href === '/' ? atual === '/' : atual.startsWith
 {servidor.preLancamento && (
   <div class="faixa">
     <div class="container faixa-in">
-      <span>Abre dia {servidor.lancamentoCurto} · <b data-dias>em breve</b></span>
       <a href={links.direct} target="_blank" rel="noopener" data-copiar={vip.mensagemDirect} data-copiado="Mensagem copiada, cole no direct">Pré-venda do VIP aberta</a>
     </div>
   </div>
@@ -46,7 +45,7 @@ const ativo = (href: string) => (href === '/' ? atual === '/' : atual.startsWith
 
 <style>
   .faixa { background: var(--vermelho); font-size: 14px; font-weight: 600; letter-spacing: 1px; }
-  .faixa-in { min-height: 36px; padding-block: 6px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 4px 16px; }
+  .faixa-in { min-height: 36px; padding-block: 6px; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 4px 16px; }
   .faixa a { color: var(--branco); text-decoration: underline; }
   .topo { position: sticky; top: 0; z-index: 20; background: rgba(11, 11, 14, 0.88); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--linha); }
   .topo-in { min-height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }

@@ -98,11 +98,6 @@ const perguntas = [
           </div>
           <p class="nota">O botão abre o direct do @{servidor.instagram} e copia a mensagem "{vip.mensagemDirect}". É só colar e enviar.</p>
         </div>
-        <div class="contagem" aria-label={`Lançamento dia ${servidor.lancamentoTexto}`}>
-          <span class="dias t-titulo" data-dias-num>--</span>
-          <span class="dias-rot">dias para abrir</span>
-          <span class="data t-titulo">{servidor.lancamentoCurto}</span>
-        </div>
       </div>
     </section>
   )}
@@ -136,7 +131,7 @@ const perguntas = [
       <h2 class="t-titulo t-h2">Do launcher ao primeiro kit</h2>
     </div>
     <ol class="passos">
-      <li><span class="n t-titulo">1</span><div><h3>Abra a versão 1.8.8</h3><p>No launcher, escolha a 1.8.8 e clique em Jogar.</p></div></li>
+      <li><span class="n t-titulo">1</span><div><h3>Abra a versão 1.8</h3><p>No launcher, escolha a 1.8 e clique em Jogar.</p></div></li>
       <li><span class="n t-titulo">2</span><div><h3>Adicione o servidor</h3><p>Multijogador, Adicionar servidor, cole {servidor.ip ? <span class="cmd">{servidor.ip}</span> : 'o IP (em breve)'}.</p></div></li>
       <li><span class="n t-titulo">3</span><div><h3>Crie sua senha</h3><p><span class="cmd">/register</span> na primeira vez e <span class="cmd">/login</span> nas outras.</p></div></li>
       <li><span class="n t-titulo">4</span><div><h3>Pegue o kit</h3><p><span class="cmd">/tutorial</span> e depois <span class="cmd">/kit nb</span>.</p></div></li>

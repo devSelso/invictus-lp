@@ -12,6 +12,8 @@ const secoes = [
   ['economia', 'Economia'],
   ['vip', 'VIP'],
   ['gaiolas', 'Gaiolas'],
+  ['skills', 'Skills'],
+  ['eventos', 'Eventos'],
   ['chat', 'Chat'],
   ['conduta', 'Conduta e punições'],
   ['rotina', 'Rotina do servidor'],
@@ -27,7 +29,7 @@ const n = (id: string) => String(secoes.findIndex(([s]) => s === id) + 1).padSta
     <div class="busca">
       <label for="busca">Buscar nas regras</label>
       <input id="busca" type="search" placeholder="Ex.: nether, baú, voo, punição" autocomplete="off" />
-      <span id="resultado" aria-live="polite">13 seções</span>
+      <span id="resultado" aria-live="polite">{secoes.length} seções</span>
     </div>
   </section>
 
@@ -69,7 +71,7 @@ const n = (id: string) => String(secoes.findIndex(([s]) => s === id) + 1).padSta
         <ul><li>A ilha central clássica da 1.8, com dragão, torres de obsidiana e cristais.</li><li><b>O dragão renasce 6 horas depois de derrotado.</b> <span class="cmd">/dragao</span> mostra se ele está vivo ou quanto falta. A derrota e o renascimento são anunciados para todos.</li><li><b>Prêmio:</b> quem dá o golpe final ganha 5.000 Coins e a tag roxa <b class="tag-destemido">Destemido</b> no chat, que fica com ele até outro jogador matar o dragão. A cada morte, o dragão tem 0,5% de chance de deixar cair uma gaiola. Valores iniciais.</li><li>Não pode colocar blocos, nem para subir nas torres: o dragão se derrota com arco.</li><li>PvP sempre ligado. Não precisa de armadura para entrar.</li></ul>
       </section>
 
-      <section id="gerais" class="sec" data-palavras="morrer dormir cama limpeza">
+      <section id="gerais" class="sec" data-palavras="morrer dormir cama limpeza reparar bigorna encantamento">
         <h2><span>{n('gerais')}</span>Regras gerais</h2>
         <ul>
           <li><b>Inventário único</b> em todos os mundos.</li>
@@ -78,6 +80,7 @@ const n = (id: string) => String(secoes.findIndex(([s]) => s === id) + 1).padSta
           <li><b>Um só relógio:</b> o horário do Mundo 1 vale para o Minerar e define o PvP de dia e de noite.</li>
           <li><b>Itens no chão são limpos a cada 10 minutos</b>, em todos os mundos, com avisos 60, 30 e 10 segundos antes. Só itens caídos são removidos.</li>
           <li>Animais não passam de um mundo para outro.</li>
+          <li><b>Reparar itens:</b> clique com o item num <b>bloco de ferro</b> (skill Reparação). A bigorna comum está desativada. Nível mínimo: 0 para madeira, pedra e couro; 100 para ferro, ouro, arco e vara de pescar; 300 para diamante. O jogador comum mantém o encantamento com 10% de chance no nível 100, 20% no 250, 70% no 500 e 90% no 750; o VIP nunca perde.</li>
         </ul>
       </section>
 
@@ -184,6 +187,47 @@ const n = (id: string) => String(secoes.findIndex(([s]) => s === id) + 1).padSta
         </table></div>
       </section>
 
+      <section id="skills" class="sec" data-palavras="mcmmo habilidade habilidades nivel nível stats mineração lenhador reparação super quebrador">
+        <h2><span>{n('skills')}</span>Skills</h2>
+        <p>Cada atividade tem uma skill que sobe de nível com o uso e libera vantagens. <span class="cmd">/stats</span> mostra as suas, <span class="cmd">/inspect jogador</span> as de outro e <span class="cmd">/mctop</span> o ranking. A cada 100 níveis numa skill, o servidor inteiro é avisado.</p>
+        <div class="tabela" style="--tmin:620px"><table>
+          <thead><tr><th>Skill</th><th>O que dá</th></tr></thead>
+          <tbody>
+            <tr><td><b>Mineração</b></td><td>Drop duplo de minério. <b>Super Quebrador</b>: picareta na mão e clique direito, minera mais rápido e triplica os drops por alguns segundos.</td></tr>
+            <tr><td><b>Lenhador</b></td><td>Drop duplo de madeira. <b>Derrubador de Árvores</b>: machado na mão e clique direito, derruba a árvore inteira.</td></tr>
+            <tr><td><b>Escavação</b></td><td>Tesouros ao cavar terra, areia e cascalho. <b>Giga Broca</b>: pá na mão e clique direito, cava muito rápido.</td></tr>
+            <tr><td><b>Herbalismo</b></td><td>Drop duplo de plantações e replantio automático. <b>Terra Verde</b>: enxada na mão e clique direito, triplica a colheita.</td></tr>
+            <tr><td><b>Pescador</b></td><td>Tesouros e itens encantados na pesca, pesca no gelo e puxar itens de mobs com a vara.</td></tr>
+            <tr><td><b>Espadas</b></td><td>Sangramento, contra-ataque e <b>Golpes Serrilhados</b> (dano em área).</td></tr>
+            <tr><td><b>Arqueiro</b></td><td>Dano extra, atordoar o alvo e recuperar flechas.</td></tr>
+            <tr><td><b>Desarmado</b></td><td>Soco mais forte, desarmar o inimigo, desviar flechas e <b>Fúria</b>.</td></tr>
+            <tr><td><b>Acrobacia</b></td><td>Menos dano de queda (rolamento) e esquiva em combate.</td></tr>
+            <tr><td><b>Domar</b></td><td>Agachado, clique com ossos para chamar lobos e com peixe para chamar jaguatiricas. Lobos mais fortes.</td></tr>
+            <tr><td><b>Alquimia</b></td><td>Poções prontas mais rápido e ingredientes extras.</td></tr>
+            <tr><td><b>Reparação</b></td><td>Reparar no bloco de ferro (ver Regras gerais). Quanto maior o nível, mais cada material conserta e maior a chance de manter o encantamento.</td></tr>
+          </tbody>
+        </table></div>
+        <p class="muted">As skills Machados e Fundição estão desligadas no Invictus. As habilidades ativas têm um tempo de recarga.</p>
+      </section>
+
+      <section id="eventos" class="sec" data-palavras="evento eventos premio prêmio loteria bolão bolao sorteio matemática palavra fastclick votação">
+        <h2><span>{n('eventos')}</span>Eventos</h2>
+        <p>Todo dia o servidor faz eventos no chat, sozinho, com prêmio em Coins. Para participar, use <span class="cmd">/evento</span>.</p>
+        <div class="tabela" style="--tmin:640px"><table>
+          <thead><tr><th>Evento</th><th>Como ganhar</th><th>Prêmio</th></tr></thead>
+          <tbody>
+            <tr><td><b>Matemática</b></td><td>Acertar a conta primeiro no chat</td><td>1.000 Coins</td></tr>
+            <tr><td><b>Palavra</b></td><td>Digitar a palavra primeiro no chat</td><td>750 Coins</td></tr>
+            <tr><td><b>FastClick</b></td><td>Clicar primeiro no [X] certo do chat</td><td>750 Coins</td></tr>
+            <tr><td><b>Loteria</b></td><td>Acertar o número sorteado (0 a 50). Aposta: <span class="cmd">/evento número</span>, 50 Coins</td><td>2.000 Coins</td></tr>
+            <tr><td><b>Bolão</b></td><td>Entrar com <span class="cmd">/evento entrar</span> (500 Coins); um participante é sorteado</td><td>O pote inteiro</td></tr>
+            <tr><td><b>Sorteio</b></td><td>Entrar de graça com <span class="cmd">/evento entrar</span>; um participante é sorteado</td><td>1.500 Coins</td></tr>
+            <tr><td><b>Votação</b></td><td>Votar no chat no próximo evento</td><td>O evento mais votado começa</td></tr>
+          </tbody>
+        </table></div>
+        <p>Horários (Brasília): 10:30, 12:00, 13:30, 15:00, 16:30, 18:00, 19:00, 20:00 (votação), 21:00, 22:00 e 23:00. Eventos com arena, como Sumô, Spleef e Killer, chegam depois do lançamento. Valores iniciais.</p>
+      </section>
+
       <section id="chat" class="sec" data-palavras="mensagem tag tags">
         <h2><span>{n('chat')}</span>Chat</h2>
         <ul>
@@ -286,7 +330,7 @@ const n = (id: string) => String(secoes.findIndex(([s]) => s === id) + 1).padSta
       if (mostra) total++;
     }
     if (vazio) vazio.hidden = total > 0;
-    if (resultado) resultado.textContent = q ? (total === 1 ? '1 seção encontrada' : `${total} seções encontradas`) : '13 seções';
+    if (resultado) resultado.textContent = q ? (total === 1 ? '1 seção encontrada' : `${total} seções encontradas`) : `${secoes.length} seções`;
   }
   campo?.addEventListener('input', filtrar);
 </script>

@@ -4,7 +4,7 @@ import ServidorCard from '../components/ServidorCard.astro';
 import { servidor } from '../data/servidor';
 
 const passos = [
-  { t: 'Abra o Minecraft na versão 1.8.8', d: 'O Invictus roda na 1.8.8, a versão do PvP clássico. No launcher, crie ou escolha um perfil com a 1.8.8 e clique em Jogar.' },
+  { t: 'Abra o Minecraft na versão 1.8', d: 'O Invictus roda na 1.8, a versão do PvP clássico. No launcher, crie ou escolha um perfil com a 1.8 e clique em Jogar.' },
   { t: 'Adicione o servidor', d: `Vá em Multijogador e depois em Adicionar servidor. Dê o nome Invictus, cole o IP e confirme. O elmo vermelho aparece na sua lista.${servidor.ip ? '' : ' O IP sai em breve: entre no Discord para saber primeiro.'}`, chat: servidor.ip ?? undefined },
   { t: 'No primeiro acesso, crie sua senha', d: 'Como o servidor aceita Minecraft pirata, sua conta é protegida por senha. Digite a mesma senha duas vezes.', chat: '/register suaSenha suaSenha' },
   { t: 'Nas outras vezes, entre com ela', d: 'Toda vez que voltar ao servidor, use a senha que você criou.', chat: '/login suaSenha' },
@@ -12,7 +12,7 @@ const passos = [
   { t: 'Pegue o kit inicial', d: 'Você começa sem itens. O kit Normal traz espada, picareta, machado e pá de madeira, 8 pães, bancada e fornalha, e pode ser pego de novo a cada 24 horas.', chat: '/kit nb' },
 ];
 ---
-<Base titulo="Como entrar" descricao="Passo a passo para entrar no Invictus: versão 1.8.8, adicionar o servidor, criar sua senha e pegar o primeiro kit.">
+<Base titulo="Como entrar" descricao="Passo a passo para entrar no Invictus: versão 1.8, adicionar o servidor, criar sua senha e pegar o primeiro kit.">
   <section class="container topo">
     <div class="topo-txt">
       <span class="hud"><span class="ponto"></span>Guia para iniciantes</span>

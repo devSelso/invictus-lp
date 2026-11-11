@@ -15,6 +15,8 @@ const vantagens = [
   { v: '∞', t: 'Lojas de placa', d: 'Crie lojas de baú e placa sem limite. Só VIP pode criar.' },
   { v: '24H', t: 'Kit VIP', d: 'Espada, picareta, machado e pá de diamante, 8 maçãs douradas, 16 frascos de experiência, bancada e fornalha.', cmd: '/kit vip' },
   { v: 'ON/OFF', t: 'PvP do seu jeito', d: 'Ligue e desligue o próprio PvP fora do Spawn e fora de combate, com 3 minutos entre trocas.', cmd: '/pvp off' },
+  { v: '100%', t: 'Encantamento garantido', d: 'Repare seus itens sem nunca perder o encantamento. O jogador comum tem de 10% a 90% de chance, conforme o nível de Reparação.' },
+  { v: 'XP', t: 'XP mantido', d: 'Ao morrer, seus itens caem, mas o XP fica com você.' },
 ];
 ---
 <Base titulo="VIP" descricao="Vantagens do VIP do Invictus, pré-venda, como funciona o código e o mercado de VIP.">
@@ -95,7 +97,7 @@ const vantagens = [
       ))}
       <li class="dado tag-linha">
         <div><h3>Destaque no servidor</h3><p>Nome em dourado no tab e em cima da cabeça, e a tag VIP dourada no chat.</p></div>
-        <span class="chat-mc"><b class="tag-vip">VIP</b> SeuNome: <span>bora minerar?</span></span>
+        <span class="chat-mc"><span style="color:#ffff55">[L]</span> <b class="tag-vip">[VIP]</b> SeuNome<span style="color:#ffff55">: bora minerar?</span></span>
       </li>
     </ul>
   </section>

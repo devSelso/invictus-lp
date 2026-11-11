@@ -4,7 +4,7 @@
 @import '@fontsource/chakra-petch/latin-500.css';
 @import '@fontsource/chakra-petch/latin-600.css';
 @import '@fontsource/chakra-petch/latin-700.css';
-@import '@fontsource/cinzel/latin-900.css';
+@import '@fontsource/saira-condensed/latin-900.css';
 
 /* Kit visual do Invictus: o mesmo "Scanner" dos Reels. */
 :root {
@@ -25,7 +25,7 @@
 
   --f-titulo: 'Orbitron', 'Chakra Petch', sans-serif;
   --f-texto: 'Chakra Petch', system-ui, sans-serif;
-  --f-marca: 'Cinzel', serif;
+  --f-marca: 'Saira Condensed', 'Chakra Petch', sans-serif;
 
   --largura: 1240px;
   color-scheme: dark;

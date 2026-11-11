@@ -2,9 +2,9 @@
 
 export const servidor = {
   nome: 'Invictus',
-  versao: '1.8.8',
+  versao: '1.8',
   // IP do servidor. null = ainda não divulgado: o site esconde o IP e manda para o Discord.
-  ip: null as string | null,
+  ip: 'redeinvictus.com.br' as string | null,
   // Data e hora de abertura (horário de Brasília).
   lancamento: '2026-11-16T00:00:00-03:00',
   lancamentoTexto: '16 de novembro',
