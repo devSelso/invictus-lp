@@ -1,0 +1,82 @@
+---
+import Base from '../layouts/Base.astro';
+import { links } from '../data/servidor';
+
+// Política de privacidade (criada em 2026-11-13). Reflete o que o servidor guarda de fato; ver
+// ../servidor-minecraft/docs/tecnico/dados-e-backup.md. Mudou o que é guardado: atualizar aqui e a data.
+const atualizada = '13 de novembro de 2026';
+---
+<Base titulo="Política de privacidade" descricao="Quais dados o Invictus guarda, para que servem, onde ficam e como pedir para ver ou apagar os seus.">
+  <section class="container topo">
+    <span class="hud"><span class="ponto"></span>Privacidade</span>
+    <h1 class="t-titulo t-h1 t-brilho">Política de privacidade</h1>
+    <p class="lead">O que guardamos quando você joga no Invictus, para que serve e como pedir para ver ou apagar. Atualizada em {atualizada}.</p>
+  </section>
+
+  <article class="container texto">
+    <section>
+      <h2 class="t-titulo">Quem somos</h2>
+      <p>O Invictus é um servidor brasileiro de Minecraft mantido pela equipe Invictus. O contato com a equipe é pelo <a href={links.discord} target="_blank" rel="noopener">Discord</a>.</p>
+    </section>
+
+    <section>
+      <h2 class="t-titulo">O que guardamos</h2>
+      <ul>
+        <li><b>Conta:</b> seu nick, um identificador gerado a partir dele e a sua senha. A senha nunca fica legível: guardamos só uma versão embaralhada (hash), que não dá para desfazer. Nem a equipe consegue ver sua senha.</li>
+        <li><b>Conexão:</b> o endereço IP de cada acesso e a data do último login. Servem para proteger as contas (limite de contas por IP, bloqueio de ataques de robôs) e para aplicar punições.</li>
+        <li><b>Dados de jogo:</b> inventário, posição, saldo de Coins, homes, kits, skills, tags, VIP, gaiolas e quais blocos e baús são seus.</li>
+        <li><b>Registro de ações:</b> blocos colocados e quebrados, uso de baús, mensagens do chat e comandos, para a equipe investigar denúncias, roubos e destruição de construções.</li>
+        <li><b>Moderação:</b> denúncias, advertências, silenciamentos e banimentos, com o motivo.</li>
+      </ul>
+      <p>Não pedimos nome real, e-mail, telefone nem documento para jogar. Se você comprar VIP, o pagamento é feito na plataforma de pagamento, e nós não recebemos os dados do seu cartão.</p>
+    </section>
+
+    <section>
+      <h2 class="t-titulo">Para que usamos</h2>
+      <ul>
+        <li>Fazer o servidor funcionar e guardar o seu progresso.</li>
+        <li>Proteger sua conta e suas construções.</li>
+        <li>Investigar denúncias e aplicar as regras.</li>
+        <li>Combater trapaças, ataques e abuso de falhas.</li>
+      </ul>
+      <p>Não vendemos nem alugamos seus dados e não usamos para propaganda.</p>
+    </section>
+
+    <section>
+      <h2 class="t-titulo">Onde ficam</h2>
+      <p>Os dados ficam no servidor do jogo, numa hospedagem em São Paulo. Uma cópia de segurança diária é guardada criptografada numa pasta de armazenamento em nuvem da equipe, para o servidor poder ser recuperado se algo der errado. Só a equipe técnica tem acesso.</p>
+      <p>A ferramenta de cópia de segurança (Invictus Backup) acessa apenas a pasta de backups da própria equipe no Google Drive. Ela não acessa nenhum dado da sua conta Google.</p>
+    </section>
+
+    <section>
+      <h2 class="t-titulo">Por quanto tempo</h2>
+      <p>Enquanto sua conta existir. O histórico de punições conta por 90 dias para a reincidência. As cópias de segurança são apagadas sozinhas: as diárias depois de 7 dias e as semanais depois de 4 semanas.</p>
+    </section>
+
+    <section>
+      <h2 class="t-titulo">Seus direitos</h2>
+      <p>Pela Lei Geral de Proteção de Dados (LGPD), você pode pedir para saber quais dados seus guardamos, corrigir o que estiver errado ou apagar sua conta e seus dados. Basta abrir um pedido no <a href={links.discord} target="_blank" rel="noopener">Discord</a> informando o seu nick. Para apagar, confirmamos que a conta é sua antes. Registros de punição podem ser mantidos pelo prazo da reincidência, para a segurança dos outros jogadores.</p>
+    </section>
+
+    <section>
+      <h2 class="t-titulo">Menores de idade</h2>
+      <p>Muitos jogadores são menores de idade. Por isso guardamos só o necessário para o jogo, sem nenhum dado pessoal de identificação. Pais e responsáveis podem pedir pelo Discord para ver ou apagar os dados de uma conta.</p>
+    </section>
+
+    <section>
+      <h2 class="t-titulo">Mudanças</h2>
+      <p>Se mudarmos o que guardamos, esta página é atualizada e a data no topo muda.</p>
+    </section>
+  </article>
+</Base>
+
+<style>
+  .topo { padding-top: 64px; display: flex; flex-direction: column; gap: 16px; max-width: 820px; }
+  .texto { max-width: 820px; display: flex; flex-direction: column; gap: 36px; margin-top: 40px; }
+  .texto h2 { font-size: 24px; margin-bottom: 12px; }
+  .texto p, .texto li { color: var(--texto-2); font-size: 16px; line-height: 1.65; }
+  .texto p + p { margin-top: 12px; }
+  .texto ul { display: flex; flex-direction: column; gap: 10px; padding-left: 20px; margin-bottom: 12px; }
+  .texto b { color: var(--branco); font-weight: 600; }
+  .texto a { color: var(--vermelho-jogo); }
+</style>
